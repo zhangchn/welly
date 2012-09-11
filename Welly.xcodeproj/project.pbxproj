@@ -13,7 +13,6 @@
 		160D6D4B0EE2E5B900CDC416 /* Security.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 160D6D4A0EE2E5B900CDC416 /* Security.framework */; };
 		161DF4A5106DD53C0003E85A /* MainMenu.xib in Resources */ = {isa = PBXBuildFile; fileRef = 161DF4A3106DD53C0003E85A /* MainMenu.xib */; };
 		161DF4AD106DD58E0003E85A /* Preferences.xib in Resources */ = {isa = PBXBuildFile; fileRef = 161DF4AB106DD58E0003E85A /* Preferences.xib */; };
-		161DF767106DE2780003E85A /* Quartz.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 161DF766106DE2780003E85A /* Quartz.framework */; };
 		161DF769106DE2780003E85A /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 161DF768106DE2780003E85A /* SystemConfiguration.framework */; };
 		1631E8200E2C672700B87A38 /* WLQuickLookBridge.m in Sources */ = {isa = PBXBuildFile; fileRef = 1631E81F0E2C672700B87A38 /* WLQuickLookBridge.m */; };
 		1631E84E0E2C8D5600B87A38 /* WLPreviewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 1631E84D0E2C8D5600B87A38 /* WLPreviewController.m */; };
@@ -104,8 +103,9 @@
 		8D11072B0486CEB800E47090 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 089C165CFE840E0CC02AAC07 /* InfoPlist.strings */; };
 		8D11072D0486CEB800E47090 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 29B97316FDCFA39411CA2CEA /* main.m */; settings = {ATTRIBUTES = (); }; };
 		8D11072F0486CEB800E47090 /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1058C7A1FEA54F0111CA2CBB /* Cocoa.framework */; };
-		D64A480B11E90350008ACEBD /* Growl.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D64A480A11E90350008ACEBD /* Growl.framework */; };
 		D64A480E11E90356008ACEBD /* Growl.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = D64A480A11E90350008ACEBD /* Growl.framework */; };
+		DB3859DB1491459300198676 /* Growl.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D64A480A11E90350008ACEBD /* Growl.framework */; };
+		DBAA9FAC149135AC00C4C0EB /* Quartz.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DBAA9FAB149135AC00C4C0EB /* Quartz.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -137,7 +137,6 @@
 		161DF4AC106DD58E0003E85A /* English */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = English; path = English.lproj/Preferences.xib; sourceTree = "<group>"; };
 		161DF4AF106DD59D0003E85A /* zh_CN */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = zh_CN; path = zh_CN.lproj/Preferences.xib; sourceTree = "<group>"; };
 		161DF4B1106DD5AC0003E85A /* zh_TW */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = zh_TW; path = zh_TW.lproj/Preferences.xib; sourceTree = "<group>"; };
-		161DF766106DE2780003E85A /* Quartz.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Quartz.framework; path = /System/Library/Frameworks/Quartz.framework; sourceTree = "<absolute>"; };
 		161DF768106DE2780003E85A /* SystemConfiguration.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SystemConfiguration.framework; path = /System/Library/Frameworks/SystemConfiguration.framework; sourceTree = "<absolute>"; };
 		1631E81F0E2C672700B87A38 /* WLQuickLookBridge.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WLQuickLookBridge.m; sourceTree = "<group>"; };
 		1631E8210E2C674300B87A38 /* WLQuickLookBridge.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WLQuickLookBridge.h; sourceTree = "<group>"; };
@@ -302,6 +301,7 @@
 		85F7F2080B06EE36000C4CDF /* WLGlobalConfig.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WLGlobalConfig.m; sourceTree = "<group>"; };
 		8D1107310486CEB800E47090 /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
 		D64A480A11E90350008ACEBD /* Growl.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Growl.framework; sourceTree = "<group>"; };
+		DBAA9FAB149135AC00C4C0EB /* Quartz.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Quartz.framework; path = SDKs/MacOSX10.7.sdk/System/Library/Frameworks/Quartz.framework; sourceTree = DEVELOPER_DIR; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -309,6 +309,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				DBAA9FAC149135AC00C4C0EB /* Quartz.framework in Frameworks */,
 				8D11072F0486CEB800E47090 /* Cocoa.framework in Frameworks */,
 				8540F7250CEB43FF003B17D1 /* PSMTabBarControl.framework in Frameworks */,
 				85D259470D21039D002BD294 /* IOKit.framework in Frameworks */,
@@ -319,9 +320,8 @@
 				81624CE20E2F8F89009C9987 /* Carbon.framework in Frameworks */,
 				160D6D4B0EE2E5B900CDC416 /* Security.framework in Frameworks */,
 				5A9C07F90F5D8C2C0033B8E6 /* Sparkle.framework in Frameworks */,
-				161DF767106DE2780003E85A /* Quartz.framework in Frameworks */,
+				DB3859DB1491459300198676 /* Growl.framework in Frameworks */,
 				161DF769106DE2780003E85A /* SystemConfiguration.framework in Frameworks */,
-				D64A480B11E90350008ACEBD /* Growl.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -345,7 +345,6 @@
 			children = (
 				81624CE10E2F8F89009C9987 /* Carbon.framework */,
 				1058C7A1FEA54F0111CA2CBB /* Cocoa.framework */,
-				161DF766106DE2780003E85A /* Quartz.framework */,
 				160D6D4A0EE2E5B900CDC416 /* Security.framework */,
 				161DF768106DE2780003E85A /* SystemConfiguration.framework */,
 			);
@@ -355,6 +354,7 @@
 		1058C7A2FEA54F0111CA2CBB /* Other Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				DBAA9FAB149135AC00C4C0EB /* Quartz.framework */,
 				29B97324FDCFA39411CA2CEA /* AppKit.framework */,
 				29B97325FDCFA39411CA2CEA /* Foundation.framework */,
 				85D259460D21039D002BD294 /* IOKit.framework */,
@@ -1010,24 +1010,26 @@
 		C01FCF4B08A954540054247B /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ARCHS = "$(ARCHS_STANDARD_32_64_BIT)";
+				ARCHS = "$(ARCHS_STANDARD_64_BIT)";
 				COPY_PHASE_STRIP = NO;
 				DEPLOYMENT_LOCATION = NO;
+				ENABLE_OPENMP_SUPPORT = NO;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"\"$(SRCROOT)\"",
-					"\"$(SRCROOT)/Quartz.framework/Frameworks\"",
 					"\"$(SYSTEM_LIBRARY_DIR)/Frameworks/ApplicationServices.framework/Frameworks\"",
 				);
 				GCC_DYNAMIC_NO_PIC = NO;
 				GCC_ENABLE_FIX_AND_CONTINUE = YES;
 				GCC_MODEL_TUNING = G5;
 				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_VERSION = com.apple.compilers.llvm.clang.1_0;
 				INFOPLIST_FILE = Info.plist;
 				INSTALL_PATH = /Applications;
 				OTHER_CFLAGS = "-D__DUMPPACKET__";
 				PRODUCT_NAME = Welly;
-				SDKROOT = macosx10.7;
+				SDKROOT = macosx;
+				VALID_ARCHS = x86_64;
 				WRAPPER_EXTENSION = app;
 				ZERO_LINK = YES;
 			};
@@ -1036,21 +1038,23 @@
 		C01FCF4C08A954540054247B /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ARCHS = "$(ARCHS_STANDARD_32_64_BIT)";
+				ARCHS = "$(ARCHS_STANDARD_64_BIT)";
 				DEPLOYMENT_LOCATION = YES;
+				ENABLE_OPENMP_SUPPORT = NO;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"\"$(SRCROOT)\"",
-					"\"$(SRCROOT)/Quartz.framework/Frameworks\"",
 					"\"$(SYSTEM_LIBRARY_DIR)/Frameworks/ApplicationServices.framework/Frameworks\"",
 				);
 				GCC_GENERATE_DEBUGGING_SYMBOLS = NO;
 				GCC_MODEL_TUNING = G5;
+				GCC_VERSION = com.apple.compilers.llvm.clang.1_0;
 				GCC_WARN_HIDDEN_VIRTUAL_FUNCTIONS = NO;
 				INFOPLIST_FILE = Info.plist;
 				INSTALL_PATH = /Applications;
 				PRODUCT_NAME = Welly;
-				SDKROOT = macosx10.7;
+				SDKROOT = macosx;
+				VALID_ARCHS = x86_64;
 				WRAPPER_EXTENSION = app;
 			};
 			name = Release;
@@ -1064,7 +1068,7 @@
 				GCC_ENABLE_OBJC_GC = unsupported;
 				GCC_PREPROCESSOR_DEFINITIONS = _DEBUG;
 				GCC_TREAT_WARNINGS_AS_ERRORS = NO;
-				GCC_VERSION = com.apple.compilers.llvmgcc42;
+				GCC_VERSION = com.apple.compilers.llvm.clang.1_0;
 				GCC_WARN_ABOUT_DEPRECATED_FUNCTIONS = YES;
 				GCC_WARN_ABOUT_RETURN_TYPE = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
@@ -1084,7 +1088,7 @@
 				GCC_C_LANGUAGE_STANDARD = c99;
 				GCC_ENABLE_OBJC_GC = unsupported;
 				GCC_TREAT_WARNINGS_AS_ERRORS = NO;
-				GCC_VERSION = com.apple.compilers.llvmgcc42;
+				GCC_VERSION = com.apple.compilers.llvm.clang.1_0;
 				GCC_WARN_ABOUT_DEPRECATED_FUNCTIONS = YES;
 				GCC_WARN_ABOUT_RETURN_TYPE = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;

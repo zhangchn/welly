@@ -260,7 +260,7 @@ NSString *const WLMenuTitleOpenWithBrowser = @"Open With Browser";
 		if (isReadingURL) {
 			// Push current char in!
             unsigned char c = grid[index/_maxColumn][index%_maxColumn].byte;
-			if (0x21 > c || c > 0x7E || c == '"' || c == '\'') {
+			if (0x21 > c || c > 0x7E || c == '"' || c == '\'' || c == ']') {
 				// Not URL anymore, add previous one
 				[self addURL:_currentURLStringBuffer AtIndex:startIndex length:urlLength];
 				[_currentURLStringBuffer setString:@""];
