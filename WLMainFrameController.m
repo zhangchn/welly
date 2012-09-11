@@ -77,9 +77,9 @@ SYNTHESIZE_SINGLETON_FOR_CLASS(WLMainFrameController);
 
     [_mainWindow setFrameAutosaveName:@"wellyMainWindowFrame"];
     
-    if (floor(NSAppKitVersionNumber)>NSAppKitVersionNumber10_6) {
-        [_mainWindow setCollectionBehavior:NSWindowCollectionBehaviorFullScreenPrimary];
-    }
+//    if (floor(NSAppKitVersionNumber)>NSAppKitVersionNumber10_6) {
+//        [_mainWindow setCollectionBehavior:NSWindowCollectionBehaviorFullScreenPrimary];
+//    }
     
     [NSTimer scheduledTimerWithTimeInterval:120 target:self selector:@selector(antiIdle:) userInfo:nil repeats:YES];
     
