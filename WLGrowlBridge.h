@@ -19,6 +19,8 @@ NSString *const WLGrowlNotificationNameNewMessageReceived;
 
 @interface WLGrowlBridge : NSObject <GrowlApplicationBridgeDelegate>
 
++ (BOOL)isMistEnabled;
+
 // iconData:nil priority:0 isSticky:NO
 + (void)notifyWithTitle:(NSString *)title
             description:(NSString *)description
@@ -36,18 +38,7 @@ NSString *const WLGrowlNotificationNameNewMessageReceived;
             description:(NSString *)description
        notificationName:(NSString *)notifName
                isSticky:(BOOL)isSticky
-           clickContext:(id)clickContext
-          clickSelector:(SEL)clickSelector
-             identifier:(id)identifier;
-
-// clickContext can be any object, not restricted to plist-encodable
-+ (void)notifyWithTitle:(NSString *)title
-            description:(NSString *)description
-       notificationName:(NSString *)notifName
-               iconData:(NSData *)iconData
-               priority:(signed int)priority
-               isSticky:(BOOL)isSticky
-           clickContext:(id)clickContext
+            clickTarget:(id)clickContext
           clickSelector:(SEL)clickSelector
              identifier:(id)identifier;
 

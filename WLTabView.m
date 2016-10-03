@@ -11,6 +11,7 @@
 #import "WLTerminal.h"
 #import "WLTerminalView.h"
 #import "WLMainFrameController.h"
+#import "WLTabBarControl.h"
 
 #import "WLTabViewItemController.h"
 
@@ -243,7 +244,6 @@
 		[super selectPreviousTabViewItem:self];
 }
 
-
 - (BOOL)acceptsFirstResponder {
 	return NO;
 }
@@ -262,7 +262,6 @@
 // Cmd+[0-9], Ctrl+Tab, Cmd+Shift+Left/Right (I don't know if we should keep this)
 // Added by K.O.ed, 2009.02.02
 - (BOOL)performKeyEquivalent:(NSEvent *)event {
-	//NSLog(@"XITabBarControl performKeyEquivalent:");
 	if ((([event modifierFlags] & NSCommandKeyMask) == NSCommandKeyMask) && 
 		(([event modifierFlags] & NSShiftKeyMask) == NSShiftKeyMask) &&
 		([[event charactersIgnoringModifiers] isEqualToString:keyStringLeft] ||
@@ -281,7 +280,11 @@
 			   ([event modifierFlags] & NSShiftKeyMask) == 0 && 
 			   [[event characters] intValue] > 0 && 
 			   [[event characters] intValue] < 10) {
-		[self selectTabViewItemAtIndex:([[event characters] intValue]-1)];
+		// User may drag and re-order tabs using tabBarControl
+		// These re-ordering will not reflect when calling
+		//  [self selectTabViewItemAtIndex:index];
+		// We here call method from tabBarControl to choose correct tab
+		[_tabBarControl selectTabViewItemAtIndex:([[event characters] intValue]-1)];
 		return YES;
 	} else if (([event modifierFlags] & NSCommandKeyMask) == 0 && 
 			   ([event modifierFlags] & NSAlternateKeyMask) == 0 && 
@@ -336,20 +339,19 @@
 }
 
 // Increase global font size setting by 5%
-- (IBAction)increaseFontSize:(id)sender {
+- (void)increaseFontSize:(id)sender {
 	// Here we use some small trick to provide better user experimence...
 	[self setFontSizeRatio:1.05f];
 }
 
 // Decrease global font size setting by 5%
-- (IBAction)decreaseFontSize:(id)sender {
+- (void)decreaseFontSize:(id)sender {
 	[self setFontSizeRatio:1.0f/1.05f];
 }
 
-- (void)magnifyWithEvent:(NSEvent *)event {
-	//NSLog(@"magnify:%f", [event magnification]);
-	[self setFontSizeRatio:[event magnification]+1.0];
-}
+//- (void)magnifyWithEvent:(NSEvent *)event {
+//	[self setFontSizeRatio:[event magnification]+1.0];
+//}
 
 - (void)swipeWithEvent:(NSEvent *)event {
 	if ([event deltaX] < 0) {

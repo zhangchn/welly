@@ -25,7 +25,7 @@ NSString *const WLMenuTitleQuitMode = @"Quit Mode";
 
 @implementation WLMovingAreaHotspotHandler
 - (id)init {
-	[super init];
+	self = [super init];
 	_leftArrowCursor = [NSCursor resizeLeftCursor];
 	_pageUpCursor = [NSCursor resizeUpCursor];
 	_pageDownCursor = [NSCursor resizeDownCursor];
@@ -75,7 +75,7 @@ NSString *const WLMenuTitleQuitMode = @"Quit Mode";
 
 - (void)mouseMoved:(NSEvent *)theEvent {
 	if ([NSCursor currentCursor] == _manager.normalCursor)
-		[[_manager.backgroundTrackingAreaUserInfo objectForKey:WLMouseCursorUserInfoName] set];
+		[(NSCursor *)[_manager.backgroundTrackingAreaUserInfo objectForKey:WLMouseCursorUserInfoName] set];
 }
 
 #pragma mark -

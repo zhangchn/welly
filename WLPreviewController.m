@@ -13,11 +13,7 @@
 
 NSString *const WLGIFToHTMLFormat = @"<html><body bgcolor='Black'><center><img scalefit='1' style='position: absolute; top: 0; right: 0; bottom: 0; left: 0; height:100%%; margin: auto;' src='%@'></img></center></body></html>";
 
-#if MAC_OS_X_VERSION_MAX_ALLOWED > MAC_OS_X_VERSION_10_5
-@interface WLDownloadDelegate : NSObject <NSWindowDelegate> {
-#else
-@interface WLDownloadDelegate : NSObject {
-#endif
+@interface WLDownloadDelegate : NSObject <NSWindowDelegate, NSURLDownloadDelegate> {
     // This progress bar is restored by gtCarrera
     // boost: don't put it in XIPreviewController
     HMBlkProgressIndicator *_indicator;
@@ -96,7 +92,7 @@ static BOOL sHasCacheDir = NO;
 @end
 
 #pragma mark -
-#pragma mark XIDownloadDelegate
+#pragma mark WLDownloadDelegate
 
 @implementation WLDownloadDelegate
 @synthesize download = _download;
@@ -180,15 +176,19 @@ static NSString * stringFromFileSize(long long size) {
     [_indicator startAnimation:self];
 }
 
+#pragma mark -
+#pragma mark NSWindowDelegate protocol
+
 // Window delegate for _window, finallize the download 
 - (BOOL)windowShouldClose:(id)window {
     NSURL *URL = [[_download request] URL];
     // Show the canceled message
-    [WLGrowlBridge notifyWithTitle:[URL absoluteString]
-                       description:NSLocalizedString(@"Canceled", @"Download canceled")
-                  notificationName:kGrowlNotificationNameFileTransfer
-                          isSticky:NO
-                        identifier:_download];
+	if (![WLGrowlBridge isMistEnabled])
+		[WLGrowlBridge notifyWithTitle:[URL absoluteString]
+						   description:NSLocalizedString(@"Canceled", @"Download canceled")
+					  notificationName:kGrowlNotificationNameFileTransfer
+							  isSticky:NO
+							identifier:_download];
     // Remove current url from the url list
     [sURLs removeObject:URL];
     // Cancel the download
@@ -201,12 +201,16 @@ static NSString * stringFromFileSize(long long size) {
     return YES;
 }
 
+#pragma mark -
+#pragma mark NSURLDownloadDelegate protocol
+
 - (void)downloadDidBegin:(NSURLDownload *)download {
-    [WLGrowlBridge notifyWithTitle:[[[download request] URL] absoluteString]
-                       description:NSLocalizedString(@"Connecting", @"Download begin")
-                  notificationName:kGrowlNotificationNameFileTransfer
-                          isSticky:YES
-                        identifier:download];
+//	if (![WLGrowlBridge isMistEnabled])
+//		[WLGrowlBridge notifyWithTitle:[[[download request] URL] absoluteString]
+//						   description:NSLocalizedString(@"Connecting", @"Download begin")
+//					  notificationName:kGrowlNotificationNameFileTransfer
+//							  isSticky:YES
+//							identifier:download];
 }
 
 - (void)download:(NSURLDownload *)download didReceiveResponse:(NSURLResponse *)response { 
@@ -220,11 +224,12 @@ static NSString * stringFromFileSize(long long size) {
     NSStringEncoding encoding = CFStringConvertEncodingToNSStringEncoding(kCFStringEncodingGB_18030_2000);
     _filename = [[NSString alloc] initWithData:data encoding:encoding];
     [pool release];
-    [WLGrowlBridge notifyWithTitle:_filename
-                       description:[self stringFromTransfer]
-                  notificationName:kGrowlNotificationNameFileTransfer
-                          isSticky:YES
-                        identifier:download];
+//	if (![WLGrowlBridge isMistEnabled])
+//		[WLGrowlBridge notifyWithTitle:_filename
+//						   description:[self stringFromTransfer]
+//					  notificationName:kGrowlNotificationNameFileTransfer
+//							  isSticky:YES
+//							identifier:download];
 
     // set local path
     NSString *cacheDir = [WLGlobalConfig cacheDirectory];
@@ -269,11 +274,12 @@ static NSString * stringFromFileSize(long long size) {
 
 - (void)download:(NSURLDownload *)download didReceiveDataOfLength:(NSUInteger)length { 
     _transferredLength += length;
-    [WLGrowlBridge notifyWithTitle:_filename
-                       description:[self stringFromTransfer]
-                  notificationName:kGrowlNotificationNameFileTransfer
-                          isSticky:YES
-                        identifier:download];
+//	if (![WLGrowlBridge isMistEnabled])
+//		[WLGrowlBridge notifyWithTitle:_filename
+//						   description:[self stringFromTransfer]
+//					  notificationName:kGrowlNotificationNameFileTransfer
+//							  isSticky:YES
+//							identifier:download];
 	// Add the incremented value
 	[_indicator incrementBy:(double)length];
 }
@@ -286,7 +292,7 @@ static void formatProps(NSMutableString *s, id *fmt, id *val) {
         [s appendFormat:NSLocalizedString(*fmt, nil), obj];
     }
 }
-
+	
 - (void)downloadDidFinish:(NSURLDownload *)download {
     [sURLs removeObject:[[download request] URL]];
 	[sDownloadedURLInfo setValue:_path forKey:[[[download request] URL] absoluteString]];
@@ -297,11 +303,12 @@ static void formatProps(NSMutableString *s, id *fmt, id *val) {
 	} else {
 		[WLQuickLookBridge add:[NSURL fileURLWithPath:_path]];
 	}
-    [WLGrowlBridge notifyWithTitle:_filename
-                       description:NSLocalizedString(@"Completed", "Download completed; will open previewer")
-                  notificationName:kGrowlNotificationNameFileTransfer
-                          isSticky:NO
-                        identifier:download];
+//	if (![WLGrowlBridge isMistEnabled])
+//		[WLGrowlBridge notifyWithTitle:_filename
+//						   description:NSLocalizedString(@"Completed", "Download completed; will open previewer")
+//					  notificationName:kGrowlNotificationNameFileTransfer
+//							  isSticky:NO
+//							identifier:download];
 
     // For read exif info by gtCarrera
     // boost: pool (leaks), check nil (crash), readable values
@@ -366,11 +373,12 @@ static void formatProps(NSMutableString *s, id *fmt, id *val) {
     NSURL *URL = [[download request] URL];
     [sURLs removeObject:URL];
     [[NSWorkspace sharedWorkspace] openURL:URL];
-    [WLGrowlBridge notifyWithTitle:[URL absoluteString]
-                       description:NSLocalizedString(@"Opening browser", "Download failed or unsupported formats")
-                  notificationName:kGrowlNotificationNameFileTransfer
-                          isSticky:NO
-                        identifier:download];
+//	if (![WLGrowlBridge isMistEnabled])
+//		[WLGrowlBridge notifyWithTitle:[URL absoluteString]
+//						   description:NSLocalizedString(@"Opening browser", "Download failed or unsupported formats")
+//					  notificationName:kGrowlNotificationNameFileTransfer
+//							  isSticky:NO
+//							identifier:download];
 	// Commented out by K.O.ed: Don't release here, release when the delegate dealloc.
     //[download release];
 }

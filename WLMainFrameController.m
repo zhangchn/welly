@@ -8,6 +8,7 @@
 #import "WLMainFrameController.h"
 #import "WLMainFrameController+RemoteControl.h"
 #import "WLMainFrameController+TabControl.h"
+#import "WLMainFrameController+FullScreen.h"
 
 // Models
 #import "WLConnection.h"
@@ -24,7 +25,7 @@
 #import "DBPrefsWindowController.h"
 
 // Full Screen
-#import "WLFullScreenController.h"
+#import "WLPresentationController.h"
 #import "WLTelnetProcessor.h"
 
 // Others
@@ -43,7 +44,7 @@
 @interface WLMainFrameController ()
 - (void)loadLastConnections;
 - (void)updateSitesMenuWithSites:(NSArray *)sites;
-- (void)exitFullScreenMode;
+- (void)exitPresentationMode;
 @end
 
 @implementation WLMainFrameController
@@ -76,17 +77,13 @@ SYNTHESIZE_SINGLETON_FOR_CLASS(WLMainFrameController);
     [_mainWindow setOpaque:NO];
 
     [_mainWindow setFrameAutosaveName:@"wellyMainWindowFrame"];
-    
-//    if (floor(NSAppKitVersionNumber)>NSAppKitVersionNumber10_6) {
-//        [_mainWindow setCollectionBehavior:NSWindowCollectionBehaviorFullScreenPrimary];
-//    }
-    
-    [NSTimer scheduledTimerWithTimeInterval:120 target:self selector:@selector(antiIdle:) userInfo:nil repeats:YES];
+        
+    [NSTimer scheduledTimerWithTimeInterval:30 target:self selector:@selector(antiIdle:) userInfo:nil repeats:YES];
     
 	[self initializeRemoteControl];
 	// FIXME: Remove this controller
 	// For full screen, initiallize the full screen controller
-	_fullScreenController = [[WLFullScreenController alloc] initWithTargetView:_tabView 
+	_presentationModeController = [[WLPresentationController alloc] initWithTargetView:_tabView
 																	 superView:[_tabView superview] 
 																originalWindow:_mainWindow];
 	
@@ -179,7 +176,10 @@ SYNTHESIZE_SINGLETON_FOR_CLASS(WLMainFrameController);
     NSArray *a = [_tabView tabViewItems];
     for (NSTabViewItem *item in a) {
         WLConnection *connection = [[item identifier] content];
-        if ([connection isConnected] && [connection lastTouchDate] && [[NSDate date] timeIntervalSinceDate:[connection lastTouchDate]] >= 119) {
+        if ([connection isKindOfClass:[WLConnection class]] &&
+            [connection isConnected] &&
+            [connection lastTouchDate] &&
+            [[NSDate date] timeIntervalSinceDate:[connection lastTouchDate]] >= 119) {
 //            unsigned char msg[] = {0x1B, 'O', 'A', 0x1B, 'O', 'B'};
             unsigned char msg[] = {0x00, 0x00, 0x00, 0x00, 0x00, 0x00};
             [connection sendBytes:msg length:6];
@@ -431,7 +431,7 @@ SYNTHESIZE_SINGLETON_FOR_CLASS(WLMainFrameController);
 - (IBAction)openComposePanel:(id)sender {
 	if ([[_tabView frontMostView] conformsToProtocol:@protocol(NSTextInput)])
 		[[WLComposePanelController sharedInstance] openComposePanelInWindow:_mainWindow 
-																	forView:[_tabView frontMostView]];
+																	forView:(NSView <NSTextInput>*)[_tabView frontMostView]];
 }
 
 // Download Post
@@ -509,7 +509,19 @@ SYNTHESIZE_SINGLETON_FOR_CLASS(WLMainFrameController);
 			![[_tabView frontMostConnection] isConnected]) {
 			return NO;
 		}
+	} else if (action == @selector(togglePresentationMode:)) {
+		if ([self isInFullScreenMode] && !_presentationModeController.isInPresentationMode) {
+			return NO;
+		} else
+			return YES;
+	} else if (action == @selector(increaseFontSize:) ||
+			   action == @selector(decreaseFontSize:)) {
+		if ([self isInFullScreenMode] || _presentationModeController.isInPresentationMode) {
+			return NO;
+		} else
+			return YES;
 	}
+	
     return YES;
 }
 
@@ -529,8 +541,12 @@ SYNTHESIZE_SINGLETON_FOR_CLASS(WLMainFrameController);
 } 
 
 - (NSApplicationTerminateReply)applicationShouldTerminate:(NSApplication *)sender {
-	// Restore from full screen firstly
-	[self exitFullScreenMode];
+	// Restore from presentation mode firstly
+	[self exitPresentationMode];
+	// Exit from full screen mode if necessary
+	if ([self isInFullScreenMode]) {
+		[_mainWindow toggleFullScreen:self];
+	}
     
     if ([[NSUserDefaults standardUserDefaults] boolForKey:WLRestoreConnectionKeyName]) 
         [self saveLastConnections];
@@ -606,33 +622,28 @@ withReplyEvent:(NSAppleEventDescriptor *)replyEvent {
     [self connectLocation:_addressBar];
 }
 
-- (void)windowWillEnterFullScreen:(NSNotification *)notification {
-    
-}
-
-- (void)windowDidEnterFullScreen:(NSNotification *)notification {
-    [_fullScreenController handleFullScreen];
-}
-
-- (void)windowWillExitFullScreen:(NSNotification *)notification {
-    [_fullScreenController releaseFullScreen];
-}
-
-- (void)windowDidExitFullScreen:(NSNotification *)notification {
-    [_mainWindow makeKeyAndOrderFront:nil];
-}
 
 #pragma mark -
 #pragma mark For View Menu
 // Here is an example to the newly designed full screen module with a customized processor
 // A "processor" here will resize the NSViews and do some necessary work before full
 // screen
-- (IBAction)fullScreenMode:(id)sender {
-	[_fullScreenController handleFullScreen];
+- (IBAction)increaseFontSize:(id)sender {
+	[_tabView increaseFontSize:sender];
 }
 
-- (void)exitFullScreenMode {
-	[_fullScreenController releaseFullScreen];
+- (IBAction)decreaseFontSize:(id)sender {
+	[_tabView decreaseFontSize:sender];
+}
+
+- (IBAction)togglePresentationMode:(id)sender {
+	[_presentationModeController togglePresentationMode];
+	[_presentationModeMenuItem setTitle:
+	 _presentationModeController.isInPresentationMode ? NSLocalizedString(@"Exit Presentation Mode", "Presentation Mode") : NSLocalizedString(@"Enter Presentation Mode", "Presentaion Mode")];
+}
+
+- (void)exitPresentationMode {
+	[_presentationModeController exitPresentationMode];
 }
 
 #pragma mark -
@@ -647,12 +658,8 @@ withReplyEvent:(NSAppleEventDescriptor *)replyEvent {
 		return;
 	
 	// Set the font settings
-	[[WLGlobalConfig sharedInstance] setCellWidth:12];
-	[[WLGlobalConfig sharedInstance] setCellHeight:24];
-	[[WLGlobalConfig sharedInstance] setChineseFontName:@"STHeiti"];
-	[[WLGlobalConfig sharedInstance] setEnglishFontName:@"Monaco"];
-	[[WLGlobalConfig sharedInstance] setChineseFontSize:22];
-	[[WLGlobalConfig sharedInstance] setEnglishFontSize:18];
+	[[WLGlobalConfig sharedInstance] restoreSettings];
+	[_mainWindow center];
 }
 
 #pragma mark -

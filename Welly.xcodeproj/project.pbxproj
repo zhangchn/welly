@@ -35,7 +35,6 @@
 		5A1BA6F60F6EA8BA003489CF /* WLURLManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 5A1BA6F50F6EA8BA003489CF /* WLURLManager.m */; };
 		5A38820C0E1D44E50098FA04 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 29B97325FDCFA39411CA2CEA /* Foundation.framework */; };
 		5A38820D0E1D44E60098FA04 /* AppKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 29B97324FDCFA39411CA2CEA /* AppKit.framework */; };
-		5A3ACCDF0EED5BE200FC4543 /* WLMenuItem.m in Sources */ = {isa = PBXBuildFile; fileRef = 5A3ACCDE0EED5BE200FC4543 /* WLMenuItem.m */; };
 		5A40C3C6118ADED400487AE9 /* WLTabViewItemController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5A40C3C5118ADED400487AE9 /* WLTabViewItemController.m */; };
 		5A43E8750F2E9B570002116B /* WLButtonAreaHotspotHandler.m in Sources */ = {isa = PBXBuildFile; fileRef = 5A43E8740F2E9B570002116B /* WLButtonAreaHotspotHandler.m */; };
 		5A43E87F0F2E9D270002116B /* WLMouseHotspotHandler.m in Sources */ = {isa = PBXBuildFile; fileRef = 5A43E87E0F2E9D270002116B /* WLMouseHotspotHandler.m */; };
@@ -52,6 +51,7 @@
 		5A8C606911D47D81007F2039 /* WLAsciiArtRender.m in Sources */ = {isa = PBXBuildFile; fileRef = 5A8C606811D47D81007F2039 /* WLAsciiArtRender.m */; };
 		5A91BB110E1E1E6A007538E5 /* Help in Resources */ = {isa = PBXBuildFile; fileRef = 5A91BAED0E1E1E6A007538E5 /* Help */; };
 		5A949D800F830C7700C00CE6 /* WLAnsiColorOperationManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 5A949D7F0F830C7700C00CE6 /* WLAnsiColorOperationManager.m */; };
+		5A978DF11701684400C188AC /* WLMainFrameController+FullScreen.m in Sources */ = {isa = PBXBuildFile; fileRef = 5A978DF01701684400C188AC /* WLMainFrameController+FullScreen.m */; };
 		5A9C07F90F5D8C2C0033B8E6 /* Sparkle.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5A9C07F80F5D8C2C0033B8E6 /* Sparkle.framework */; };
 		5A9C08230F5D8C320033B8E6 /* Sparkle.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = 5A9C07F80F5D8C2C0033B8E6 /* Sparkle.framework */; };
 		5AA6807D0F45780B004753E2 /* WLEditingCursorMoveHotspotHandler.m in Sources */ = {isa = PBXBuildFile; fileRef = 5AA6807C0F45780B004753E2 /* WLEditingCursorMoveHotspotHandler.m */; };
@@ -79,7 +79,7 @@
 		81208EBE0EF8D94D005FD459 /* default_site.png in Resources */ = {isa = PBXBuildFile; fileRef = 81208EBD0EF8D94D005FD459 /* default_site.png */; };
 		81624CE20E2F8F89009C9987 /* Carbon.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 81624CE10E2F8F89009C9987 /* Carbon.framework */; };
 		81E307220E79031B0024C47E /* WLPopUpMessage.m in Sources */ = {isa = PBXBuildFile; fileRef = 81E307210E79031B0024C47E /* WLPopUpMessage.m */; };
-		81F8ECF20E5005190022FA65 /* WLFullScreenController.m in Sources */ = {isa = PBXBuildFile; fileRef = 81F8ECF10E5005190022FA65 /* WLFullScreenController.m */; };
+		81F8ECF20E5005190022FA65 /* WLPresentationController.m in Sources */ = {isa = PBXBuildFile; fileRef = 81F8ECF10E5005190022FA65 /* WLPresentationController.m */; };
 		81FEAD320EFE91BD0051C867 /* waiting.pdf in Resources */ = {isa = PBXBuildFile; fileRef = 81FEAD310EFE91BD0051C867 /* waiting.pdf */; };
 		85137B330D02192800833909 /* Credits.rtf in Resources */ = {isa = PBXBuildFile; fileRef = 85137B320D02192800833909 /* Credits.rtf */; };
 		85145AAE0AB40192009FC710 /* WLTerminal.m in Sources */ = {isa = PBXBuildFile; fileRef = 85145AAD0AB40192009FC710 /* WLTerminal.m */; };
@@ -178,8 +178,6 @@
 		5A1BA6F50F6EA8BA003489CF /* WLURLManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WLURLManager.m; sourceTree = "<group>"; };
 		5A309A790D9A252B00970494 /* zh_CN */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = zh_CN; path = zh_CN.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		5A309A7A0D9A252B00970494 /* zh_CN */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = zh_CN; path = zh_CN.lproj/Localizable.strings; sourceTree = "<group>"; };
-		5A3ACCDD0EED5BE200FC4543 /* WLMenuItem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WLMenuItem.h; sourceTree = "<group>"; };
-		5A3ACCDE0EED5BE200FC4543 /* WLMenuItem.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WLMenuItem.m; sourceTree = "<group>"; };
 		5A40C3C4118ADED400487AE9 /* WLTabViewItemController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WLTabViewItemController.h; sourceTree = "<group>"; };
 		5A40C3C5118ADED400487AE9 /* WLTabViewItemController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WLTabViewItemController.m; sourceTree = "<group>"; };
 		5A40C3C7118B179500487AE9 /* WLTabBarCellContentProvider.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WLTabBarCellContentProvider.h; sourceTree = "<group>"; };
@@ -215,6 +213,8 @@
 		5A91BAED0E1E1E6A007538E5 /* Help */ = {isa = PBXFileReference; lastKnownFileType = folder; path = Help; sourceTree = "<group>"; };
 		5A949D7E0F830C7700C00CE6 /* WLAnsiColorOperationManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WLAnsiColorOperationManager.h; sourceTree = "<group>"; };
 		5A949D7F0F830C7700C00CE6 /* WLAnsiColorOperationManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WLAnsiColorOperationManager.m; sourceTree = "<group>"; };
+		5A978DEF1701684400C188AC /* WLMainFrameController+FullScreen.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "WLMainFrameController+FullScreen.h"; sourceTree = "<group>"; };
+		5A978DF01701684400C188AC /* WLMainFrameController+FullScreen.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "WLMainFrameController+FullScreen.m"; sourceTree = "<group>"; };
 		5A9C07F80F5D8C2C0033B8E6 /* Sparkle.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Sparkle.framework; sourceTree = "<group>"; };
 		5AA6807B0F45780B004753E2 /* WLEditingCursorMoveHotspotHandler.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WLEditingCursorMoveHotspotHandler.h; sourceTree = "<group>"; };
 		5AA6807C0F45780B004753E2 /* WLEditingCursorMoveHotspotHandler.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WLEditingCursorMoveHotspotHandler.m; sourceTree = "<group>"; };
@@ -265,8 +265,8 @@
 		81624CE10E2F8F89009C9987 /* Carbon.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Carbon.framework; path = /System/Library/Frameworks/Carbon.framework; sourceTree = "<absolute>"; };
 		81E307200E79031B0024C47E /* WLPopUpMessage.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WLPopUpMessage.h; sourceTree = "<group>"; };
 		81E307210E79031B0024C47E /* WLPopUpMessage.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WLPopUpMessage.m; sourceTree = "<group>"; };
-		81F8ECF00E5005190022FA65 /* WLFullScreenController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WLFullScreenController.h; sourceTree = "<group>"; };
-		81F8ECF10E5005190022FA65 /* WLFullScreenController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WLFullScreenController.m; sourceTree = "<group>"; };
+		81F8ECF00E5005190022FA65 /* WLPresentationController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WLPresentationController.h; sourceTree = "<group>"; };
+		81F8ECF10E5005190022FA65 /* WLPresentationController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WLPresentationController.m; sourceTree = "<group>"; };
 		81FEAD310EFE91BD0051C867 /* waiting.pdf */ = {isa = PBXFileReference; lastKnownFileType = image.pdf; path = waiting.pdf; sourceTree = "<group>"; };
 		85137B320D02192800833909 /* Credits.rtf */ = {isa = PBXFileReference; lastKnownFileType = text.rtf; path = Credits.rtf; sourceTree = "<group>"; };
 		85145AAC0AB40192009FC710 /* WLTerminal.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WLTerminal.h; sourceTree = "<group>"; };
@@ -624,6 +624,8 @@
 				5AF9DD84118B29E300E288A9 /* WLMainFrameController+RemoteControl.m */,
 				5AF9DDBE118B2F0E00E288A9 /* WLMainFrameController+TabControl.h */,
 				5AF9DDBF118B2F0E00E288A9 /* WLMainFrameController+TabControl.m */,
+				5A978DEF1701684400C188AC /* WLMainFrameController+FullScreen.h */,
+				5A978DF01701684400C188AC /* WLMainFrameController+FullScreen.m */,
 			);
 			name = "Main Frame Controller";
 			sourceTree = "<group>";
@@ -697,8 +699,8 @@
 		81F8ECFB0E5006660022FA65 /* FullScreen */ = {
 			isa = PBXGroup;
 			children = (
-				81F8ECF00E5005190022FA65 /* WLFullScreenController.h */,
-				81F8ECF10E5005190022FA65 /* WLFullScreenController.m */,
+				81F8ECF00E5005190022FA65 /* WLPresentationController.h */,
+				81F8ECF10E5005190022FA65 /* WLPresentationController.m */,
 			);
 			name = FullScreen;
 			sourceTree = "<group>";
@@ -723,8 +725,6 @@
 		85F701440C895C8600E27A1E /* Models */ = {
 			isa = PBXGroup;
 			children = (
-				5A3ACCDD0EED5BE200FC4543 /* WLMenuItem.h */,
-				5A3ACCDE0EED5BE200FC4543 /* WLMenuItem.m */,
 				85ED53200D092B5F003296D4 /* WLConnection.h */,
 				85ED53210D092B5F003296D4 /* WLConnection.m */,
 				16C0C90A0E294BAA00B576C5 /* WLProtocol.h */,
@@ -878,11 +878,10 @@
 				1680A7ED0E2F0F8300A2E175 /* WLBookmarkPortalItem.m in Sources */,
 				5A56C3820E342CFF00082312 /* WLPostDownloadDelegate.m in Sources */,
 				16BF97BD0E3D9B7600ED990A /* WLIntegerArray.m in Sources */,
-				81F8ECF20E5005190022FA65 /* WLFullScreenController.m in Sources */,
+				81F8ECF20E5005190022FA65 /* WLPresentationController.m in Sources */,
 				1600D7AF0E51C2B100496E3E /* WLTerminalFeeder.m in Sources */,
 				5A4A50190E5956EE007E16E6 /* WLEffectView.m in Sources */,
 				81E307220E79031B0024C47E /* WLPopUpMessage.m in Sources */,
-				5A3ACCDF0EED5BE200FC4543 /* WLMenuItem.m in Sources */,
 				186E810F0F218C10007D73BC /* WLComposePanelController.m in Sources */,
 				5AD4B7160F2D8F8200BF2F87 /* WLClickEntryHotspotHandler.m in Sources */,
 				5AD4B9B20F2DF0BD00BF2F87 /* WLMovingAreaHotspotHandler.m in Sources */,
@@ -908,6 +907,7 @@
 				5AF9DDC0118B2F0E00E288A9 /* WLMainFrameController+TabControl.m in Sources */,
 				5ADC663311992C5E005A2881 /* WLNewBookmarkPortalItem.m in Sources */,
 				5A8C606911D47D81007F2039 /* WLAsciiArtRender.m in Sources */,
+				5A978DF11701684400C188AC /* WLMainFrameController+FullScreen.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1068,14 +1068,14 @@
 				GCC_ENABLE_OBJC_GC = unsupported;
 				GCC_PREPROCESSOR_DEFINITIONS = _DEBUG;
 				GCC_TREAT_WARNINGS_AS_ERRORS = NO;
-				GCC_VERSION = com.apple.compilers.llvm.clang.1_0;
+				GCC_VERSION = "";
 				GCC_WARN_ABOUT_DEPRECATED_FUNCTIONS = YES;
 				GCC_WARN_ABOUT_RETURN_TYPE = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				PREBINDING = NO;
 				RUN_CLANG_STATIC_ANALYZER = NO;
 				SDKROOT = "";
-				VALID_ARCHS = "i386 x86_64";
+				VALID_ARCHS = x86_64;
 			};
 			name = Debug;
 		};
@@ -1088,14 +1088,14 @@
 				GCC_C_LANGUAGE_STANDARD = c99;
 				GCC_ENABLE_OBJC_GC = unsupported;
 				GCC_TREAT_WARNINGS_AS_ERRORS = NO;
-				GCC_VERSION = com.apple.compilers.llvm.clang.1_0;
+				GCC_VERSION = "";
 				GCC_WARN_ABOUT_DEPRECATED_FUNCTIONS = YES;
 				GCC_WARN_ABOUT_RETURN_TYPE = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				PREBINDING = NO;
 				RUN_CLANG_STATIC_ANALYZER = YES;
 				SDKROOT = "";
-				VALID_ARCHS = "i386 x86_64";
+				VALID_ARCHS = x86_64;
 			};
 			name = Release;
 		};

@@ -92,17 +92,14 @@ BOOL isEnglishNumberAlphabet(unsigned char c) {
 #pragma mark Conversion
 
 - (int)convertIndexFromPoint:(NSPoint)p {
-	// The following 2 lines: for full screen mode
-	NSRect frame = [self frame];
-    // Comment added by gtCarrera
-    // Why it was 2 here? I think it should be 1
-    // Using 2 will cause one line offset on selecting
-	p.y -= /*2 * */frame.origin.y;
-	
-    if (p.x >= _maxColumn * _fontWidth) p.x = _maxColumn * _fontWidth - 0.001;
-    if (p.y >= _maxRow * _fontHeight) p.y = _maxRow * _fontHeight - 0.001;
-    if (p.x < 0) p.x = 0;
-    if (p.y < 0) p.y = 0;
+	if (p.x >= _maxColumn * _fontWidth)
+		p.x = _maxColumn * _fontWidth - 0.001;
+    if (p.y >= _maxRow * _fontHeight)
+		p.y = _maxRow * _fontHeight - 0.001;
+    if (p.x < 0)
+		p.x = 0;
+    if (p.y < 0)
+		p.y = 0;
     int cx, cy = 0;
     cx = (int) ((CGFloat) p.x / _fontWidth);
     cy = _maxRow - (int) ((CGFloat) p.y / _fontHeight) - 1;
@@ -467,6 +464,7 @@ BOOL isEnglishNumberAlphabet(unsigned char c) {
 }
 
 - (void)sendText:(NSString *)text {
+	[self clearSelection];
 	[[self frontMostConnection] sendText:text];
 }
 
@@ -512,7 +510,7 @@ BOOL isEnglishNumberAlphabet(unsigned char c) {
 	// Disable the mouse if we cancelled any selection
     if(abs(_selectionLength) > 0) 
         _isNotCancelingSelection = NO;
-    NSPoint p = [self convertPoint:[theEvent locationInWindow] toView:nil];
+    NSPoint p = [self convertPoint:[theEvent locationInWindow] fromView:nil];
     _selectionLocation = [self convertIndexFromPoint:p];
     _selectionLength = 0;
     
@@ -535,7 +533,7 @@ BOOL isEnglishNumberAlphabet(unsigned char c) {
 	}
 
     NSPoint p = [theEvent locationInWindow];
-    p = [self convertPoint:p toView:nil];
+    p = [self convertPoint:p fromView:nil];
     int index = [self convertIndexFromPoint:p];
     int oldValue = _selectionLength;
     _selectionLength = index - _selectionLocation + 1;
@@ -551,10 +549,6 @@ BOOL isEnglishNumberAlphabet(unsigned char c) {
     [self hasMouseActivity];
     if (![self isConnected]) return;
     // open url
-	/* Never used
-	NSPoint p = [theEvent locationInWindow];
-    p = [self convertPoint:p toView:nil];
-*/
     if (abs(_selectionLength) <= 1 && _isNotCancelingSelection && !_isKeying && !_isInUrlMode) {
 		[_mouseBehaviorDelegate mouseUp:theEvent];
     }
@@ -568,7 +562,6 @@ BOOL isEnglishNumberAlphabet(unsigned char c) {
 - (void)scrollWheel:(NSEvent *)theEvent {
     [super scrollWheel:theEvent];
     [self hasMouseActivity];
-    [self clearSelection];
     [_mouseBehaviorDelegate scrollWheel:theEvent];
 }
 
@@ -599,8 +592,13 @@ BOOL isEnglishNumberAlphabet(unsigned char c) {
 
 - (void)keyDown:(NSEvent *)theEvent {
     [[self frontMostConnection] resetMessageCount];
+    
+    if (theEvent.characters.length == 0) {
+        // dead key pressed
+        return;
+    }
 	
-    unichar c = [[theEvent characters] characterAtIndex:0];
+    unichar c = [theEvent.characters characterAtIndex:0];
 	// URL
 	if(_isInUrlMode) {
 		BOOL shouldExit;
@@ -636,8 +634,8 @@ BOOL isEnglishNumberAlphabet(unsigned char c) {
 
     WLTerminal *ds = [self frontMostTerminal];
 
-    if (([theEvent modifierFlags] & NSControlKeyMask) &&
-	   (([theEvent modifierFlags] & NSAlternateKeyMask) == 0 )) {
+    if ((theEvent.modifierFlags & NSControlKeyMask) &&
+	   ((theEvent.modifierFlags & NSAlternateKeyMask) == 0 )) {
         buf[0] = c;
         [[self frontMostConnection] sendBytes:buf length:1];
         return;
@@ -917,7 +915,7 @@ BOOL isEnglishNumberAlphabet(unsigned char c) {
     } else if (aSelector == @selector(insertTabIgnoringFieldEditor:)) { // Now do URL mode switching
 		[self switchURL];
 	} else {
-        NSLog(@"Unprocessed selector: %s", aSelector);
+        NSLog(@"Unprocessed selector: %@", NSStringFromSelector(aSelector));
     }
 }
 

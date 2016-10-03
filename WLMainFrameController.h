@@ -14,7 +14,7 @@
 @class WLTabView;
 @class WLFeedGenerator;
 @class WLTabBarControl;
-@class WLFullScreenController;
+@class WLPresentationController;
 
 @class RemoteControl;
 @class MultiClickRemoteBehavior;
@@ -47,7 +47,7 @@
 	
     IBOutlet NSMenuItem *_showHiddenTextMenuItem;
     IBOutlet NSMenuItem *_encodingMenuItem;
-	IBOutlet NSMenuItem *_fullScreenMenuItem;
+	IBOutlet NSMenuItem *_presentationModeMenuItem;
 	
 	IBOutlet NSMenuItem *_sitesMenu;
 	
@@ -60,24 +60,28 @@
 	NSTimer* _scrollTimer;
 	
 	// Full Screen
-	WLFullScreenController *_fullScreenController;
+	WLPresentationController *_presentationModeController;
     
     // RSS feed
     NSThread *_rssThread;
+	
+	// 10.7 Full Screen
+	@private
+	NSRect _originalFrame;
+	CGFloat _screenRatio;
+	NSColor *_originalWindowBackgroundColor;
+	NSDictionary *_originalSizeParameters;
 }
 @property (readonly) WLTabView *tabView;
 
 + (WLMainFrameController *)sharedInstance;
 
-- (IBAction)setEncoding:(id)sender;
-- (IBAction)toggleDetectDoubleByte:(id)sender;
 - (IBAction)toggleAutoReply:(id)sender;
 - (IBAction)toggleMouseAction:(id)sender;
 
 - (IBAction)connectLocation:(id)sender;
 - (IBAction)openLocation:(id)sender;
 - (IBAction)reconnect:(id)sender;
-- (IBAction)toggleShowsHiddenText:(id)sender;
 - (IBAction)openPreferencesWindow:(id)sender;
 - (void)newConnectionWithSite:(WLSite *)site;
 
@@ -90,8 +94,17 @@
 // Message
 - (IBAction)closeMessageWindow:(id)sender;
 
-// for full screen
-- (IBAction)fullScreenMode:(id)sender;
+#pragma mark -
+#pragma mark Menu:View
+- (IBAction)toggleShowsHiddenText:(id)sender;
+- (IBAction)toggleDetectDoubleByte:(id)sender;
+
+- (IBAction)increaseFontSize:(id)sender;
+- (IBAction)decreaseFontSize:(id)sender;
+- (IBAction)togglePresentationMode:(id)sender;
+
+- (IBAction)setEncoding:(id)sender;
+
 
 /*
 // for portal

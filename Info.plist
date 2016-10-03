@@ -2,6 +2,8 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
+	<key>NSSupportsAutomaticGraphicsSwitching</key>
+	<true/>
 	<key>CFBundleDevelopmentRegion</key>
 	<string>English</string>
 	<key>CFBundleDocumentTypes</key>
@@ -10,6 +12,8 @@
 	<string>${EXECUTABLE_NAME}</string>
 	<key>CFBundleHelpBookFolder</key>
 	<string>Help</string>
+	<key>CFBundleDisplayName</key>
+	<string>Welly</string>
 	<key>CFBundleHelpBookName</key>
 	<string>Welly Help</string>
 	<key>CFBundleIconFile</key>
@@ -19,13 +23,13 @@
 	<key>CFBundleInfoDictionaryVersion</key>
 	<string>6.0</string>
 	<key>CFBundleVersion</key>
-	<string>825</string>
+	<string>836</string>
 	<key>CFBundleName</key>
 	<string>Welly</string>
 	<key>CFBundlePackageType</key>
 	<string>APPL</string>
 	<key>CFBundleShortVersionString</key>
-	<string>2.64 release</string>
+	<string>2.7</string>
 	<key>CFBundleSignature</key>
 	<string>abgK</string>
 	<key>CFBundleURLTypes</key>
@@ -48,10 +52,8 @@
 			</array>
 		</dict>
 	</array>
-	<key>LSApplicationCategoryType</key>
-	<string>public.app-category.social-networking</string>
 	<key>LSMinimumSystemVersion</key>
-	<string>10.6.0</string>
+	<string>10.7.0</string>
 	<key>LSMinimumSystemVersionByArchitecture</key>
 	<dict>
 		<key>i386</key>

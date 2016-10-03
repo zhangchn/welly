@@ -24,7 +24,7 @@ NSString *const WLAutoReplyGrowlTipFormat = @"AutoReplyGrowlTipFormat";
 
 - (id)init {
 	self = [super init];
-	if (self != nil) {
+	if (self) {
 		_unreadMessage = [[NSMutableString alloc] initWithCapacity:400];
 		[_unreadMessage setString:@""];
 		_unreadCount = 0;
@@ -33,8 +33,9 @@ NSString *const WLAutoReplyGrowlTipFormat = @"AutoReplyGrowlTipFormat";
 }
 
 - (id)initWithConnection:(WLConnection *)connection {
-	[self init];
-	[self setConnection:connection];
+	self = [self init];
+	if (self)
+		[self setConnection:connection];
 	return self;
 }
 
@@ -72,16 +73,16 @@ NSString *const WLAutoReplyGrowlTipFormat = @"AutoReplyGrowlTipFormat";
 		} else {
 			description = message;
 		}
+		
 		// should invoke growl notification
 		[WLGrowlBridge notifyWithTitle:callerName
 						   description:description 
 					  notificationName:kGrowlNotificationNameNewMessageReceived
-							  iconData:[NSData data]
-							  priority:0
 							  isSticky:NO
-						  clickContext:self
+						   clickTarget:self
 						 clickSelector:@selector(didClickGrowlNewMessage:)
 							identifier:_connection];
+		
 	}
 }
 

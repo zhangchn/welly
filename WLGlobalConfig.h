@@ -22,6 +22,11 @@ NSString *const WLConfirmOnCloseEnabledKeyName;
 NSString *const WLSafePasteEnabledKeyName;
 NSString *const WLCoverFlowModeEnabledKeyName;
 
+NSString *const WLCellWidthKeyName;
+NSString *const WLCellHeightKeyName;
+NSString *const WLChineseFontSizeKeyName;
+NSString *const WLEnglishFontSizeKeyName;
+
 @interface WLGlobalConfig : NSObject {
     int _messageCount;
 	int _row;
@@ -67,22 +72,22 @@ NSString *const WLCoverFlowModeEnabledKeyName;
 @property (readwrite, assign) int column;
 @property (readwrite, assign) CGFloat cellWidth;
 @property (readwrite, assign) CGFloat cellHeight;
-@property (readwrite, assign) BOOL showsHiddenText;
-@property (readwrite, assign) BOOL shouldSmoothFonts;
-@property (readwrite, assign) BOOL shouldDetectDoubleByte;
-@property (readwrite, assign) BOOL shouldEnableMouse;
-@property (readwrite, assign) BOOL shouldRepeatBounce;
-@property (readwrite, assign) WLEncoding defaultEncoding;
-@property (readwrite, assign) YLANSIColorKey defaultANSIColorKey;
+@property (readwrite, assign, nonatomic) BOOL showsHiddenText;
+@property (readwrite, assign, nonatomic) BOOL shouldSmoothFonts;
+@property (readwrite, assign, nonatomic) BOOL shouldDetectDoubleByte;
+@property (readwrite, assign, nonatomic) BOOL shouldEnableMouse;
+@property (readwrite, assign, nonatomic) BOOL shouldRepeatBounce;
+@property (readwrite, assign, nonatomic) WLEncoding defaultEncoding;
+@property (readwrite, assign, nonatomic) YLANSIColorKey defaultANSIColorKey;
 @property (readwrite, assign) BOOL blinkTicker;
-@property (readwrite, assign) CGFloat chineseFontSize;
-@property (readwrite, assign) CGFloat englishFontSize;
-@property (readwrite, assign) CGFloat chineseFontPaddingLeft;
-@property (readwrite, assign) CGFloat englishFontPaddingLeft;
-@property (readwrite, assign) CGFloat chineseFontPaddingBottom;
-@property (readwrite, assign) CGFloat englishFontPaddingBottom;
-@property (readwrite, copy) NSString *chineseFontName;
-@property (readwrite, copy) NSString *englishFontName;
+@property (readwrite, assign, nonatomic) CGFloat chineseFontSize;
+@property (readwrite, assign, nonatomic) CGFloat englishFontSize;
+@property (readwrite, assign, nonatomic) CGFloat chineseFontPaddingLeft;
+@property (readwrite, assign, nonatomic) CGFloat englishFontPaddingLeft;
+@property (readwrite, assign, nonatomic) CGFloat chineseFontPaddingBottom;
+@property (readwrite, assign, nonatomic) CGFloat englishFontPaddingBottom;
+@property (readwrite, copy, nonatomic) NSString *chineseFontName;
+@property (readwrite, copy, nonatomic) NSString *englishFontName;
 
 + (WLGlobalConfig *)sharedInstance;
 
@@ -153,4 +158,8 @@ NSString *const WLCoverFlowModeEnabledKeyName;
 + (NSString *)cacheDirectory;
 
 + (BOOL)shouldEnableCoverFlow;
+
+- (void)restoreSettings;
+- (NSDictionary *)sizeParameters;
+- (void)setSizeParameters:(NSDictionary *)sizeParameters;
 @end
