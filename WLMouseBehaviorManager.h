@@ -62,7 +62,7 @@ NSString *const WLRangeLengthUserInfoName;
 @property (readonly) int lastCursorRow;
 @property (readonly) WLTerminalView *view;
 
-- (id)initWithView:(WLTerminalView *)view;
+- (instancetype)initWithView:(WLTerminalView *)view;
 
 // Add/Remove tracking areas
 /*!

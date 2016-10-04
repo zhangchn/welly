@@ -9,12 +9,8 @@
 #import <Cocoa/Cocoa.h>
 
 
-@interface WLFeedGenerator : NSObject {
-    NSString *_siteName;
-    NSXMLDocument *_xmlDoc;
-}
-
-- (id)initWithSiteName:(NSString *)siteName;
+@interface WLFeedGenerator : NSObject
+- (instancetype)initWithSiteName:(NSString *)siteName NS_DESIGNATED_INITIALIZER;
 - (void)addItemWithTitle:(NSString *)aTitle description:(NSString *)aDescription author:(NSString *) anAuthor pubDate:(NSString *)aPubDate;
 - (BOOL)writeFeedToFile:(NSString *)fileName;
 

@@ -11,13 +11,14 @@
 
 @class WLConnection;
 @interface WLMessageDelegate : NSObject {
-	WLConnection *_connection;
+//	WLConnection *_connection;
 	NSMutableString *_unreadMessage;
 	int _unreadCount;
 }
+
 @property (readonly) int unreadCount;
 
-- (id)initWithConnection:(WLConnection *)connection;
+- (instancetype)initWithConnection:(WLConnection *)connection;
 
 - (void)setConnection:(WLConnection *)connection;
 - (void)connectionDidReceiveNewMessage:(NSString *)message

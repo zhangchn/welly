@@ -21,24 +21,11 @@
 
 @end
 
-@interface WLTerminal : NSObject {	
-	WLBBSType _bbsType;
-	
-    unsigned int _maxRow;
-    unsigned int _maxColumn;
-    unsigned int _cursorColumn;
-    unsigned int _cursorRow;
+@interface WLTerminal : NSObject {
     unsigned int _offset;
 	
     cell **_grid;
     BOOL **_dirty;
-
-	NSMutableSet *_observers;
-
-    WLConnection *_connection;
-	
-	BBSState _bbsState;
-	
 	unichar *_textBuf;
 }
 @property unsigned int maxRow;
@@ -46,7 +33,7 @@
 @property unsigned int cursorColumn;
 @property unsigned int cursorRow;
 @property cell **grid;
-@property (assign, setter=setConnection:, nonatomic) WLConnection *connection;
+@property (assign, nonatomic) WLConnection *connection;
 @property (assign, readwrite) WLBBSType bbsType;
 @property (readonly) BBSState bbsState;
 
@@ -70,7 +57,7 @@
 					 length:(int)length;
 - (NSAttributedString *)attributedStringAtIndex:(NSUInteger)location 
 										 length:(NSUInteger)length;
-- (cell *)cellsOfRow:(int)r;
+- (cell *)cellsOfRow:(int)r NS_RETURNS_INNER_POINTER;
 - (cell)cellAtIndex:(int)index;
 
 /* Update State */
@@ -78,8 +65,7 @@
 - (void)updateBBSState;
 
 /* Accessor */
-- (WLEncoding)encoding;
-- (void)setEncoding:(WLEncoding)encoding;
+@property (NS_NONATOMIC_IOSONLY) WLEncoding encoding;
 
 /* Input Interface */
 - (void)feedGrid:(cell **)grid;

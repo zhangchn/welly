@@ -13,13 +13,13 @@
 @property (readonly) BOOL isInPresentationMode;
 
 // Init functions
-- (id)initWithProcessor:(NSObject <WLPresentationModeProcessor>*)pro 
+- (instancetype)initWithProcessor:(NSObject <WLPresentationModeProcessor>*)pro 
 			 targetView:(NSView*)tview 
 			  superView:(NSView*)sview
-		 originalWindow:(NSWindow*)owin;
-- (id)initWithTargetView:(NSView*)tview 
+		 originalWindow:(NSWindow*)owin NS_DESIGNATED_INITIALIZER;
+- (instancetype)initWithTargetView:(NSView*)tview 
 				 superView:(NSView*)sview
-			originalWindow:(NSWindow*)owin;
+			originalWindow:(NSWindow*)owin NS_DESIGNATED_INITIALIZER;
 // Handle functions
 - (void)togglePresentationMode;
 - (void)exitPresentationMode;

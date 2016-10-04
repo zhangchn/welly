@@ -40,8 +40,8 @@
 					   label:(NSString *)theLabel;
 - (void)newTabWithCoverFlowPortal;
 
-- (NSView *)frontMostView;
-- (WLConnection *)frontMostConnection;
-- (WLTerminal *)frontMostTerminal;
+@property (NS_NONATOMIC_IOSONLY, readonly, strong) NSView *frontMostView;
+@property (NS_NONATOMIC_IOSONLY, readonly, strong) WLConnection *frontMostConnection;
+@property (NS_NONATOMIC_IOSONLY, readonly, strong) WLTerminal *frontMostTerminal;
 
 @end

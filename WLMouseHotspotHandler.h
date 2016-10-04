@@ -42,7 +42,7 @@
 	@result		If the <code>update</code> should be called, return <code>YES</code>. Otherwise return <code>NO</code>.
     @discussion When the <code>YLView</code> refreshes, the WLMouseBehaviorManager should be informed. Then it would ask every updatable object in its list if it should be updated. It would then call every object which returns <code>YES</code> to <code>update</code>.
 */
-- (BOOL)shouldUpdate;
+@property (NS_NONATOMIC_IOSONLY, readonly) BOOL shouldUpdate;
 /*!
     @method     
     @abstract   Update the object's state.
@@ -99,7 +99,7 @@
 	@param		view	Relative <code>YLView</code> object.
 	@discussion	This method should be rarely called. In most of time, developers should use @link initWithManager: <code>initWithManager:</code>@/link instead. Using this initializing method requires <code>setManager:</code> manually.
 */
-- (id)initWithView:(WLTerminalView *)view;
+- (instancetype)initWithView:(WLTerminalView *)view;
 
 /*!
     @method     
@@ -107,7 +107,7 @@
 	@param		manager	relative <code>WLMouseBehaviorManager</code> object.
     @discussion This method would call <code>initWithView:</code> firstly.
 */
-- (id)initWithManager:(WLMouseBehaviorManager *)manager;
+- (instancetype)initWithManager:(WLMouseBehaviorManager *)manager;
 
 /*!
     @method     

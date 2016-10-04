@@ -10,14 +10,12 @@
 
 
 @implementation YLEmoticon
-@synthesize name = _name;
-@synthesize content = _content;
 
 #pragma mark -
 #pragma mark init and dealloc
-- (id)init {
+- (instancetype)init {
     if (self = [super init]) {
-        [self setContent: @":)"];
+        self.content = @":)";
 		//        [self setName: @"smile"];
     }
     return self;
@@ -29,13 +27,13 @@
     [super dealloc];
 }
 
-- (id)initWithName:(NSString *)name 
+- (instancetype)initWithName:(NSString *)name 
 		   content:(NSString *)content {
 	if (self = [self init]) {
 		//_name = name;
 		//_content = content;
-		[self setName:name];
-		[self setContent:content];
+		self.name = name;
+		self.content = content;
 	}
 	return self;
 }
@@ -45,7 +43,7 @@
 + (YLEmoticon *)emoticonWithDictionary:(NSDictionary *)d {
     YLEmoticon *e = [[YLEmoticon alloc] init];
 //    [e setName: [d valueForKey: @"name"]];
-    [e setContent:[d valueForKey:@"content"]];
+    e.content = [d valueForKey:@"content"];
     return [e autorelease];    
 }
 
@@ -67,11 +65,11 @@
 }
 
 - (NSDictionary *)dictionaryOfEmoticon {
-    return [NSDictionary dictionaryWithObjectsAndKeys:[self content], @"content", nil];
+    return @{@"content": self.content};
 }
      
 - (NSString *)description {
-    return [NSString stringWithFormat:@"%@", [[[self content] componentsSeparatedByString:@"\n"] componentsJoinedByString:@""]];
+    return [NSString stringWithFormat:@"%@", [[self.content componentsSeparatedByString:@"\n"] componentsJoinedByString:@""]];
 }
 
 - (void)setDescription:(NSString *)d { }

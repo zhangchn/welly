@@ -12,8 +12,8 @@
 @class WLTerminal, WLConnection, WLAsciiArtRender;
 
 @interface WLTermView : NSView <WLTabItemContentObserver> {
-	CGFloat _fontWidth;
-	CGFloat _fontHeight;
+//	CGFloat _fontWidth;
+//	CGFloat _fontHeight;
     
     CGSize *_singleAdvance;
     CGSize *_doubleAdvance;
@@ -23,26 +23,25 @@
 	int _x;
 	int _y;
 	
-	int _maxRow;
-	int _maxColumn;
-	
 	WLConnection *_connection;
 	
 	WLAsciiArtRender *_asciiArtRender;
 }
 @property CGFloat fontWidth;
 @property CGFloat fontHeight;
+@property int maxRow;
+@property int maxColumn;
 
 - (void)updateBackedImage;
 - (void)configure;
 
-- (WLTerminal *)frontMostTerminal;
-- (WLConnection *)frontMostConnection;
-- (BOOL)isConnected;
+@property (NS_NONATOMIC_IOSONLY, readonly, strong) WLTerminal *frontMostTerminal;
+@property (NS_NONATOMIC_IOSONLY, readonly, strong) WLConnection *frontMostConnection;
+@property (NS_NONATOMIC_IOSONLY, getter=isConnected, readonly) BOOL connected;
 
 - (void)refreshDisplay;
 - (void)terminalDidUpdate:(WLTerminal *)terminal;
 
 // get current BBS image
-- (NSImage *)image;
+@property (NS_NONATOMIC_IOSONLY, readonly, copy) NSImage *image;
 @end

@@ -29,28 +29,29 @@
 @synthesize protocol = _protocol;
 @synthesize isConnected = _connected;
 @synthesize icon = _icon;
-@synthesize isProcessing = _isProcessing;
+//@synthesize isProcessing = _isProcessing;
 @synthesize objectCount = _objectCount;
 @synthesize lastTouchDate = _lastTouchDate;
 @synthesize messageCount = _messageCount;
 @synthesize messageDelegate = _messageDelegate;
 @synthesize tabViewItemController = _tabViewItemController;
+@synthesize processing = _processing;
 
-- (id)initWithSite:(WLSite *)site {
+- (instancetype)initWithSite:(WLSite *)site {
 	self = [self init];
     if (self) {
 		// Create a feeder to parse content from the connection
 		_feeder = [[WLTerminalFeeder alloc] initWithConnection:self];
 
-        [self setSite:site];
+        self.site = site;
         if (![site isDummy]) {
 			// WLPTY as the default protocol (a proxy)
 			WLPTY *protocol = [[WLPTY new] autorelease];
-			[self setProtocol:protocol];
-			[protocol setDelegate:self];
-			[protocol setProxyType:[site proxyType]];
-			[protocol setProxyAddress:[site proxyAddress]];
-			[protocol connect:[site address]];
+			self.protocol = protocol;
+			protocol.delegate = self;
+			protocol.proxyType = site.proxyType;
+			protocol.proxyAddress = site.proxyAddress;
+			[protocol connect:site.address];
 		}
 		
 		// Setup the message delegate
@@ -77,7 +78,7 @@
 	if (_terminal != value) {
 		[_terminal release];
 		_terminal = [value retain];
-        [_terminal setConnection:self];
+        _terminal.connection = self;
 		[_feeder setTerminal:_terminal];
 	}
 }
@@ -85,10 +86,10 @@
 - (void)setConnected:(BOOL)value {
     _connected = value;
     if (_connected) 
-        [self setIcon:[NSImage imageNamed:@"online.pdf"]];
+        self.icon = [NSImage imageNamed:@"online.pdf"];
     else {
         [self resetMessageCount];
-        [self setIcon:[NSImage imageNamed:@"offline.pdf"]];
+        self.icon = [NSImage imageNamed:@"offline.pdf"];
     }
 }
 
@@ -100,13 +101,13 @@
 #pragma mark -
 #pragma mark WLProtocol delegate methods
 - (void)protocolWillConnect:(id)protocol {
-    [self setIsProcessing:YES];
+    [self setProcessing:YES];
     [self setConnected:NO];
-    [self setIcon:[NSImage imageNamed:@"waiting.pdf"]];
+    self.icon = [NSImage imageNamed:@"waiting.pdf"];
 }
 
 - (void)protocolDidConnect:(id)protocol {
-    [self setIsProcessing:NO];
+    [self setProcessing:NO];
     [self setConnected:YES];
     [NSThread detachNewThreadSelector:@selector(login) toTarget:self withObject:nil];
     //[self login];
@@ -123,7 +124,7 @@
 }
 
 - (void)protocolDidClose:(id)protocol {
-    [self setIsProcessing:NO];
+    [self setProcessing:NO];
     [self setConnected:NO];
 	[_feeder clearAll];
     [_terminal clearAll];
@@ -137,7 +138,7 @@
 
 - (void)reconnect {
     [_protocol close];
-    [_protocol connect:[_site address]];
+    [_protocol connect:_site.address];
 	[self resetMessageCount];
 }
 
@@ -165,8 +166,8 @@
 
     // translate into proper encoding of the site
     NSMutableData *data = [NSMutableData data];
-	WLEncoding encoding = [_site encoding];
-    for (int i = 0; i < [s length]; i++) {
+	WLEncoding encoding = _site.encoding;
+    for (int i = 0; i < s.length; i++) {
         unichar ch = [s characterAtIndex:i];
         char buf[2];
         if (ch < 0x007F) {
@@ -197,8 +198,8 @@
         [self sendMessage:data];
     } else {
         // send with delay
-        const char *buf = (const char *)[data bytes];
-        for (int i = 0; i < [data length]; i++) {
+        const char *buf = (const char *)data.bytes;
+        for (int i = 0; i < data.length; i++) {
             [self sendBytes:buf+i length:1];
             usleep(microsecond);
         }
@@ -210,8 +211,8 @@
 - (void)login {
 	NSAutoreleasePool *pool = [NSAutoreleasePool new];
 	
-    NSString *addr = [_site address];
-    const char *account = [addr UTF8String];
+    NSString *addr = _site.address;
+    const char *account = addr.UTF8String;
     // telnet; send username
     if (![addr hasPrefix:@"ssh"]) {
         char *pe = strchr(account, '@');
@@ -221,13 +222,13 @@
                 if (*ps == ' ' || *ps == '/')
                     break;
             if (ps != pe) {
-                while ([_feeder cursorY] <= 3)
+                while (_feeder.cursorY <= 3)
                     sleep(1);
                 [self sendBytes:ps+1 length:pe-ps-1];
                 [self sendBytes:"\r" length:1];
             }
         }
-    } else if ([_feeder grid][[_feeder cursorY]][[_feeder cursorX] - 2].byte == '?') {
+    } else if (_feeder.grid[_feeder.cursorY][_feeder.cursorX - 2].byte == '?') {
         [self sendBytes:"yes\r" length:4];
         sleep(1);
     }
@@ -260,10 +261,10 @@
 	WLGlobalConfig *config = [WLGlobalConfig sharedInstance];
 	
 	// we should let the icon on the deck bounce
-	[NSApp requestUserAttention: ([config shouldRepeatBounce] ? NSCriticalRequest : NSInformationalRequest)];
-	[config setMessageCount:[config messageCount] + value];
+	[NSApp requestUserAttention: (config.shouldRepeatBounce ? NSCriticalRequest : NSInformationalRequest)];
+	config.messageCount = config.messageCount + value;
 	_messageCount += value;
-    [self setObjectCount:_messageCount];
+    self.objectCount = _messageCount;
 }
 
 // reset '_messageCount' to zero
@@ -272,9 +273,9 @@
 		return;
 	
 	WLGlobalConfig *config = [WLGlobalConfig sharedInstance];
-	[config setMessageCount:[config messageCount] - _messageCount];
+	config.messageCount = config.messageCount - _messageCount;
 	_messageCount = 0;
-    [self setObjectCount:_messageCount];
+    self.objectCount = _messageCount;
 }
 
 - (void)didReceiveNewMessage:(NSString *)message

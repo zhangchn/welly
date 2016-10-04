@@ -144,6 +144,17 @@
 #define CSI_RCP     0x75 // u, Restores the cursor position.
 
 @interface WLTerminalFeeder ()
+@property unsigned int row;
+@property unsigned int column;
+@property unsigned int offset;
+@property int fgColor;
+@property int bgColor;
+@property BOOL bold;
+@property BOOL underline;
+@property BOOL blink;
+@property BOOL reverse;
+
+
 /* Clear */
 - (void)clearRow:(int)r;
 - (void)clearRow:(int)r 
@@ -153,9 +164,6 @@
 @end
 
 @implementation WLTerminalFeeder
-@synthesize cursorX = _cursorX;
-@synthesize cursorY = _cursorY;
-@synthesize grid = _grid;
 
 #define CURSOR_MOVETO(x, y)		do {\
 _cursorX = (x); _cursorY = (y); \
@@ -202,12 +210,12 @@ ASCII_CODE asciiCodeFamily(unsigned char c) {
 
 static unsigned short gEmptyAttr;
 
-- (id)init {
+- (instancetype)init {
 	if (self = [super init]) {
 		_hasNewMessage = NO;
         _savedCursorX = _savedCursorY = -1;
-        _row = [[WLGlobalConfig sharedInstance] row];
-		_column = [[WLGlobalConfig sharedInstance] column];
+        _row = [WLGlobalConfig sharedInstance].row;
+		_column = [WLGlobalConfig sharedInstance].column;
         _scrollBeginRow = 0; _scrollEndRow = _row - 1;
         _modeScreenReverse = NO;
 		_modeOriginRelative = NO;
@@ -227,7 +235,7 @@ static unsigned short gEmptyAttr;
 	return self;
 }
 
-- (id)initWithConnection:(WLConnection *)connection {
+- (instancetype)initWithConnection:(WLConnection *)connection {
 	self = [self init];
 	if (self) {
 		_connection = connection;
@@ -248,8 +256,8 @@ static unsigned short gEmptyAttr;
 # pragma mark Input Interface
 - (void)feedData:(NSData *)data 
 	  connection:(id)connection {
-	[self feedBytes:[data bytes] 
-			 length:[data length] 
+	[self feedBytes:data.bytes 
+			 length:data.length 
 		 connection:connection];
 }
 
@@ -261,7 +269,7 @@ static unsigned short gEmptyAttr;
 	int i, x;
 	unsigned char c;
 	
-	if ([_terminal bbsType] == WLFirebird) {
+	if (_terminal.bbsType == WLFirebird) {
 		_hasNewMessage = NO;
 	}
 	
@@ -974,7 +982,7 @@ static unsigned short gEmptyAttr;
 	
 	if (_hasNewMessage) {
 		// new incoming message
-		if ([_terminal bbsType] == WLMaple && _grid[_row - 1][0].attr.f.bgColor != 9 && _grid[_row - 1][_column - 2].attr.f.bgColor == 9) {
+		if (_terminal.bbsType == WLMaple && _grid[_row - 1][0].attr.f.bgColor != 9 && _grid[_row - 1][_column - 2].attr.f.bgColor == 9) {
 			// for maple bbs (e.g. ptt)
 			for (i = 2; i < _column && _grid[_row - 1][i].attr.f.bgColor == _grid[_row - 1][i - 1].attr.f.bgColor; ++i); // split callerName and messageString
 			int splitPoint = i++;
@@ -984,7 +992,7 @@ static unsigned short gEmptyAttr;
 			
 			[connection didReceiveNewMessage:messageString fromCaller:callerName];
 			_hasNewMessage = NO;
-		} else if ([_terminal bbsType] == WLFirebird && _grid[0][0].attr.f.bgColor != 9) {
+		} else if (_terminal.bbsType == WLFirebird && _grid[0][0].attr.f.bgColor != 9) {
 			// for firebird bbs (e.g. smth)
 			for (i = 2; i < _row && _grid[i][0].attr.f.bgColor != 9; ++i);	// determine the end of the message
 			NSString *callerName = [_terminal stringAtIndex:0 length:_column];
@@ -997,9 +1005,9 @@ static unsigned short gEmptyAttr;
     [pool release];
 }
 
-- (void)setTerminal:(WLTerminal *)terminal {
-    _terminal = terminal;
-}
+//- (void)setTerminal:(WLTerminal *)terminal {
+//    _terminal = terminal;
+//}
 
 
 # pragma mark -

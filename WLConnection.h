@@ -19,7 +19,7 @@
 // inhert from NSObjectController for PSMTabBarControl
 @interface WLConnection : NSObject <WLTabBarCellContentProvider> {
     NSImage *_icon;
-    BOOL _isProcessing;
+    BOOL _processing;
     NSInteger _objectCount;
 
     BOOL _connected;
@@ -45,12 +45,12 @@
 @property (readonly) NSInteger messageCount;
 @property (readonly) WLMessageDelegate *messageDelegate;
 // for PSMTabBarControl
-@property (readwrite, retain) NSImage *icon;
-@property (readwrite, assign) BOOL isProcessing;
+@property (readwrite, copy) NSImage *icon;
+@property (readwrite, assign, getter=isProcessing) BOOL processing;
 @property (readwrite, assign) NSInteger objectCount;
 @property (readwrite, assign) id tabViewItemController;
 
-- (id)initWithSite:(WLSite *)site;
+- (instancetype)initWithSite:(WLSite *)site;
 
 - (void)close;
 - (void)reconnect;

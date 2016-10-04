@@ -12,24 +12,9 @@
 @class WLConnection, WLIntegerArray, WLTerminal;
 
 @interface WLTerminalFeeder : NSObject {
-    unsigned int _row;
-    unsigned int _column;
-    int _cursorX;
-    int _cursorY;
-    unsigned int _offset;
-	
     int _savedCursorX;
     int _savedCursorY;
-	
-    int _fgColor;
-    int _bgColor;
-    BOOL _bold;
-    BOOL _underline;
-    BOOL _blink;
-    BOOL _reverse;
-	
-    cell **_grid;
-	
+			
     enum { TP_NORMAL, TP_ESCAPE, TP_CONTROL, TP_SCS } _state;
 	
     WLIntegerArray *_csBuf;
@@ -39,7 +24,7 @@
     int _scrollBeginRow;
     int _scrollEndRow;
 	
-	WLTerminal *_terminal;
+//	WLTerminal *_terminal;
 	WLConnection *_connection;
 	
 	BOOL _hasNewMessage;	// to determine if a growl notification is needed
@@ -52,12 +37,12 @@
     BOOL _modeLNM;            // line feed (true, default), new line (false)
     BOOL _modeIRM;            // insert (true), replace (false, default)
 }
-@property int cursorX;
-@property int cursorY;
+@property (readonly) int cursorX;
+@property (readonly) int cursorY;
 @property cell **grid;
-
-- (id)init;
-- (id)initWithConnection:(WLConnection *)connection;
+@property (assign) WLTerminal *terminal;
+- (instancetype)init NS_DESIGNATED_INITIALIZER;
+- (instancetype)initWithConnection:(WLConnection *)connection;
 - (void)dealloc;
 
 /* Input Interface */
@@ -66,10 +51,10 @@
 		   length:(NSUInteger)len 
 	   connection:(id)connection;
 
-- (void)setTerminal:(WLTerminal *)terminal;
+//- (void)setTerminal:(WLTerminal *)terminal;
 
 /* Clear */
 - (void)clearAll;
 
-- (cell *)cellsOfRow:(int)r;
+- (cell *)cellsOfRow:(int)r NS_RETURNS_INNER_POINTER;
 @end

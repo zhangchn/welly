@@ -12,8 +12,8 @@
 @protocol WLTabBarCellContentProvider
 
 // PSMTabBarControl needs these methods being implemented to provider indicator/icon/count feature
-- (BOOL)isProcessing;
-- (NSImage *)icon;
-- (NSInteger)objectCount;
+@property (NS_NONATOMIC_IOSONLY, getter=isProcessing, readonly) BOOL processing;
+@property (NS_NONATOMIC_IOSONLY, readonly, copy) NSImage *icon;
+@property (NS_NONATOMIC_IOSONLY, readonly) NSInteger objectCount;
 
 @end

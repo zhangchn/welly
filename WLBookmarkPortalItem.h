@@ -10,14 +10,11 @@
 #import "WLPortalItem.h"
 #import "WLSite.h"
 
-@interface WLBookmarkPortalItem : WLPortalItem <WLPasteboardReceiver, WLDraggingSource> {
-	WLSite *_site;
-    NSString *_path;
-}
+@interface WLBookmarkPortalItem : WLPortalItem <WLPasteboardReceiver, WLDraggingSource>
 @property (readwrite, copy, nonatomic) NSString *path;
 @property (readwrite, retain, nonatomic) WLSite *site;
-- (id)initWithSite:(WLSite *)site;
-- (id)initWithPath:(NSString *)path title:(NSString *)title;
+- (instancetype)initWithSite:(WLSite *)site;
+- (instancetype)initWithPath:(NSString *)path title:(NSString *)title NS_DESIGNATED_INITIALIZER;
 //- (void)setPath:(NSString *)path;
 
 

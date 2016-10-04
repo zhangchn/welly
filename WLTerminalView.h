@@ -35,21 +35,18 @@
 	BOOL _wantsRectangleSelection;
 	BOOL _hasRectangleSelected;
 	
-	BOOL _isInUrlMode;
 	BOOL _isNotCancelingSelection;
 	BOOL _isKeying;
-	BOOL _isMouseActive;
-	
 	NSTimer *_activityCheckingTimer;
 	
 	WLMouseBehaviorManager *_mouseBehaviorDelegate;
 	WLURLManager *_urlManager;
 }
-@property BOOL isInUrlMode;
-@property BOOL isMouseActive;
+@property (readonly, getter=isInUrlMode) BOOL inUrlMode;
+@property (readonly, getter=isMouseActive) BOOL mouseActive;
 @property (readonly) WLEffectView *effectView;
 
-- (BOOL)shouldWarnCompose;
+@property (NS_NONATOMIC_IOSONLY, readonly) BOOL shouldWarnCompose;
 
 - (void)copy:(id)sender;
 - (void)pasteWrap:(id)sender;
@@ -68,11 +65,11 @@
 			 height:(int)h 
 			  width:(int)w;
 
-- (BOOL)shouldEnableMouse;
+@property (NS_NONATOMIC_IOSONLY, readonly) BOOL shouldEnableMouse;
 
 - (void)sendText:(NSString *)text;
 
-- (NSString *)selectedPlainString ;
+@property (NS_NONATOMIC_IOSONLY, readonly, copy) NSString *selectedPlainString ;
 //- (BOOL)hasBlinkCell ;
 
 - (void)insertText:(id)aString withDelay:(int)microsecond;
@@ -85,5 +82,5 @@
 - (void)activateMouseForKeying:(NSTimer*)timer;
 
 - (int)convertIndexFromPoint:(NSPoint)aPoint;
-- (NSPoint)mouseLocationInView;
+@property (NS_NONATOMIC_IOSONLY, readonly) NSPoint mouseLocationInView;
 @end

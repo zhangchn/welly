@@ -12,18 +12,7 @@
 #import <Cocoa/Cocoa.h>
 #import "CommonType.h"
 
-@interface WLSite : NSObject {
-    NSString *_name;
-    NSString *_address;
-    WLEncoding _encoding;
-    YLANSIColorKey _ansiColorKey;
-    BOOL _shouldDetectDoubleByte;
-	BOOL _shouldAutoReply;
-	BOOL _shouldEnableMouse;
-	NSString *_autoReplyString;
-    WLProxyType _proxyType;
-    NSString *_proxyAddress;
-}
+@interface WLSite : NSObject
 @property (readwrite, copy) NSString *name;
 @property (readwrite, copy) NSString *address;
 @property (readwrite, assign) WLEncoding encoding;
@@ -39,5 +28,5 @@
 + (WLSite *)siteWithDictionary:(NSDictionary *)d;
 - (NSDictionary *)dictionaryOfSite ;
 
-- (BOOL)isDummy;
+@property (NS_NONATOMIC_IOSONLY, getter=isDummy, readonly) BOOL dummy;
 @end

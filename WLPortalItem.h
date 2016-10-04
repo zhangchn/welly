@@ -10,16 +10,16 @@
 
 @protocol WLPortalSource
 
-- (NSImage *)image;
+@property (NS_NONATOMIC_IOSONLY, readonly) NSImage *image;
 - (void)didSelect:(id)sender;
 
 @end
 
 @protocol WLDraggingSource
 
-- (BOOL)acceptsDragging;
-- (NSImage *)draggingImage;
-- (NSPasteboard *)draggingPasteboard;
+@property (NS_NONATOMIC_IOSONLY, readonly) BOOL acceptsDragging;
+@property (NS_NONATOMIC_IOSONLY, readonly, copy) NSImage *draggingImage;
+@property (NS_NONATOMIC_IOSONLY, readonly, strong) NSPasteboard *draggingPasteboard;
 - (void)draggedToRemove:(id)sender;
 
 @end
@@ -41,15 +41,15 @@
 @property (readonly) NSString *imageTitle;
 @property (readonly) NSImage *image;
 
-- (id)initWithTitle:(NSString *)title;
-- (id)initWithImage:(NSImage *)theImage;
-- (id)initWithImage:(NSImage *)theImage title:(NSString *)title;
+- (instancetype)initWithTitle:(NSString *)title NS_DESIGNATED_INITIALIZER;
+- (instancetype)initWithImage:(NSImage *)theImage NS_DESIGNATED_INITIALIZER;
+- (instancetype)initWithImage:(NSImage *)theImage title:(NSString *)title NS_DESIGNATED_INITIALIZER;
 
 #pragma mark -
 #pragma mark IKImageBrowserItem protocol
-- (NSString *)imageUID;
-- (NSString *)imageRepresentationType;
-- (id)imageRepresentation;
+@property (NS_NONATOMIC_IOSONLY, readonly, copy) NSString *imageUID;
+@property (NS_NONATOMIC_IOSONLY, readonly, copy) NSString *imageRepresentationType;
+@property (NS_NONATOMIC_IOSONLY, readonly, strong) id imageRepresentation;
 - (NSString *)imageTitle;
 
 #pragma mark -
