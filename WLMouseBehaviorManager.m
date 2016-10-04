@@ -196,9 +196,9 @@ const float WLHorizontalScrollReactivateTimeInteval = 1.0;
 													   userInfo:userInfo] autorelease];
 	[_view addTrackingArea:area];
 	if ([self isMouseInsideRect:rect]) {
-		NSEvent *event = [NSEvent enterExitEventWithType:NSMouseEntered 
+		NSEvent *event = [NSEvent enterExitEventWithType:NSEventTypeMouseEntered 
 												location:[NSEvent mouseLocation] 
-										   modifierFlags:NSMouseEnteredMask 
+										   modifierFlags:NSEventMaskMouseEntered 
 											   timestamp:0
 											windowNumber:_view.window.windowNumber 
 												 context:nil
@@ -220,9 +220,9 @@ const float WLHorizontalScrollReactivateTimeInteval = 1.0;
 - (void)removeTrackingArea:(NSTrackingArea *)area {
 	NSRect rect = area.rect;
 	if ([self isMouseInsideRect:rect]) {
-		NSEvent *event = [NSEvent enterExitEventWithType:NSMouseExited 
+		NSEvent *event = [NSEvent enterExitEventWithType:NSEventTypeMouseExited 
 												location:[NSEvent mouseLocation] 
-										   modifierFlags:NSMouseExitedMask 
+										   modifierFlags:NSEventMaskMouseExited 
 											   timestamp:0
 											windowNumber:_view.window.windowNumber 
 												 context:nil

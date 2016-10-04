@@ -43,9 +43,9 @@
 - (UInt32)locateIP:(const char*)ip;
 
 // basic reading
-- (UInt32)readInt3;
+@property (NS_NONATOMIC_IOSONLY, readonly) UInt32 readInt3;
 - (UInt32)readInt3:(unsigned long long)offset;
-- (UInt32)readInt4;
+@property (NS_NONATOMIC_IOSONLY, readonly) UInt32 readInt4;
 - (UInt32)readInt4:(unsigned long long)offset;
 - (NSString*)readString:(unsigned long long)offset;
 

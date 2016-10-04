@@ -33,6 +33,6 @@
 }
 
 - (BOOL) instantiateAndAddRemoteControlDeviceWithClass: (Class) clazz;
-- (unsigned int) count;
+@property (NS_NONATOMIC_IOSONLY, readonly) unsigned int count;
 
 @end

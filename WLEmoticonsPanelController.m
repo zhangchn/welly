@@ -19,7 +19,7 @@
 
 // emoticons accessors
 - (void)addEmoticon:(YLEmoticon *)emoticon;
-- (unsigned)countOfEmoticons;
+@property (NS_NONATOMIC_IOSONLY, readonly) unsigned int countOfEmoticons;
 - (id)objectInEmoticonsAtIndex:(unsigned)theIndex;
 - (void)getEmoticons:(id *)objsPtr 
 			   range:(NSRange)range;
@@ -34,7 +34,7 @@
 
 SYNTHESIZE_SINGLETON_FOR_CLASS(WLEmoticonsPanelController);
 
-- (id)init {
+- (instancetype)init {
     if (self = [super init]) {
 		@synchronized(self) {
 			if (!_emoticons)
@@ -79,13 +79,13 @@ SYNTHESIZE_SINGLETON_FOR_CLASS(WLEmoticonsPanelController);
 
 - (IBAction)inputSelectedEmoticon:(id)sender {
     [self closeEmoticonsPanel:sender];
-	if ([[[NSApp keyWindow] firstResponder] conformsToProtocol:@protocol(NSTextInput)]) {
-		id <NSTextInput> textInput = (id <NSTextInput>)[[NSApp keyWindow] firstResponder];
-		NSArray *a = [_emoticonsController selectedObjects];
+	if ([NSApp.keyWindow.firstResponder conformsToProtocol:@protocol(NSTextInput)]) {
+		id <NSTextInput> textInput = (id <NSTextInput>)NSApp.keyWindow.firstResponder;
+		NSArray *a = _emoticonsController.selectedObjects;
 		
-		if ([a count] == 1) {
-			YLEmoticon *e = [a objectAtIndex:0];
-			[textInput insertText:[e content]];
+		if (a.count == 1) {
+			YLEmoticon *e = a[0];
+			[textInput insertText:e.content];
 		}		
 	}
 }
@@ -109,11 +109,11 @@ SYNTHESIZE_SINGLETON_FOR_CLASS(WLEmoticonsPanelController);
 #pragma mark -
 #pragma mark Emoticons Accessors
 - (unsigned)countOfEmoticons {
-    return [_emoticons count];
+    return _emoticons.count;
 }
 
 - (id)objectInEmoticonsAtIndex:(unsigned)theIndex {
-    return [_emoticons objectAtIndex:theIndex];
+    return _emoticons[theIndex];
 }
 
 - (void)getEmoticons:(id *)objsPtr 
@@ -131,7 +131,7 @@ SYNTHESIZE_SINGLETON_FOR_CLASS(WLEmoticonsPanelController);
 }
 
 - (void)replaceObjectInEmoticonsAtIndex:(unsigned)theIndex withObject:(id)obj {
-    [_emoticons replaceObjectAtIndex:theIndex withObject:obj];
+    _emoticons[theIndex] = obj;
 }
 
 - (void)addEmoticon:(YLEmoticon *)emoticon {
