@@ -11,7 +11,6 @@
 
 @class WLConnection;
 @interface WLMessageDelegate : NSObject {
-//	WLConnection *_connection;
 	NSMutableString *_unreadMessage;
 	int _unreadCount;
 }

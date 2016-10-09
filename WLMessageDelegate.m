@@ -21,6 +21,7 @@ NSString *const WLAutoReplyGrowlTipFormat = @"AutoReplyGrowlTipFormat";
 @end
 
 @implementation WLMessageDelegate
+@synthesize connection = _connection;
 @synthesize unreadCount = _unreadCount;
 
 - (instancetype)init {
@@ -45,9 +46,12 @@ NSString *const WLAutoReplyGrowlTipFormat = @"AutoReplyGrowlTipFormat";
 	[super dealloc];
 }
 
-//- (void)setConnection:(WLConnection *)connection {
-//	_connection = connection;
-//}
+- (WLConnection *)connection {
+    return _connection;
+}
+- (void)setConnection:(WLConnection *)connection {
+	_connection = connection;
+}
 
 - (void)connectionDidReceiveNewMessage:(NSString *)message
 							fromCaller:(NSString *)callerName {

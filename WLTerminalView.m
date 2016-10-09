@@ -142,7 +142,9 @@ BOOL isEnglishNumberAlphabet(unsigned char c) {
 }
 
 - (NSPoint)mouseLocationInView {
-	return [self convertPoint:[self.window convertScreenToBase:[NSEvent mouseLocation]] fromView:nil];
+    NSPoint location = [NSEvent mouseLocation];
+    NSPoint p = [self.window convertRectFromScreen:NSMakeRect(location.x, location.y, 0, 0)].origin;
+    return [self convertPoint:p fromView:nil];
 }
 
 - (NSRange)rangeForWordAtPoint:(NSPoint)point {
@@ -512,11 +514,11 @@ BOOL isEnglishNumberAlphabet(unsigned char c) {
     _selectionLocation = [self convertIndexFromPoint:p];
     _selectionLength = 0;
     
-    if ((theEvent.modifierFlags & NSCommandKeyMask) == 0x00 &&
+    if ((theEvent.modifierFlags & NSEventModifierFlagCommand) == 0x00 &&
         theEvent.clickCount == 3) {
         _selectionLocation = _selectionLocation - (_selectionLocation % self.maxColumn);
         _selectionLength = self.maxColumn;
-    } else if ((theEvent.modifierFlags & NSCommandKeyMask) == 0x00 &&
+    } else if ((theEvent.modifierFlags & NSEventModifierFlagCommand) == 0x00 &&
                theEvent.clickCount == 2) {
 		[self selectWordAtPoint:p];
     }
@@ -679,7 +681,7 @@ BOOL isEnglishNumberAlphabet(unsigned char c) {
 - (void)flagsChanged:(NSEvent *)event {
 	unsigned int currentFlags = event.modifierFlags;
 	// For rectangle selection
-	if ((currentFlags & NSAlternateKeyMask) == NSAlternateKeyMask) {
+	if ((currentFlags & NSEventModifierFlagOption) == NSEventModifierFlagOption) {
 		_wantsRectangleSelection = YES;
 		[[NSCursor crosshairCursor] push];
 		_mouseBehaviorDelegate.normalCursor = [NSCursor crosshairCursor];

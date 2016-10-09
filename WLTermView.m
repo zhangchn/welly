@@ -307,9 +307,9 @@ static NSImage *gLeftImage;
 					  to:(int)end {
     NSAutoreleasePool *pool = [NSAutoreleasePool new];
 	[_backedImage lockFocus];
-	[_backedImage compositeToPoint:NSMakePoint(0, (_maxRow - end) * _fontHeight) 
+	[_backedImage compositeToPoint:NSMakePoint(0, (_maxRow - end) * _fontHeight)
 						  fromRect:NSMakeRect(0, (_maxRow - end - 1) * _fontHeight, _maxColumn * _fontWidth, (end - start) * _fontHeight) 
-						 operation:NSCompositeCopy];
+						 operation:NSCompositingOperationCopy];
 	
 	[gConfig->_colorTable[0][gConfig->_bgColorIndex] set];
 	NSRectFill(NSMakeRect(0, (_maxRow - end - 1) * _fontHeight, _maxColumn * _fontWidth, _fontHeight));
@@ -331,7 +331,7 @@ static NSImage *gLeftImage;
     [_backedImage lockFocus];
 	[_backedImage compositeToPoint:NSMakePoint(0, (_maxRow - end - 1) * _fontHeight) 
 						  fromRect:NSMakeRect(0, (_maxRow - end) * _fontHeight, _maxColumn * _fontWidth, (end - start) * _fontHeight) 
-						 operation:NSCompositeCopy];
+						 operation:NSCompositingOperationCopy];
 	
 	[gConfig->_colorTable[0][gConfig->_bgColorIndex] set];
 	NSRectFill(NSMakeRect(0, (_maxRow - start - 1) * _fontHeight, _maxColumn * _fontWidth, _fontHeight));
@@ -592,7 +592,7 @@ static NSImage *gLeftImage;
                 [gLeftImage unlockFocus];
                 [gLeftImage drawAtPoint:NSMakePoint(index * _fontWidth, (_maxRow - 1 - r) * _fontHeight)
 							   fromRect:rect
-							  operation:NSCompositeCopy
+							  operation:NSCompositingOperationCopy
 							   fraction:1.0];
             }
 		}

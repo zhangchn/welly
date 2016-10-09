@@ -262,22 +262,22 @@
 // Cmd+[0-9], Ctrl+Tab, Cmd+Shift+Left/Right (I don't know if we should keep this)
 // Added by K.O.ed, 2009.02.02
 - (BOOL)performKeyEquivalent:(NSEvent *)event {
-	if (((event.modifierFlags & NSCommandKeyMask) == NSCommandKeyMask) && 
-		((event.modifierFlags & NSShiftKeyMask) == NSShiftKeyMask) &&
+	if (((event.modifierFlags & NSEventModifierFlagCommand) == NSEventModifierFlagCommand) && 
+		((event.modifierFlags & NSEventModifierFlagShift) == NSEventModifierFlagShift) &&
 		([event.charactersIgnoringModifiers isEqualToString:keyStringLeft] ||
 		 [event.charactersIgnoringModifiers isEqualToString:@"{"])) {
 		[self selectPreviousTabViewItem:self];
 		return YES;
-	} else if (((event.modifierFlags & NSCommandKeyMask) == NSCommandKeyMask) && 
-			   ((event.modifierFlags & NSShiftKeyMask) == NSShiftKeyMask) &&
+	} else if (((event.modifierFlags & NSEventModifierFlagCommand) == NSEventModifierFlagCommand) && 
+			   ((event.modifierFlags & NSEventModifierFlagShift) == NSEventModifierFlagShift) &&
 			   ([event.charactersIgnoringModifiers isEqualToString:keyStringRight] ||
 				[event.charactersIgnoringModifiers isEqualToString:@"}"])) {
 		[self selectNextTabViewItem:self];
 		return YES;
-	} else if ((event.modifierFlags & NSCommandKeyMask) == NSCommandKeyMask && 
-			   (event.modifierFlags & NSAlternateKeyMask) == 0 && 
-			   (event.modifierFlags & NSControlKeyMask) == 0 && 
-			   (event.modifierFlags & NSShiftKeyMask) == 0 && 
+	} else if ((event.modifierFlags & NSEventModifierFlagCommand) == NSEventModifierFlagCommand && 
+			   (event.modifierFlags & NSEventModifierFlagOption) == 0 && 
+			   (event.modifierFlags & NSEventModifierFlagControl) == 0 && 
+			   (event.modifierFlags & NSEventModifierFlagShift) == 0 && 
 			   event.characters.intValue > 0 && 
 			   event.characters.intValue < 10) {
 		// User may drag and re-order tabs using tabBarControl
@@ -286,17 +286,17 @@
 		// We here call method from tabBarControl to choose correct tab
 		[_tabBarControl selectTabViewItemAtIndex:(event.characters.intValue-1)];
 		return YES;
-	} else if ((event.modifierFlags & NSCommandKeyMask) == 0 && 
-			   (event.modifierFlags & NSAlternateKeyMask) == 0 && 
-			   (event.modifierFlags & NSControlKeyMask) && 
-			   (event.modifierFlags & NSShiftKeyMask) == 0 && 
+	} else if ((event.modifierFlags & NSEventModifierFlagCommand) == 0 && 
+			   (event.modifierFlags & NSEventModifierFlagOption) == 0 && 
+			   (event.modifierFlags & NSEventModifierFlagControl) && 
+			   (event.modifierFlags & NSEventModifierFlagShift) == 0 && 
 			   [event.characters characterAtIndex:0] == '\t') {
 		[self selectNextTabViewItem:self];
 		return YES;
-    } else if ((event.modifierFlags & NSCommandKeyMask) == 0 && 
-        (event.modifierFlags & NSAlternateKeyMask) == 0 && 
-        (event.modifierFlags & NSControlKeyMask)  && 
-        (event.modifierFlags & NSShiftKeyMask) && 
+    } else if ((event.modifierFlags & NSEventModifierFlagCommand) == 0 && 
+        (event.modifierFlags & NSEventModifierFlagOption) == 0 && 
+        (event.modifierFlags & NSEventModifierFlagControl)  && 
+        (event.modifierFlags & NSEventModifierFlagShift) && 
         (event.keyCode == 48)) {
 		//keyCode 48: back-tab
 		[self selectPreviousTabViewItem:self];

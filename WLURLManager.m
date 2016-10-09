@@ -166,7 +166,7 @@ NSString *const WLMenuTitleOpenWithBrowser = @"Open With Browser";
 - (void)mouseUp:(NSEvent *)theEvent {
 	NSString *url = _manager.activeTrackingAreaUserInfo[WLURLUserInfoName];
 	if (url != nil) {
-		if ((theEvent.modifierFlags & NSShiftKeyMask) == NSShiftKeyMask) {
+		if ((theEvent.modifierFlags & NSEventModifierFlagShift) == NSEventModifierFlagShift) {
 			// click while holding shift key or navigate web pages
 			// open the URL with browser
 			[[NSWorkspace sharedWorkspace] openURL:[NSURL URLWithString:url]];
@@ -283,7 +283,7 @@ NSString *const WLMenuTitleOpenWithBrowser = @"Open With Browser";
 	NSDictionary *urlInfo = _currentURLList[_currentSelectedURLIndex];
 	NSString *url = urlInfo[WLURLUserInfoName];
 	if (url != nil) {
-		if ((theEvent.modifierFlags & NSShiftKeyMask) == NSShiftKeyMask) {
+		if ((theEvent.modifierFlags & NSEventModifierFlagShift) == NSEventModifierFlagShift) {
 			// click while holding shift key or navigate web pages
 			// open the URL with browser
 			[[NSWorkspace sharedWorkspace] openURL:[NSURL URLWithString:url]];
