@@ -170,11 +170,6 @@ static NSImage *gLeftImage;
 	[self refreshDisplay];
 }
 
-- (void)displayCellAtRow:(int)r 
-				  column:(int)c {
-    [self setNeedsDisplayInRect:NSMakeRect(c * _fontWidth, (_maxRow - 1 - r) * _fontHeight, _fontWidth, _fontHeight)];
-}
-
 - (void)terminalDidUpdate:(WLTerminal *)terminal {
 	if (terminal == [self frontMostTerminal]) {
 		[self tick];
@@ -195,14 +190,6 @@ static NSImage *gLeftImage;
     [pool release];
 }
 
-- (NSRect)cellRectForRect:(NSRect)r {
-	int originx = r.origin.x / _fontWidth;
-	int originy = r.origin.y / _fontHeight;
-	int width = ((r.size.width + r.origin.x) / _fontWidth) - originx + 1;
-	int height = ((r.size.height + r.origin.y) / _fontHeight) - originy + 1;
-	return NSMakeRect(originx, originy, width, height);
-}
-
 - (void)drawRect:(NSRect)rect {
     NSAutoreleasePool *pool = [NSAutoreleasePool new];
     WLTerminal *ds = [self frontMostTerminal];
@@ -216,9 +203,10 @@ static NSImage *gLeftImage;
 		
 		NSRect imgRect = rect;
 		imgRect.origin.y = (_fontHeight * _maxRow) - rect.origin.y - rect.size.height;
-		[_backedImage compositeToPoint:rect.origin
-							  fromRect:rect
-							 operation:NSCompositingOperationCopy];
+        [_backedImage drawAtPoint:rect.origin
+                         fromRect:rect
+                        operation:NSCompositingOperationCopy
+                         fraction:1.0];
         [self drawBlink];
         
         /* Draw the url underline */
@@ -294,51 +282,6 @@ static NSImage *gLeftImage;
     [pool release];
 }
 
-/* 
- Extend Bottom:
- 
- AAAAAAAAAAA			BBBBBBBBBBB
- BBBBBBBBBBB			CCCCCCCCCCC
- CCCCCCCCCCC   ->	DDDDDDDDDDD
- DDDDDDDDDDD			...........
- 
- */
-- (void)extendBottomFrom:(int)start
-					  to:(int)end {
-    NSAutoreleasePool *pool = [NSAutoreleasePool new];
-	[_backedImage lockFocus];
-	[_backedImage compositeToPoint:NSMakePoint(0, (_maxRow - end) * _fontHeight)
-						  fromRect:NSMakeRect(0, (_maxRow - end - 1) * _fontHeight, _maxColumn * _fontWidth, (end - start) * _fontHeight) 
-						 operation:NSCompositingOperationCopy];
-	
-	[gConfig->_colorTable[0][gConfig->_bgColorIndex] set];
-	NSRectFill(NSMakeRect(0, (_maxRow - end - 1) * _fontHeight, _maxColumn * _fontWidth, _fontHeight));
-	[_backedImage unlockFocus];
-    [pool release];
-}
-
-
-/* 
- Extend Top:
- AAAAAAAAAAA			...........
- BBBBBBBBBBB			AAAAAAAAAAA
- CCCCCCCCCCC   ->	BBBBBBBBBBB
- DDDDDDDDDDD			CCCCCCCCCCC
- */
-- (void)extendTopFrom:(int)start 
-				   to:(int)end {
-    NSAutoreleasePool *pool = [NSAutoreleasePool new];
-    [_backedImage lockFocus];
-	[_backedImage compositeToPoint:NSMakePoint(0, (_maxRow - end - 1) * _fontHeight) 
-						  fromRect:NSMakeRect(0, (_maxRow - end) * _fontHeight, _maxColumn * _fontWidth, (end - start) * _fontHeight) 
-						 operation:NSCompositingOperationCopy];
-	
-	[gConfig->_colorTable[0][gConfig->_bgColorIndex] set];
-	NSRectFill(NSMakeRect(0, (_maxRow - start - 1) * _fontHeight, _maxColumn * _fontWidth, _fontHeight));
-	[_backedImage unlockFocus];
-    [pool release];
-}
-
 - (void)updateBackedImage {
     NSAutoreleasePool *pool = [NSAutoreleasePool new];
 	int x, y;
@@ -386,12 +329,11 @@ static NSImage *gLeftImage;
 				 context:(CGContextRef)myCGContext {
 	int i, c, x;
 	int start, end;
-	unichar textBuf[_maxColumn];
-	BOOL isDoubleByte[_maxColumn];
-	BOOL isDoubleColor[_maxColumn];
-	int bufIndex[_maxColumn];
-	int runLength[_maxColumn];
-	CGPoint position[_maxColumn];
+	unichar *textBuf = alloca(sizeof(unichar)*_maxColumn);
+	BOOL *isDoubleByte = alloca(sizeof(BOOL)*_maxColumn);
+    BOOL *isDoubleColor = alloca(sizeof(BOOL)*_maxColumn);
+    int *bufIndex = alloca(sizeof(int)*_maxColumn);
+    CGPoint *position = alloca(sizeof(CGPoint)*_maxColumn);
 	int bufLength = 0;
     
     CGFloat ePaddingLeft = gConfig.englishFontPaddingLeft, ePaddingBottom = gConfig.englishFontPaddingBottom;
@@ -403,7 +345,7 @@ static NSImage *gLeftImage;
     cell *currRow = [ds cellsOfRow:r];
 	
 	for (i = 0; i < _maxColumn; i++) 
-		isDoubleColor[i] = isDoubleByte[i] = textBuf[i] = runLength[i] = 0;
+        isDoubleColor[i] = isDoubleByte[i] = textBuf[i] = 0;
 	
     // find the first dirty position in this row
 	for (x = 0; x < _maxColumn && ![ds isDirtyAtRow:r column:x]; x++) ;
@@ -541,14 +483,7 @@ static NSImage *gLeftImage;
                 CGGlyph glyph[_maxColumn];
                 CFRange glyphRange = CFRangeMake(location, len);
                 CTRunGetGlyphs(run, glyphRange, glyph);
-                
-                CGAffineTransform textMatrix = CTRunGetTextMatrix(run);
-                textMatrix.tx = position[glyphOffset + location].x;
-                textMatrix.ty = position[glyphOffset + location].y;
-                CGContextSetTextMatrix(myCGContext, textMatrix);
-                
-                CGContextShowGlyphsWithAdvances(myCGContext, glyph, isDoubleByte[glyphOffset + location] ? _doubleAdvance : _singleAdvance, len);
-                
+                CGContextShowGlyphsAtPositions(myCGContext, glyph, position + glyphOffset + location, len);
                 location = runGlyphIndex;
                 if (runGlyphIndex != runGlyphCount)
                     hidden = isHiddenAttribute(currRow[index].attr);
@@ -588,7 +523,8 @@ static NSImage *gLeftImage;
                                          tempColor.blueComponent, 
                                          1.0);
                 
-                CGContextShowGlyphsAtPoint(tempContext, cPaddingLeft, CTFontGetDescent(gConfig->_cCTFont) + cPaddingBottom, &glyph, 1);
+                CGPoint glyphPosition = CGPointMake(cPaddingLeft, CTFontGetDescent(gConfig->_cCTFont) + cPaddingBottom);
+                CGContextShowGlyphsAtPositions(tempContext, &glyph, &glyphPosition, 1);
                 [gLeftImage unlockFocus];
                 [gLeftImage drawAtPoint:NSMakePoint(index * _fontWidth, (_maxRow - 1 - r) * _fontHeight)
 							   fromRect:rect
