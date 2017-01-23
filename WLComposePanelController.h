@@ -10,15 +10,8 @@
 
 @class WLTerminalView;
 @interface WLComposePanelController : NSObject {
-    NSView <NSTextInput> *_telnetView;
 	
-    IBOutlet NSColorWell *_bgColorWell;
-	
-    /* composeWindow */
-    IBOutlet NSTextView *_composeText;
-    IBOutlet NSPanel *_composePanel;
-	
-	NSShadow *_shadowForBlink;
+
 }
 
 + (WLComposePanelController *)sharedInstance;

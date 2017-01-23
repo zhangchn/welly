@@ -9,10 +9,8 @@
 #import <Cocoa/Cocoa.h>
 #import <HMBlkAppKit/HMBlkAppKit.h>
 
-@interface WLPreviewController : NSObject {
-}
+@interface WLPreviewController : NSObject
 
 - (IBAction)openPreview:(id)sender;
 + (NSURLDownload *)downloadWithURL:(NSURL *)URL;
-
 @end

@@ -16,6 +16,27 @@
 #define kSitePanelNibFilename @"SitesPanel"
 
 @interface WLSitesPanelController()
+/* Sites Array */
+@property (retain)   NSMutableArray *sites;
+@property (assign)   IBOutlet NSArrayController *sitesController;
+
+/* Site Panel Outlets */
+@property (assign)   IBOutlet NSPanel *sitesPanel;
+@property (assign)   IBOutlet NSTableView *tableView;
+@property (assign)   IBOutlet NSTextField *siteNameField;
+@property (assign)   IBOutlet NSTextField *siteAddressField;
+
+@property (assign)   IBOutlet NSPopUpButton *proxyTypeButton;
+@property (assign)   IBOutlet NSTextField *proxyAddressField;
+
+/* Password Window Outlets */
+@property (assign)   IBOutlet NSPanel *passwordPanel;
+@property (assign)   IBOutlet NSSecureTextField *passwordField;
+
+/* Observers */
+@property (assign)   NSMutableArray *sitesObservers;
+
+
 - (void)loadSites;
 - (void)sitesDidChanged;
 
@@ -31,7 +52,7 @@
 @end
 
 @implementation WLSitesPanelController
-@synthesize sites = _sites;
+//@synthesize sites = _sites;
 
 SYNTHESIZE_SINGLETON_FOR_CLASS(WLSitesPanelController);
 

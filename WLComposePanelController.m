@@ -17,6 +17,18 @@
 
 @property (NS_NONATOMIC_IOSONLY, readonly) BOOL shouldWarnCompose;
 @property (NS_NONATOMIC_IOSONLY, readonly) YLANSIColorKey ansiColorKey;
+@end
+
+@interface WLComposePanelController()
+
+@property (assign) NSView <NSTextInput> *telnetView;
+@property IBOutlet NSColorWell *bgColorWell;
+
+/* composeWindow */
+@property IBOutlet NSTextView *composeText;
+@property IBOutlet NSPanel *composePanel;
+
+@property NSShadow *shadowForBlink;
 
 @end
 
@@ -31,7 +43,7 @@ SYNTHESIZE_SINGLETON_FOR_CLASS(WLComposePanelController);
 		return;
 	}
 	
-	[NSBundle loadNibNamed:kComposePanelNibFilename owner:self];
+    [[NSBundle mainBundle] loadNibNamed:kComposePanelNibFilename owner:self topLevelObjects:nil];
 }
 
 - (void)awakeFromNib {

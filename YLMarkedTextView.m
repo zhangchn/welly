@@ -10,11 +10,6 @@
 
 
 @implementation YLMarkedTextView
-//@synthesize string = _string;
-@synthesize markedRange = _markedRange;
-@synthesize selectedRange = _selectedRange;
-//@synthesize defaultFont = _defaultFont;
-@synthesize destination = _destination;
 
 - (instancetype)initWithFrame:(NSRect)frame {
     self = [super initWithFrame:frame];

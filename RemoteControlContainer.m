@@ -44,7 +44,7 @@
 }
 
 - (BOOL) instantiateAndAddRemoteControlDeviceWithClass: (Class) clazz {
-	RemoteControl* remoteControl = [[clazz alloc] initWithDelegate: delegate];
+	RemoteControl* remoteControl = [[clazz alloc] initWithDelegate: self.delegate];
 	[remoteControl autorelease];
 	if (remoteControl) {
 		[remoteControls addObject: remoteControl];

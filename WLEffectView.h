@@ -15,9 +15,8 @@
 @class WLTerminalView;
 
 @interface WLEffectView : NSView {
-    CALayer *_mainLayer;
 	
-	IBOutlet WLTerminalView *_mainView;
+	//IBOutlet WLTerminalView *_mainView;
 	
 	CALayer *_ipAddrLayer;
 	CALayer *_clickEntryLayer;
@@ -32,7 +31,8 @@
 	CGColorRef _popUpLayerTextColor;
 	CGFontRef _popUpLayerTextFont;
 }
-
+@property (assign) CALayer *mainLayer;
+@property (assign) IBOutlet WLTerminalView *mainView;
 // for ip seeker
 - (void)drawIPAddrBox:(NSRect)rect;
 - (void)clearIPAddrBox;

@@ -11,22 +11,7 @@
 
 @class WLTerminal, WLConnection, WLAsciiArtRender;
 
-@interface WLTermView : NSView <WLTabItemContentObserver> {
-//	CGFloat _fontWidth;
-//	CGFloat _fontHeight;
-    
-    CGSize *_singleAdvance;
-    CGSize *_doubleAdvance;
-	
-	NSImage *_backedImage;
-	
-	int _x;
-	int _y;
-	
-	WLConnection *_connection;
-	
-	WLAsciiArtRender *_asciiArtRender;
-}
+@interface WLTermView : NSView <WLTabItemContentObserver>
 @property CGFloat fontWidth;
 @property CGFloat fontHeight;
 @property int maxRow;

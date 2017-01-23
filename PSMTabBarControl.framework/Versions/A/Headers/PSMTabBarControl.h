@@ -78,37 +78,26 @@ enum {
 + (NSBundle *)bundle;
 
 // control configuration
-- (BOOL)canCloseOnlyTab;
-- (void)setCanCloseOnlyTab:(BOOL)value;
-- (NSString *)styleName;
+@property (NS_NONATOMIC_IOSONLY) BOOL canCloseOnlyTab;
+@property (NS_NONATOMIC_IOSONLY, readonly, copy) NSString *styleName;
 - (void)setStyleNamed:(NSString *)name;
-- (BOOL)hideForSingleTab;
-- (void)setHideForSingleTab:(BOOL)value;
-- (BOOL)showAddTabButton;
-- (void)setShowAddTabButton:(BOOL)value;
-- (int)cellMinWidth;
-- (void)setCellMinWidth:(int)value;
-- (int)cellMaxWidth;
-- (void)setCellMaxWidth:(int)value;
-- (int)cellOptimumWidth;
-- (void)setCellOptimumWidth:(int)value;
-- (BOOL)sizeCellsToFit;
-- (void)setSizeCellsToFit:(BOOL)value;
-- (BOOL)allowsDragBetweenWindows;
-- (void)setAllowsDragBetweenWindows:(BOOL)flag;
+@property (NS_NONATOMIC_IOSONLY) BOOL hideForSingleTab;
+@property (NS_NONATOMIC_IOSONLY) BOOL showAddTabButton;
+@property (NS_NONATOMIC_IOSONLY) int cellMinWidth;
+@property (NS_NONATOMIC_IOSONLY) int cellMaxWidth;
+@property (NS_NONATOMIC_IOSONLY) int cellOptimumWidth;
+@property (NS_NONATOMIC_IOSONLY) BOOL sizeCellsToFit;
+@property (NS_NONATOMIC_IOSONLY) BOOL allowsDragBetweenWindows;
 
 // accessors
-- (NSTabView *)tabView;
-- (void)setTabView:(NSTabView *)view;
-- (id)delegate;
-- (void)setDelegate:(id)object;
-- (id)partnerView;
-- (void)setPartnerView:(id)view;
+@property (NS_NONATOMIC_IOSONLY, strong) NSTabView *tabView;
+@property (NS_NONATOMIC_IOSONLY, assign) id delegate;
+@property (NS_NONATOMIC_IOSONLY, strong) id partnerView;
 
 // the buttons
-- (PSMRolloverButton *)addTabButton;
-- (PSMOverflowPopUpButton *)overflowPopUpButton;
-- (NSMutableArray *)representedTabViewItems;
+@property (NS_NONATOMIC_IOSONLY, readonly, strong) PSMRolloverButton *addTabButton;
+@property (NS_NONATOMIC_IOSONLY, readonly, strong) PSMOverflowPopUpButton *overflowPopUpButton;
+@property (NS_NONATOMIC_IOSONLY, readonly, copy) NSMutableArray *representedTabViewItems;
 
 // special effects
 - (void)hideTabBar:(BOOL)hide animate:(BOOL)animate;

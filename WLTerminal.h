@@ -22,11 +22,11 @@
 @end
 
 @interface WLTerminal : NSObject {
-    unsigned int _offset;
+    //unsigned int _offset;
 	
-    cell **_grid;
-    BOOL **_dirty;
-	unichar *_textBuf;
+    // cell **_grid;
+    //BOOL **_dirty;
+	// unichar *_textBuf;
 }
 @property unsigned int maxRow;
 @property unsigned int maxColumn;

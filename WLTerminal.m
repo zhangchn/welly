@@ -15,12 +15,13 @@
 #import "WLSite.h"
 
 @interface WLTerminal ()
+@property (assign) BOOL **dirty;
+@property (assign) unichar *textBuf;
 @property (retain) NSMutableSet *observers;
 - (void)notifyObservers;
 @end
 
 @implementation WLTerminal
-@synthesize grid = _grid;
 
 - (instancetype)init {
 	if (self = [super init]) {

@@ -40,19 +40,22 @@ NSString* kApplicationIdentifier   = @"CFBundleIdentifier";
 // this key is being used in the FINISHED notification only
 NSString* kTargetApplicationIdentifier = @"TargetBundleIdentifier";
 
+@interface RemoteControl()
+
+@end
 
 @implementation RemoteControl
 
 // returns nil if the remote control device is not available
 - (instancetype) initWithDelegate: (id) _remoteControlDelegate {	
 	if (self = [super init]) {
-		delegate = [_remoteControlDelegate retain];
+		self.delegate = _remoteControlDelegate;
 	}
 	return self;
 }
 
 - (void) dealloc {
-	[delegate release];
+    self.delegate = nil;
 	[super dealloc];
 }
 

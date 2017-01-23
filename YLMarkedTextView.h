@@ -11,11 +11,11 @@
 
 @interface YLMarkedTextView : NSView {
 //	NSAttributedString *_string;
-	NSRange _markedRange;
-	NSRange _selectedRange;
+//	NSRange _markedRange;
+//	NSRange _selectedRange;
 //	NSFont *_defaultFont;
 	CGFloat _lineHeight;
-	NSPoint _destination;
+//	NSPoint _destination;
 }
 @property (readwrite, copy, nonatomic) NSAttributedString *string;
 @property (readwrite, assign, nonatomic) NSRange markedRange;

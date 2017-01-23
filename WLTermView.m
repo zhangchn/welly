@@ -18,7 +18,15 @@ static WLGlobalConfig *gConfig;
 static NSImage *gLeftImage;
 
 @interface WLTermView ()
-- (void)drawSpecialSymbol:(unichar)ch 
+@property (assign) NSImage *backedImage;
+@property (assign) CGSize *singleAdvance;
+@property (assign) CGSize *doubleAdvance;
+@property (assign) int x;
+@property (assign) int y;
+@property (assign) WLConnection *connection;
+@property (assign) WLAsciiArtRender *asciiArtRender;
+
+- (void)drawSpecialSymbol:(unichar)ch
 				   forRow:(int)r 
 				   column:(int)c 
 			leftAttribute:(attribute)attr1 
@@ -115,17 +123,17 @@ static NSImage *gLeftImage;
 #pragma mark -
 #pragma mark Accessor
 - (WLConnection *)frontMostConnection {
-	return _connection;
+	return self.connection;
 }
 
 - (WLTerminal *)frontMostTerminal {
-	if (!_connection)
+	if (!self.connection)
 		return nil;
     return (WLTerminal *)[self frontMostConnection].terminal;
 }
 
 - (BOOL)isConnected {
-	if (!_connection)
+	if (!self.connection)
 		return NO;
 	return [self frontMostConnection].isConnected;
 }
@@ -651,9 +659,9 @@ static NSImage *gLeftImage;
 #pragma mark WLTabItemContentObserver protocol
 - (void)didChangeContent:(id)content {
 	if (!content)
-		_connection = nil;
+		self.connection = nil;
 	if ([content isKindOfClass:[WLConnection class]]) {
-		_connection = content;
+		self.connection = content;
 		[self refreshDisplay];
 	}
 }

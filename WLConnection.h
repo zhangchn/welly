@@ -18,8 +18,6 @@
 // modified by boost @ 9#
 // inhert from NSObjectController for PSMTabBarControl
 @interface WLConnection : NSObject <WLTabBarCellContentProvider> {
-    NSImage *_icon;
-    BOOL _processing;
     NSInteger _objectCount;
 
     BOOL _connected;
@@ -28,9 +26,6 @@
     
     WLTerminal *_terminal;
 	WLTerminalFeeder *_feeder;
-    NSObject <WLProtocol> *_protocol;
-    WLSite *_site;
-	
 	WLMessageDelegate *_messageDelegate;
 	NSInteger _messageCount;
 	

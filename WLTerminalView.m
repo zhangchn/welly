@@ -185,19 +185,19 @@ BOOL isEnglishNumberAlphabet(unsigned char c) {
 #pragma mark -
 #pragma mark safe_paste
 - (void)confirmPaste:(NSWindow *)sheet returnCode:(int)returnCode contextInfo:(void *)contextInfo {
-    if (returnCode == NSAlertDefaultReturn) {
+    if (returnCode == NSAlertFirstButtonReturn) {
 		[self performPaste];
     }
 }
 
 - (void)confirmPasteWrap:(NSWindow *)sheet returnCode:(int)returnCode contextInfo:(void *)contextInfo {
-    if (returnCode == NSAlertDefaultReturn) {
+    if (returnCode == NSAlertFirstButtonReturn) {
 		[self performPasteWrap];
     }
 }
 
 - (void)confirmPasteColor:(NSWindow *)sheet returnCode:(int)returnCode contextInfo:(void *)contextInfo {
-    if (returnCode == NSAlertDefaultReturn) {
+    if (returnCode == NSAlertFirstButtonReturn) {
 		[self performPasteColor];
     }
 }
@@ -399,16 +399,26 @@ BOOL isEnglishNumberAlphabet(unsigned char c) {
 }
 
 - (void)warnPasteWithSelector:(SEL)didEndSelector {
-	NSBeginAlertSheet(NSLocalizedString(@"Are you sure you want to paste?", @"Sheet Title"),
-					  NSLocalizedString(@"Confirm", @"Default Button"),
-					  NSLocalizedString(@"Cancel", @"Cancel Button"),
-					  nil,
-					  self.window,
-					  self,
-					  didEndSelector,
-					  nil,
-					  nil,
-					  NSLocalizedString(@"It seems that you are not in edit mode. Pasting may cause unpredictable behaviors. Are you sure you want to paste?", @"Sheet Message"));
+    NSAlert *alert = [[NSAlert alloc] init];
+    alert.messageText = NSLocalizedString(@"Are you sure you want to paste?", @"Sheet Title");
+    alert.informativeText = NSLocalizedString(@"It seems that you are not in edit mode. Pasting may cause unpredictable behaviors. Are you sure you want to paste?", @"Sheet Message");
+    [alert addButtonWithTitle:NSLocalizedString(@"Confirm", @"Default Button")];
+    [alert addButtonWithTitle:NSLocalizedString(@"Cancel", @"Cancel Button")];
+    // TODO:
+    WLTerminalView *weakSelf =  self;
+    [alert beginSheetModalForWindow:self.window completionHandler:^(NSModalResponse returnCode) {
+        [weakSelf performSelector:didEndSelector];
+    }];
+//	NSBeginAlertSheet(NSLocalizedString(@"Are you sure you want to paste?", @"Sheet Title"),
+//					  NSLocalizedString(@"Confirm", @"Default Button"),
+//					  NSLocalizedString(@"Cancel", @"Cancel Button"),
+//					  nil,
+//					  self.window,
+//					  self,
+//					  didEndSelector,
+//					  nil,
+//					  nil,
+//					  NSLocalizedString(@"It seems that you are not in edit mode. Pasting may cause unpredictable behaviors. Are you sure you want to paste?", @"Sheet Message"));
 }
 
 - (BOOL)shouldWarnPaste {
@@ -786,7 +796,6 @@ BOOL isEnglishNumberAlphabet(unsigned char c) {
 - (void)resetCursorRects {
 	[super resetCursorRects];
 	[self refreshMouseHotspot];
-	return;
 }
 
 // For full screen
@@ -800,8 +809,7 @@ BOOL isEnglishNumberAlphabet(unsigned char c) {
 	[_effectView resize];
 }
 
-#pragma mark -
-#pragma mark Accessor
+#pragma mark - Accessor
 - (NSString *)selectedPlainString {
     if (_selectionLength == 0) return nil;
     

@@ -10,11 +10,7 @@
 #import "CommonType.h"
 
 @class WLConnection;
-@interface WLMessageDelegate : NSObject {
-	NSMutableString *_unreadMessage;
-	int _unreadCount;
-}
-
+@interface WLMessageDelegate : NSObject
 @property (readonly) int unreadCount;
 
 - (instancetype)initWithConnection:(WLConnection *)connection;

@@ -51,8 +51,9 @@ SYNTHESIZE_SINGLETON_FOR_CLASS(WLContextualMenuManager);
 					   s, nil];
 	NSString *url = [NSString stringWithFormat:
 					 [dictionary valueForKey:WLContextualMenuItemURLFormatAttributeName], 
-					 [s stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding], nil];
-	NSMenuItem *item = [[NSMenuItem alloc] initWithTitle:title 
+                     [s stringByAddingPercentEncodingWithAllowedCharacters:[NSCharacterSet URLQueryAllowedCharacterSet]],
+                     nil];
+	NSMenuItem *item = [[NSMenuItem alloc] initWithTitle:title
 												  action:@selector(openURL:) 
 										   keyEquivalent:@""];
 	item.toolTip = url;
@@ -155,7 +156,9 @@ SYNTHESIZE_SINGLETON_FOR_CLASS(WLContextualMenuManager);
 		u = [sender title];
 	}
 	if (![u hasPrefix:@"http://"]) {
-		u = [@"http://" stringByAppendingString:[u stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding]];
+//		u = [@"http://" stringByAppendingString:[u stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding]];
+        u = [@"http://" stringByAppendingString:[u stringByAddingPercentEncodingWithAllowedCharacters:[NSCharacterSet URLPathAllowedCharacterSet]]];
+
 	}
     [[NSWorkspace sharedWorkspace] openURL:[NSURL URLWithString:u]];
 }

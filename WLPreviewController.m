@@ -19,12 +19,16 @@ NSString *const WLGIFToHTMLFormat = @"<html><body bgcolor='Black'><center><img s
     HMBlkProgressIndicator *_indicator;
     NSPanel         *_window;
     long long _contentLength, _transferredLength;
-    NSString *_filename, *_path;
 //    NSURLDownload *_download;
 }
-@property(readwrite, assign) NSURLDownload *download;
+@property (readwrite, assign) NSURLDownload *download;
+@property (copy) NSString *filename;
+@property (copy) NSString *path;
+@property (assign) BOOL canView;
 - (void)showLoadingWindow;
 @end
+
+static void formatProps(NSMutableString *s, id *fmt, id *val);
 
 @implementation WLPreviewController
 
@@ -95,7 +99,7 @@ static BOOL sHasCacheDir = NO;
 #pragma mark WLDownloadDelegate
 
 @implementation WLDownloadDelegate
-@synthesize download = _download;
+//@synthesize download = _download;
 
 static NSString * stringFromFileSize(long long size) {
     NSString *fmt;
@@ -152,9 +156,9 @@ static NSString * stringFromFileSize(long long size) {
 }
 
 - (void)showLoadingWindow {
-    unsigned int style = NSTitledWindowMask
-        | NSMiniaturizableWindowMask | NSClosableWindowMask
-        | NSDocModalWindowMask;
+    unsigned int style = NSWindowStyleMaskTitled
+        | NSWindowStyleMaskMiniaturizable | NSWindowStyleMaskClosable
+        | NSWindowStyleMaskDocModalWindow;
 
     // init
     _window = [[NSPanel alloc] initWithContentRect:NSMakeRect(0, 0, 400, 30)

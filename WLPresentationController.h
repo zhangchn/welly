@@ -7,9 +7,10 @@
 //
 
 #import <Cocoa/Cocoa.h>
+#import <QuartzCore/QuartzCore.h>
 @protocol WLPresentationModeProcessor;
 
-@interface WLPresentationController : NSObject
+@interface WLPresentationController : NSObject<CAAnimationDelegate>
 @property (readonly) BOOL isInPresentationMode;
 
 // Init functions

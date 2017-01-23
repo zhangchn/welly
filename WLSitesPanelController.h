@@ -19,27 +19,7 @@
 @end
 
 
-@interface WLSitesPanelController : NSObject {
-	/* Sites Array */
-    NSMutableArray *_sites;
-    IBOutlet NSArrayController *_sitesController;
-	
-	/* Site Panel Outlets */
-    IBOutlet NSPanel *_sitesPanel;
-    IBOutlet NSTableView *_tableView;
-    IBOutlet NSTextField *_siteNameField;
-    IBOutlet NSTextField *_siteAddressField;
-
-    IBOutlet NSPopUpButton *_proxyTypeButton;
-    IBOutlet NSTextField *_proxyAddressField;
-	
-    /* Password Window Outlets */
-    IBOutlet NSPanel *_passwordPanel;
-    IBOutlet NSSecureTextField *_passwordField;
-	
-	/* Observers */
-	NSMutableArray *_sitesObservers;
-}
+@interface WLSitesPanelController : NSObject
 @property (readonly) NSArray *sites;
 
 /* Accessors */
