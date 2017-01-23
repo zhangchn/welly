@@ -30,8 +30,8 @@
     NSAssert([_tabBarControl delegate] == self, @"set in .nib");
     //show a new-tab button
     [_tabBarControl setShowAddTabButton:YES];
-    [[_tabBarControl addTabButton] setTarget:self];
-    [[_tabBarControl addTabButton] setAction:@selector(newTab:)];
+    [_tabBarControl addTabButton].target = self;
+    [_tabBarControl addTabButton].action = @selector(newTab:);
     //_tabView = (WLTabView *)[_tabBarControl tabView];
 	
     // open the portal

@@ -489,13 +489,13 @@ static unsigned short gEmptyAttr;
 						[_csArg push_back:-1];
 						_csTemp = 0;
 						[_csBuf clear];
-					}  else if (![_csBuf empty]) {
+					}  else if (!_csBuf.empty) {
 						[_csArg push_back:_csTemp];
 						_csTemp = 0;
 						[_csBuf clear];
 					}
 				} else if (c == ASC_BS) { // Backspace eats previous parameter.
-					if (![_csBuf empty]) {
+					if (!_csBuf.empty) {
 						[_csArg pop_front];
 					}
 				} else if (c == ASC_VT) { // Virtical Tabulation
@@ -515,7 +515,7 @@ static unsigned short gEmptyAttr;
 				} else if (c == ASC_CR) { // CR (Carriage Return)
 					_cursorX = 0;
 				} else {
-					if (![_csBuf empty]) {
+					if (!_csBuf.empty) {
 						[_csArg push_back:_csTemp];
 						_csTemp = 0;
 						[_csBuf clear];
@@ -525,8 +525,8 @@ static unsigned short gEmptyAttr;
 						// just for code alignment...
 					} else if (c == CSI_ICH) {
 						int p;
-						if ([_csArg size] > 0) {
-							p = [_csArg front];
+						if (_csArg.size > 0) {
+							p = _csArg.front;
 							if (p < 1)
 								p = 1;
 						} else {
@@ -538,8 +538,8 @@ static unsigned short gEmptyAttr;
 						}
 						[self clearRow:_cursorY fromStart:_cursorX toEnd:_cursorX+p-1];
 					} else if (c == CSI_CUU) {		// Cursor Up
-						if ([_csArg size] > 0){
-							int p = [_csArg front];
+						if (_csArg.size > 0){
+							int p = _csArg.front;
 							if (p < 1) p = 1;
 								_cursorY -= p;
 						} else
@@ -551,8 +551,8 @@ static unsigned short gEmptyAttr;
 							_cursorY = 0;
 						}
 					} else if (c == CSI_CUD) {
-						if ([_csArg size] > 0) {
-							int p = [_csArg front];
+						if (_csArg.size > 0) {
+							int p = _csArg.front;
 							if (p < 1) p = 1;
 							_cursorY += p;
 						} else
@@ -563,24 +563,24 @@ static unsigned short gEmptyAttr;
 							_cursorY = _row - 1;
 						}
 					} else if (c == CSI_CUF) {
-						if ([_csArg size] > 0) {
-							int p = [_csArg front];
+						if (_csArg.size > 0) {
+							int p = _csArg.front;
 							if (p < 1) p = 1;
 							_cursorX += p;
 						} else
 							_cursorX++;
 						if (_cursorX >= _column) _cursorX = _column - 1;
 					} else if (c == CSI_CUB) {
-						if ([_csArg size] > 0) {
-							int p = [_csArg front];
+						if (_csArg.size > 0) {
+							int p = _csArg.front;
 							if (p < 1) p = 1;
 							_cursorX -= p;
 						} else
 							_cursorX--;
 						if (_cursorX < 0) _cursorX = 0;
 					} else if (c == CSI_CHA) { // move to Pn position of current line
-						if ([_csArg size] > 0) {
-							int p = [_csArg front];
+						if (_csArg.size > 0) {
+							int p = _csArg.front;
 							if (p < 1) p = 1;
 							CURSOR_MOVETO(p - 1, _cursorY);
 						} else {
@@ -590,19 +590,19 @@ static unsigned short gEmptyAttr;
 						/*  ^[H			: go to row 1, column 1
 						 ^[3H		: go to row 3, column 1
 						 ^[3;4H		: go to row 3, column 4 */
-						if ([_csArg size] == 0) {
+						if (_csArg.size == 0) {
 							_cursorX = 0, _cursorY = 0;
-						} else if ([_csArg size] == 1) {
-							int p = [_csArg front];
+						} else if (_csArg.size == 1) {
+							int p = _csArg.front;
 							if (p < 1) p = 1;
 							if (_modeOriginRelative && _scrollBeginRow > 0) {
 								p += _scrollBeginRow;
 								if (p > _scrollEndRow) p = _scrollEndRow + 1;
 							}
 							CURSOR_MOVETO(0, p - 1);
-						} else if ([_csArg size] > 1) {
-							int p = [_csArg front]; [_csArg pop_front];
-							int q = [_csArg front];
+						} else if (_csArg.size > 1) {
+							int p = _csArg.front; [_csArg pop_front];
+							int q = _csArg.front;
 							if (p < 1) p = 1;
 							if (q < 1) q = 1;
 							if (_modeOriginRelative && _scrollBeginRow > 0) {
@@ -616,7 +616,7 @@ static unsigned short gEmptyAttr;
 						 ^[1J		: clear from start to cursor position
 						 ^[2J		: clear all */
 						int j;
-						if ([_csArg size] == 0 || [_csArg front] == 0) {
+						if (_csArg.size == 0 || _csArg.front == 0) {
 							// mjhsieh is not comfortable with putting _csArg lookup with
 							// [_csArg size]==0
 							[self clearRow:_cursorY 
@@ -624,13 +624,13 @@ static unsigned short gEmptyAttr;
 									 toEnd:_column - 1];
 							for (j = _cursorY + 1; j < _row; j++)
 								[self clearRow:j];
-						} else if ([_csArg size] > 0 && [_csArg front] == 1) {
+						} else if (_csArg.size > 0 && _csArg.front == 1) {
 							[self clearRow:_cursorY 
 								 fromStart:0 
 									 toEnd:_cursorX];
 							for (j = 0; j < _cursorY; j++)
 								[self clearRow:j];
-						} else if ([_csArg size] > 0 && [_csArg front] == 2) {
+						} else if (_csArg.size > 0 && _csArg.front == 2) {
 							[self clearAll];
 						}
 					} else if (c == CSI_EL ) { // Erase Line (cursor does not move)
@@ -639,23 +639,23 @@ static unsigned short gEmptyAttr;
 						 ^[1K		: clear from start of line to cursor position
 						 ^[2K		: clear whole line 
 						 */
-						if ([_csArg size] == 0 || [_csArg front] == 0) {
+						if (_csArg.size == 0 || _csArg.front == 0) {
 							[self clearRow:_cursorY 
 								 fromStart:_cursorX 
 									 toEnd:_column - 1];
-						} else if ([_csArg size] > 0 && [_csArg front] == 1) {
+						} else if (_csArg.size > 0 && _csArg.front == 1) {
 							[self clearRow:_cursorY 
 								 fromStart:0 
 									 toEnd:_cursorX];
-						} else if ([_csArg size] > 0 && [_csArg front] == 2) {
+						} else if (_csArg.size > 0 && _csArg.front == 2) {
 							[self clearRow:_cursorY];
 						}
 					}else if (c == CSI_IL ) { // Insert Line
 						int lineNumber = 0;
-						if ([_csArg size] == 0) 
+						if (_csArg.size == 0) 
 							lineNumber = 1;
-						else if ([_csArg size] > 0)
-							lineNumber = [_csArg front];
+						else if (_csArg.size > 0)
+							lineNumber = _csArg.front;
 						if (lineNumber < 1) lineNumber = 1; //mjhsieh is paranoid
 						
 						int j;
@@ -671,10 +671,10 @@ static unsigned short gEmptyAttr;
 							[_terminal setDirtyForRow:j];
 					} else if (c == CSI_DL ) { // Delete Line
 						int lineNumber = 0;
-						if ([_csArg size] == 0) 
+						if (_csArg.size == 0) 
 							lineNumber = 1;
-						else if ([_csArg size] > 0)
-							lineNumber = [_csArg front];
+						else if (_csArg.size > 0)
+							lineNumber = _csArg.front;
 						if (lineNumber < 1) lineNumber = 1; //mjhsieh is paranoid
 						
 						int j;
@@ -690,8 +690,8 @@ static unsigned short gEmptyAttr;
 							[_terminal setDirtyForRow:j];
 					} else if (c == CSI_DCH) { // Delete characters at the current cursor position.
 						int p = 1;
-						if ([_csArg size] == 1) {
-							p = [_csArg front];
+						if (_csArg.size == 1) {
+							p = _csArg.front;
 						}
 						if (p < 1) p = 1;
 						int j;
@@ -707,15 +707,15 @@ static unsigned short gEmptyAttr;
 						}
 					} else if (c == CSI_HPA) { // goto to absolute character position
 						int p = 0;
-						if ([_csArg size] > 0) {
-							p = [_csArg front]-1;
+						if (_csArg.size > 0) {
+							p = _csArg.front-1;
 							if (p < 0) p = 0;
 						}
 						CURSOR_MOVETO(p,_cursorY);
 					} else if (c == CSI_HPR) { // goto to the next position of the line
 						int p = 1;
-						if ([_csArg size] > 0) {
-							p = [_csArg front];
+						if (_csArg.size > 0) {
+							p = _csArg.front;
 							if (p < 1) p = 1;
 						}
 						CURSOR_MOVETO(_cursorX+p,_cursorY);					
@@ -733,29 +733,29 @@ static unsigned short gEmptyAttr;
 							cmd[cmdLength++] = 0x3F; cmd[cmdLength++] = '6';
 							cmd[cmdLength++] = 'c';
 						}
-						if ([_csArg empty]) {
+						if (_csArg.empty) {
 							[connection sendBytes:cmd length:cmdLength];
-						} else if ([_csArg size] == 1 && [_csArg front] == 0) {
+						} else if (_csArg.size == 1 && _csArg.front == 0) {
 							[connection sendBytes:cmd length:cmdLength];
 						}
 					} else if (c == CSI_VPA) { // move to Pn line, col remaind the same
 						int p = 0;
-						if ([_csArg size] > 0) {
-							p = [_csArg front]-1;
+						if (_csArg.size > 0) {
+							p = _csArg.front-1;
 							if (p < 0) p = 0;
 						}
 						CURSOR_MOVETO(_cursorX,p);
 					} else if (c == CSI_VPR) { // move to Pn Line in forward direction
 						int p = 1;
-						if ([_csArg size] > 0) {
-							p = [_csArg front];
+						if (_csArg.size > 0) {
+							p = _csArg.front;
 							if (p < 1) p = 1;
 						}
 						CURSOR_MOVETO(_cursorX,_cursorY+p);
 					} else if (c == CSI_TBC) { // Clear a tab at the current column
 						int p = 1;
-						if ([_csArg size] == 1){
-							p = [_csArg front];
+						if (_csArg.size == 1){
+							p = _csArg.front;
 						}
 						if (p == 3) {
 							NSLog(@"Ignoring request to clear all horizontal tab stops.");
@@ -763,12 +763,12 @@ static unsigned short gEmptyAttr;
 							NSLog(@"Ignoring request to clear one horizontal tab stop.");
 					} else if (c == CSI_SM ) {  // set mode
 						int doClear = 0;
-						while (![_csArg empty]) {
-							int p = [_csArg front];
+						while (!_csArg.empty) {
+							int p = _csArg.front;
 							if (p == -1) {
 								[_csArg pop_front];
-								if ([_csArg size] == 1) {
-									p = [_csArg front];
+								if (_csArg.size == 1) {
+									p = _csArg.front;
 									if (p == 3) { // Set number of columns to 132
 										NSLog(@"132-column mode is not supported.");
 										doClear = 1;
@@ -815,26 +815,26 @@ static unsigned short gEmptyAttr;
 						}
 					} else if (c == CSI_HPB) { // move to Pn Location in backward direction, same raw
 						int p = 1;
-						if ([_csArg size] > 0) {
-							p = [_csArg front];
+						if (_csArg.size > 0) {
+							p = _csArg.front;
 							if (p < 1) p = 1;
 						}
 						CURSOR_MOVETO(_cursorX-p,_cursorY);										
 					} else if (c == CSI_VPB) { // move to Pn Line in backward direction
 						int p = 1;
-						if ([_csArg size] > 0) {
-							p = [_csArg front];
+						if (_csArg.size > 0) {
+							p = _csArg.front;
 							if (p < 1) p = 1;
 						}
 						CURSOR_MOVETO(_cursorX,_cursorY-p);
 					} else if (c == CSI_RM ) { // reset mode
 						int doClear = 0;
-						while (![_csArg empty]) {
-							int p = [_csArg front];
+						while (!_csArg.empty) {
+							int p = _csArg.front;
 							if (p == -1) {
 								[_csArg pop_front];
-								if ([_csArg size] == 1) {
-									p = [_csArg front];
+								if (_csArg.size == 1) {
+									p = _csArg.front;
 									if (p == 3) { // Set number of columns to 80
 										//NSLog(@"132-column mode (re)setting are not supported.");
 										doClear = 1;
@@ -871,7 +871,7 @@ static unsigned short gEmptyAttr;
 							_cursorX = 0, _cursorY = 0;
 						}
 					} else if (c == CSI_SGR) { // Character Attributes
-						if ([_csArg empty]) { // clear
+						if (_csArg.empty) { // clear
 							_fgColor = 7;
 							_bgColor = 9;
 							_bold = NO;
@@ -879,8 +879,8 @@ static unsigned short gEmptyAttr;
 							_blink = NO;
 							_reverse = NO ^ _modeScreenReverse;
 						} else {
-							while (![_csArg empty]) {
-								int p = [_csArg front];
+							while (!_csArg.empty) {
+								int p = _csArg.front;
 								[_csArg pop_front];
 								if (p  == 0) {
 									_fgColor = 7;
@@ -905,10 +905,10 @@ static unsigned short gEmptyAttr;
 							}
 						}
 					} else if (c == CSI_DSR) {
-						if ([_csArg size] != 1) {
+						if (_csArg.size != 1) {
 							//do nothing
 							//NSLog(@"%s %s",[_csArg front],(*_csArg)[1]);
-						} else if ([_csArg front] == 5) {
+						} else if (_csArg.front == 5) {
 							unsigned char cmd[4];
 							unsigned int cmdLength = 0;
 							// Report Device OK	<ESC>[0n
@@ -917,7 +917,7 @@ static unsigned short gEmptyAttr;
 							cmd[cmdLength++] = 0x30;
 							cmd[cmdLength++] = CSI_DSR;
 							[connection sendBytes:cmd length:cmdLength];
-						} else if ([_csArg front] == 6) {
+						} else if (_csArg.front == 6) {
 							unsigned char cmd[8];
 							unsigned int cmdLength = 0;
 							unsigned int mynum;
@@ -941,13 +941,13 @@ static unsigned short gEmptyAttr;
 							[connection sendBytes:cmd length:cmdLength];
 						}
 					} else if (c == CSI_DECSTBM) { // Assigning Scrolling Region
-						if ([_csArg size] == 0) {
+						if (_csArg.size == 0) {
 							_scrollBeginRow = 0;
 							_scrollEndRow = _row - 1;
-						} else if ([_csArg size] == 2) {
-							int s = [_csArg front];
+						} else if (_csArg.size == 2) {
+							int s = _csArg.front;
 							int e = [_csArg at:1];
-							if (s > e) s = [_csArg at:1], e = [_csArg front];
+							if (s > e) s = [_csArg at:1], e = _csArg.front;
 							_scrollBeginRow = s - 1;
 							_scrollEndRow = e - 1;
 							//NSLog(@"Assigning Scrolling Region between line %d and line %d",s,e);

@@ -107,7 +107,7 @@ NSString* L(NSString* key) {
 	char byte = ((const char*)data.bytes)[0];
 	if(byte == REDIRECT_MODE_1) {
 		// read offset of country
-		UInt32 countryOffset = [self readInt3];
+		UInt32 countryOffset = self.readInt3;
 		
 		// skip to country
 		[m_file seekToFileOffset:countryOffset];
@@ -116,7 +116,7 @@ NSString* L(NSString* key) {
 		data = [m_file readDataOfLength:1];
 		byte = ((const char*)data.bytes)[0];
 		if(byte == REDIRECT_MODE_2) {
-			country = [self readString:[self readInt3]];
+			country = [self readString:self.readInt3];
 			[m_file seekToFileOffset:(countryOffset + 4)];
 		} else
 			country = [self readString:countryOffset];
@@ -124,7 +124,7 @@ NSString* L(NSString* key) {
 		// read area
 		area = [self readArea:m_file.offsetInFile];
 	} else if(byte == REDIRECT_MODE_2) {
-		country = [self readString:[self readInt3]];
+		country = [self readString:self.readInt3];
 		area = [self readArea:(offset + 8)];
 	} else {
 		country = [self readString:(m_file.offsetInFile - 1)];
@@ -219,7 +219,7 @@ NSString* L(NSString* key) {
 
 - (UInt32)readInt3:(unsigned long long)offset {
 	[m_file seekToFileOffset:offset];
-	return [self readInt3];
+	return self.readInt3;
 }
 
 - (UInt32)readInt4 {
@@ -235,7 +235,7 @@ NSString* L(NSString* key) {
 
 - (UInt32)readInt4:(unsigned long long)offset {
 	[m_file seekToFileOffset:offset];
-	return [self readInt4];
+	return self.readInt4;
 }
 
 - (NSString*)readString:(unsigned long long)offset {

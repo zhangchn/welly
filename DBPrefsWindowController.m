@@ -411,7 +411,7 @@ static DBPrefsWindowController *_sharedPrefsWindowController = nil;
 		[contentSubview addSubview:newView];
 		self.window.initialFirstResponder = newView;
 
-		if (animate && [self crossFade])
+		if (animate && self.crossFade)
 			[self crossFadeView:oldView withView:newView];
 		else {
 			[oldView removeFromSuperviewWithoutNeedingDisplay];
@@ -434,7 +434,7 @@ static DBPrefsWindowController *_sharedPrefsWindowController = nil;
 {
 	[viewAnimation stopAnimation];
 	
-    if ([self shiftSlowsAnimation] && self.window.currentEvent.modifierFlags & NSEventModifierFlagShift)
+    if (self.shiftSlowsAnimation && self.window.currentEvent.modifierFlags & NSEventModifierFlagShift)
 		viewAnimation.duration = 1.25;
     else
 		viewAnimation.duration = 0.25;

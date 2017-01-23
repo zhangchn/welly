@@ -93,7 +93,7 @@ SYNTHESIZE_SINGLETON_FOR_CLASS(WLComposePanelController);
 	
 	// Propose a warning if necessary
 	if ([telnetView respondsToSelector:@selector(shouldWarnCompose)] &&
-		[telnetView shouldWarnCompose]) {
+		telnetView.shouldWarnCompose) {
         NSAlert *alert = [NSAlert alertWithMessageText:NSLocalizedString(@"Are you sure you want to open the composer?", @"Sheet Title")
                                          defaultButton:NSLocalizedString(@"Confirm", @"Default Button")
                                        alternateButton:NSLocalizedString(@"Cancel", @"Cancel Button")
@@ -139,7 +139,7 @@ SYNTHESIZE_SINGLETON_FOR_CLASS(WLComposePanelController);
 - (IBAction)commitCompose:(id)sender {
 	if ([_telnetView respondsToSelector:@selector(ansiColorKey)]) {
 		NSString *ansiCode = [WLAnsiColorOperationManager ansiCodeStringFromAttributedString:_composeText.textStorage 
-																			 forANSIColorKey:[_telnetView ansiColorKey]];
+																			 forANSIColorKey:_telnetView.ansiColorKey];
 		
 		[_telnetView insertText:ansiCode];
 	} else {

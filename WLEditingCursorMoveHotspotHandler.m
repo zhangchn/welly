@@ -66,7 +66,7 @@ static NSCursor *gMoveCursor = nil;
 	
 	unsigned char cmd[_maxRow * _maxColumn * 3];
 	unsigned int cmdLength = 0;
-	id ds = [_view frontMostTerminal];
+	id ds = _view.frontMostTerminal;
 	// FIXME: what actually matters is whether the user enables auto-break-line
 	// however, since it is enabled by default in smth (switchible by ctrl-p) and disabled in ptt,
 	// we temporarily use bbsType here...
@@ -92,10 +92,10 @@ static NSCursor *gMoveCursor = nil;
 			} 			
 		} 
 		
-		cell *currRow = [[_view frontMostTerminal] cellsOfRow:moveToRow];
+		cell *currRow = [_view.frontMostTerminal cellsOfRow:moveToRow];
 		if (home) {
 			for (int i = 0; i < moveToCol; i++) {
-				if (currRow[i].attr.f.doubleByte != 2 || [_view frontMostConnection].site.shouldDetectDoubleByte) {
+				if (currRow[i].attr.f.doubleByte != 2 || _view.frontMostConnection.site.shouldDetectDoubleByte) {
 					cmd[cmdLength++] = 0x1B;
 					cmd[cmdLength++] = 0x4F;
 					cmd[cmdLength++] = 0x43;                    
@@ -103,7 +103,7 @@ static NSCursor *gMoveCursor = nil;
 			}
 		} else if (moveToCol > [ds cursorColumn]) {
 			for (int i = [ds cursorColumn]; i < moveToCol; i++) {
-				if (currRow[i].attr.f.doubleByte != 2 || [_view frontMostConnection].site.shouldDetectDoubleByte) {
+				if (currRow[i].attr.f.doubleByte != 2 || _view.frontMostConnection.site.shouldDetectDoubleByte) {
 					cmd[cmdLength++] = 0x1B;
 					cmd[cmdLength++] = 0x4F;
 					cmd[cmdLength++] = 0x43;
@@ -111,7 +111,7 @@ static NSCursor *gMoveCursor = nil;
 			}
 		} else if (moveToCol < [ds cursorColumn]) {
 			for (int i = [ds cursorColumn]; i > moveToCol; i--) {
-				if (currRow[i].attr.f.doubleByte != 2 || [_view frontMostConnection].site.shouldDetectDoubleByte) {
+				if (currRow[i].attr.f.doubleByte != 2 || _view.frontMostConnection.site.shouldDetectDoubleByte) {
 					cmd[cmdLength++] = 0x1B;
 					cmd[cmdLength++] = 0x4F;
 					cmd[cmdLength++] = 0x44;
@@ -136,7 +136,7 @@ static NSCursor *gMoveCursor = nil;
 				}
 				if (i % _maxColumn <= lastEffectiveChar
 					&& ([ds attrAtRow:i / _maxColumn column:i % _maxColumn].f.doubleByte != 2
-						|| [_view frontMostConnection].site.shouldDetectDoubleByte)) {
+						|| _view.frontMostConnection.site.shouldDetectDoubleByte)) {
 					cmd[cmdLength++] = 0x1B;
 					cmd[cmdLength++] = 0x4F;
 					cmd[cmdLength++] = 0x43;                    
@@ -155,7 +155,7 @@ static NSCursor *gMoveCursor = nil;
 				}
 				if (i % _maxColumn <= lastEffectiveChar
 					&& ([ds attrAtRow:i / _maxColumn column:i % _maxColumn].f.doubleByte != 2
-						|| [_view frontMostConnection].site.shouldDetectDoubleByte)) {
+						|| _view.frontMostConnection.site.shouldDetectDoubleByte)) {
 					cmd[cmdLength++] = 0x1B;
 					cmd[cmdLength++] = 0x4F;
 					cmd[cmdLength++] = 0x44;                    
@@ -164,7 +164,7 @@ static NSCursor *gMoveCursor = nil;
 		}				
 	}
 	if (cmdLength > 0)
-		[[_view frontMostConnection] sendBytes:cmd length:cmdLength];
+		[_view.frontMostConnection sendBytes:cmd length:cmdLength];
 }
 
 - (void)mouseEntered:(NSEvent *)theEvent {
@@ -187,10 +187,10 @@ static NSCursor *gMoveCursor = nil;
 #pragma mark -
 #pragma mark Update State
 - (BOOL)shouldUpdate {
-	if (![_view shouldEnableMouse] || ![_view isConnected]) {
+	if (!_view.shouldEnableMouse || !_view.connected) {
 		return YES;
 	}
-	BBSState bbsState = [_view frontMostTerminal].bbsState;
+	BBSState bbsState = _view.frontMostTerminal.bbsState;
 	if (_manager.lastBBSState.state == bbsState.state)
 		return NO;
 	return YES;
@@ -198,10 +198,10 @@ static NSCursor *gMoveCursor = nil;
 
 - (void)update {
 	[self clear];
-	if (![_view shouldEnableMouse] || ![_view isConnected]) {
+	if (!_view.shouldEnableMouse || !_view.connected) {
 		return;
 	}
-	BBSState bbsState = [_view frontMostTerminal].bbsState;
+	BBSState bbsState = _view.frontMostTerminal.bbsState;
 	if (bbsState.state == BBSComposePost) {
 		[_trackingAreas addObject:[_manager addTrackingAreaWithRect:_view.frame
 														   userInfo:@{WLMouseHandlerUserInfoName: self} 

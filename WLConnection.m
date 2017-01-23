@@ -41,7 +41,7 @@
 		_feeder = [[WLTerminalFeeder alloc] initWithConnection:self];
 
         self.site = site;
-        if (![site isDummy]) {
+        if (!site.dummy) {
 			// WLPTY as the default protocol (a proxy)
 			WLPTY *protocol = [WLPTY new];
 			self.protocol = protocol;
@@ -65,7 +65,7 @@
 	if (_terminal != value) {
 		_terminal = value;
         _terminal.connection = self;
-		[_feeder setTerminal:_terminal];
+		_feeder.terminal = _terminal;
 	}
 }
 

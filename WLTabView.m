@@ -103,15 +103,15 @@
 }
 
 - (WLTerminal *)frontMostTerminal {
-	return [self frontMostConnection].terminal;
+	return self.frontMostConnection.terminal;
 }
 
 - (BOOL)isFrontMostTabPortal {
-	return [[self frontMostView] isKindOfClass:[WLCoverFlowPortal class]];
+	return [self.frontMostView isKindOfClass:[WLCoverFlowPortal class]];
 }
 
 - (BOOL)isSelectedTabEmpty {
-	return [self isFrontMostTabPortal] || ([self frontMostConnection] && ([self frontMostTerminal] == nil));
+	return [self isFrontMostTabPortal] || (self.frontMostConnection && (self.frontMostTerminal == nil));
 }
 
 #pragma mark -
@@ -144,7 +144,7 @@
 	// set the view
 	tabViewItem.view = _terminalView;
 	
-	if (![theConnection.site isDummy]) {
+	if (!(theConnection.site).dummy) {
 		// Create a new terminal for receiving connection's content, and forward to view
 		WLTerminal *terminal = [[WLTerminal alloc] init];
 		[terminal addObserver:_terminalView];
@@ -250,7 +250,7 @@
 	if (self.numberOfTabViewItems == 0 && [self.subviews containsObject:_portal]) {
 		return [self.window makeFirstResponder:_portal];
 	} else {
-		return [self.window makeFirstResponder:[self frontMostView]];
+		return [self.window makeFirstResponder:self.frontMostView];
 	}
 }
 

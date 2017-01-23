@@ -174,7 +174,7 @@ NSString *const WLMenuTitleOpenWithBrowser = @"Open With Browser";
 
 - (void)mouseEntered:(NSEvent *)theEvent {
 	NSDictionary *userInfo = theEvent.trackingArea.userInfo;
-	if([_view frontMostConnection].isConnected) {
+	if(_view.frontMostConnection.isConnected) {
 		_manager.activeTrackingAreaUserInfo = userInfo;
 		[[NSCursor pointingHandCursor] set];
 	}
@@ -266,12 +266,12 @@ NSString *const WLMenuTitleOpenWithBrowser = @"Open With Browser";
 
 - (NSPoint)moveNext {
 	_currentSelectedURLIndex = (_currentSelectedURLIndex + 1) % _currentURLList.count;
-	return [self currentSelectedURLPos];
+	return self.currentSelectedURLPos;
 }
 
 - (NSPoint)movePrev {
 	_currentSelectedURLIndex = (_currentSelectedURLIndex - 1 + _currentURLList.count) % _currentURLList.count;
-	return [self currentSelectedURLPos];
+	return self.currentSelectedURLPos;
 }
 
 - (BOOL)openCurrentURL:(NSEvent *)theEvent {
@@ -339,7 +339,7 @@ NSString *const WLMenuTitleOpenWithBrowser = @"Open With Browser";
 		int index = [urlInfo[WLRangeLocationUserInfoName] intValue];
 		int length = [urlInfo[WLRangeLengthUserInfoName] intValue];
 		
-		WLTerminal *ds = [_view frontMostTerminal];
+		WLTerminal *ds = _view.frontMostTerminal;
 		// Set all involved row to be dirty. Reduce the number of [ds setDirty] call.
 		while (length > 0) {
 			int row = index / _maxColumn;
@@ -363,11 +363,11 @@ NSString *const WLMenuTitleOpenWithBrowser = @"Open With Browser";
 
 - (void)update {
 	[self clear];
-	if (![_view isConnected]) {
+	if (!_view.connected) {
 		return;	
 	}
 	// Restore the url list pointer
 	_currentSelectedURLIndex = 0;
-	[_parser parse:[_view frontMostTerminal]];
+	[_parser parse:_view.frontMostTerminal];
 }
 @end
