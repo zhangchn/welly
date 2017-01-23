@@ -118,39 +118,72 @@ NSString *const FBCommandSequenceEnterExcerption = @"x";
 }
 
 - (void)updateButtonAreaForRow:(int)r {
-	const WLButtonDescription buttonsDefinition[] = {
-		/* BBSBrowseBoard */
-		{BBSBrowseBoard, @"发表文章[Ctrl-P]", 16, WLButtonNameComposePost, fbComposePost},
-		{BBSBrowseBoard, @"砍信[d]", 7, WLButtonNameDeletePost, fbDeletePost},
-		{BBSBrowseBoard, @"备忘录[TAB]", 11, WLButtonNameShowNote, fbShowNote},
-		{BBSBrowseBoard, @"求助[h]", 7, WLButtonNameShowHelp, fbShowHelp},
-		{BBSBrowseBoard, @"[一般模式]", 10, WLButtonNameNormalToDigest, fbNormalToDigest},
-		{BBSBrowseBoard, @"[文摘模式]", 10, WLButtonNameDigestToThread, fbDigestToThread},
-		{BBSBrowseBoard, @"[主题模式]", 10, WLButtonNameThreadToMark, fbThreadToMark},
-		{BBSBrowseBoard, @"[精华模式]", 10, WLButtonNameMarkToOrigin, fbMarkToOrigin},
-		{BBSBrowseBoard, @"[原作模式]", 10, WLButtonNameOriginToNormal, fbOriginToNormal},
-		{BBSBrowseBoard, @"[作者模式]", 10, WLButtonNameAuthorToNormal, FBCommandSequenceAuthorToNormal},
-		{BBSBrowseBoard, @"[您有信件]", 10, WLButtonNameJumpToMailList, FBCommandSequenceJumpToMailList},
-		{BBSBrowseBoard, @"阅读[→,r]", 10, WLButtonNameEnterExcerption, FBCommandSequenceEnterExcerption},
-		/* BBSBoardList */
-		{BBSBoardList, @"列出[y]", 7, WLButtonNameSwitchDisplayAllBoards, fbSwitchDisplayAllBoards},
-		{BBSBoardList, @"排序[S]", 7, WLButtonNameSwitchSortBoards, fbSwitchSortBoards},
-		{BBSBoardList, @"切换[c]", 7, WLButtonNameSwitchBoardsNumber, fbSwitchBoardsNumber},
-		{BBSBoardList, @"删除[d]", 7, WLButtonNameDeleteBoard, fbDeletePost},
-		{BBSBoardList, @"求助[h]", 7, WLButtonNameShowHelp, fbShowHelp},
-		{BBSBoardList, @"[您有信件]", 10, WLButtonNameJumpToMailList, FBCommandSequenceJumpToMailList},
-		/* BBSUserInfo */
-		{BBSUserInfo, @"寄信[m]", 7, WLButtonNameMailToUser, FBCommandSequenceMailToUser},
-		{BBSUserInfo, @"聊天[t]", 7, WLButtonNameChatWithUser, FBCommandSequenceChatWithUser},
-		{BBSUserInfo, @"送讯息[s]", 9, WLButtonNameSendMessageToUser, FBCommandSequenceSendMessageToUser},
-		{BBSUserInfo, @"加,减朋", 7, WLButtonNameAddUserToFriendList, FBCommandSequenceAddUserToFriendList},
-		{BBSUserInfo, @"友[o,d]", 7, WLButtonNameRemoveUserFromFriendList, FBCommandSequenceRemoveUserFromFriendList},
-		{BBSUserInfo, @"切换模式 [f]", 12, WLButtonNameSwitchUserListMode, FBCommandSequenceSwitchUserListMode},
-		{BBSUserInfo, @"求救[h]", 7, WLButtonNameShowHelp, fbShowHelp},
-		{BBSUserInfo, @"查看说明档[l]", 13, WLButtonNameShowUserDescription, FBCommandSequenceShowUserDescription},
-		{BBSUserInfo, @"选择使用", 8, WLButtonNamePreviousUser, FBCommandSequencePreviousUser},
-		{BBSUserInfo, @"者[↑,↓]", 9, WLButtonNameNextUser, FBCommandSequenceNextUser},
-	};
+    NSArray *buttonsDefinition =
+  @[
+    @[@(BBSBrowseBoard), @"发表文章[Ctrl-P]", @16, WLButtonNameComposePost, fbComposePost],
+    @[@(BBSBrowseBoard), @"砍信[d]", @7, WLButtonNameDeletePost, fbDeletePost],
+    @[@(BBSBrowseBoard), @"备忘录[TAB]", @11, WLButtonNameShowNote, fbShowNote],
+    @[@(BBSBrowseBoard),@"求助[h]", @7, WLButtonNameShowHelp, fbShowHelp],
+    @[@(BBSBrowseBoard),@"[一般模式]", @10, WLButtonNameNormalToDigest, fbNormalToDigest],
+    @[@(BBSBrowseBoard),@"[文摘模式]", @10, WLButtonNameDigestToThread, fbDigestToThread],
+    @[@(BBSBrowseBoard),@"[主题模式]", @10, WLButtonNameThreadToMark, fbThreadToMark],
+    @[@(BBSBrowseBoard),@"[精华模式]", @10, WLButtonNameMarkToOrigin, fbMarkToOrigin],
+    @[@(BBSBrowseBoard),@"[原作模式]", @10, WLButtonNameOriginToNormal, fbOriginToNormal],
+    @[@(BBSBrowseBoard),@"[作者模式]", @10, WLButtonNameAuthorToNormal, FBCommandSequenceAuthorToNormal],
+    @[@(BBSBrowseBoard),@"[您有信件]", @10, WLButtonNameJumpToMailList, FBCommandSequenceJumpToMailList],
+    @[@(BBSBrowseBoard),@"阅读[→,r]", @10, WLButtonNameEnterExcerption, FBCommandSequenceEnterExcerption],
+    @[@(BBSBoardList),@"列出[y]", @7, WLButtonNameSwitchDisplayAllBoards, fbSwitchDisplayAllBoards],
+    @[@(BBSBoardList),@"排序[S]", @7, WLButtonNameSwitchSortBoards, fbSwitchSortBoards],
+    @[@(BBSBoardList), @"切换[c]", @7, WLButtonNameSwitchBoardsNumber, fbSwitchBoardsNumber],
+    @[@(BBSBoardList),@"删除[d]", @7, WLButtonNameDeleteBoard, fbDeletePost],
+    @[@(BBSBoardList),@"求助[h]", @7, WLButtonNameShowHelp, fbShowHelp],
+    @[@(BBSBoardList),@"[您有信件]", @10, WLButtonNameJumpToMailList, FBCommandSequenceJumpToMailList],
+    @[@(BBSUserInfo), @"寄信[m]", @7, WLButtonNameMailToUser, FBCommandSequenceMailToUser],
+    @[@(BBSUserInfo), @"聊天[t]", @7, WLButtonNameChatWithUser, FBCommandSequenceChatWithUser],
+    @[@(BBSUserInfo), @"送讯息[s]", @9, WLButtonNameSendMessageToUser, FBCommandSequenceSendMessageToUser],
+    @[@(BBSUserInfo),@"加,减朋", @7, WLButtonNameAddUserToFriendList, FBCommandSequenceAddUserToFriendList],
+    @[@(BBSUserInfo),@"友[o,d]", @7, WLButtonNameRemoveUserFromFriendList, FBCommandSequenceRemoveUserFromFriendList],
+    @[@(BBSUserInfo),@"切换模式 [f]", @12, WLButtonNameSwitchUserListMode, FBCommandSequenceSwitchUserListMode],
+    @[@(BBSUserInfo), @"求救[h]", @7, WLButtonNameShowHelp, fbShowHelp],
+    @[@(BBSUserInfo), @"查看说明档[l]", @13, WLButtonNameShowUserDescription, FBCommandSequenceShowUserDescription],
+    @[@(BBSUserInfo), @"选择使用", @8, WLButtonNamePreviousUser, FBCommandSequencePreviousUser],
+    @[@(BBSUserInfo), @"者[↑,↓]", @9, WLButtonNameNextUser, FBCommandSequenceNextUser],
+    
+    ];
+    
+//	const WLButtonDescription buttonsDefinition[] = {
+//		/* BBSBrowseBoard */
+//		{BBSBrowseBoard, @"发表文章[Ctrl-P]", 16, WLButtonNameComposePost, fbComposePost},
+//		{BBSBrowseBoard, @"砍信[d]", 7, WLButtonNameDeletePost, fbDeletePost},
+//		{BBSBrowseBoard, @"备忘录[TAB]", 11, WLButtonNameShowNote, fbShowNote},
+//		{BBSBrowseBoard, @"求助[h]", 7, WLButtonNameShowHelp, fbShowHelp},
+//		{BBSBrowseBoard, @"[一般模式]", 10, WLButtonNameNormalToDigest, fbNormalToDigest},
+//		{BBSBrowseBoard, @"[文摘模式]", 10, WLButtonNameDigestToThread, fbDigestToThread},
+//		{BBSBrowseBoard, @"[主题模式]", 10, WLButtonNameThreadToMark, fbThreadToMark},
+//		{BBSBrowseBoard, @"[精华模式]", 10, WLButtonNameMarkToOrigin, fbMarkToOrigin},
+//		{BBSBrowseBoard, @"[原作模式]", 10, WLButtonNameOriginToNormal, fbOriginToNormal},
+//		{BBSBrowseBoard, @"[作者模式]", 10, WLButtonNameAuthorToNormal, FBCommandSequenceAuthorToNormal},
+//		{BBSBrowseBoard, @"[您有信件]", 10, WLButtonNameJumpToMailList, FBCommandSequenceJumpToMailList},
+//		{BBSBrowseBoard, @"阅读[→,r]", 10, WLButtonNameEnterExcerption, FBCommandSequenceEnterExcerption},
+//		/* BBSBoardList */
+//		{BBSBoardList, @"列出[y]", 7, WLButtonNameSwitchDisplayAllBoards, fbSwitchDisplayAllBoards},
+//		{BBSBoardList, @"排序[S]", 7, WLButtonNameSwitchSortBoards, fbSwitchSortBoards},
+//		{BBSBoardList, @"切换[c]", 7, WLButtonNameSwitchBoardsNumber, fbSwitchBoardsNumber},
+//		{BBSBoardList, @"删除[d]", 7, WLButtonNameDeleteBoard, fbDeletePost},
+//		{BBSBoardList, @"求助[h]", 7, WLButtonNameShowHelp, fbShowHelp},
+//		{BBSBoardList, @"[您有信件]", 10, WLButtonNameJumpToMailList, FBCommandSequenceJumpToMailList},
+//		/* BBSUserInfo */
+//		{BBSUserInfo, @"寄信[m]", 7, WLButtonNameMailToUser, FBCommandSequenceMailToUser},
+//		{BBSUserInfo, @"聊天[t]", 7, WLButtonNameChatWithUser, FBCommandSequenceChatWithUser},
+//		{BBSUserInfo, @"送讯息[s]", 9, WLButtonNameSendMessageToUser, FBCommandSequenceSendMessageToUser},
+//		{BBSUserInfo, @"加,减朋", 7, WLButtonNameAddUserToFriendList, FBCommandSequenceAddUserToFriendList},
+//		{BBSUserInfo, @"友[o,d]", 7, WLButtonNameRemoveUserFromFriendList, FBCommandSequenceRemoveUserFromFriendList},
+//		{BBSUserInfo, @"切换模式 [f]", 12, WLButtonNameSwitchUserListMode, FBCommandSequenceSwitchUserListMode},
+//		{BBSUserInfo, @"求救[h]", 7, WLButtonNameShowHelp, fbShowHelp},
+//		{BBSUserInfo, @"查看说明档[l]", 13, WLButtonNameShowUserDescription, FBCommandSequenceShowUserDescription},
+//		{BBSUserInfo, @"选择使用", 8, WLButtonNamePreviousUser, FBCommandSequencePreviousUser},
+//		{BBSUserInfo, @"者[↑,↓]", 9, WLButtonNameNextUser, FBCommandSequenceNextUser},
+//	};
 	
 	if (r > 3 && r < _maxRow-1)
 		return;
@@ -158,24 +191,41 @@ NSString *const FBCommandSequenceEnterExcerption = @"x";
 	WLTerminal *ds = [_view frontMostTerminal];
 	BBSState bbsState = ds.bbsState;
 	
-	for (int x = 0; x < _maxColumn; ++x) {
-		for (int i = 0; i < sizeof(buttonsDefinition) / sizeof(WLButtonDescription); ++i) {
-			WLButtonDescription buttonDescription  = buttonsDefinition[i];
-			if (bbsState.state != buttonDescription.state)
-				continue;
-			int length = buttonDescription.signatureLengthOfBytes;
-			if (x < _maxColumn - length) {
-				if ([[ds stringAtIndex:(x + r * _maxColumn) length:length] isEqualToString:buttonDescription.signature]) {
-					[self addButtonArea:buttonDescription.buttonName 
-						commandSequence:buttonDescription.commandSequence 
-								  atRow:r 
-								 column:x 
-								 length:length];
-					x += length - 1;
-					break;
-				}
-			}
-		}
+	for (__block int x = 0; x < _maxColumn; ++x) {
+//		for (int i = 0; i < sizeof(buttonsDefinition) / sizeof(WLButtonDescription); ++i) {
+        [buttonsDefinition enumerateObjectsUsingBlock:^(NSArray * _Nonnull buttonDescription, NSUInteger idx, BOOL * _Nonnull stop) {
+            if (bbsState.state != [buttonDescription[0] intValue])
+                return;
+            int length = [buttonDescription[3] intValue];
+            if (x < _maxColumn - length) {
+                if ([[ds stringAtIndex:(x + r * _maxColumn) length:length] isEqualToString:buttonDescription[1]]) {
+                    [self addButtonArea:buttonDescription[3]
+                        commandSequence:buttonDescription[4]
+                                  atRow:r
+                                 column:x 
+                                 length:length];
+                    x += length - 1;
+                    *stop = true;
+                    return;
+                }
+            }
+        }];
+//			WLButtonDescription buttonDescription  = buttonsDefinition[i];
+//			if (bbsState.state != buttonDescription.state)
+//				continue;
+//			int length = buttonDescription.signatureLengthOfBytes;
+//			if (x < _maxColumn - length) {
+//				if ([[ds stringAtIndex:(x + r * _maxColumn) length:length] isEqualToString:buttonDescription.signature]) {
+//					[self addButtonArea:buttonDescription.buttonName 
+//						commandSequence:buttonDescription.commandSequence 
+//								  atRow:r 
+//								 column:x 
+//								 length:length];
+//					x += length - 1;
+//					break;
+//				}
+//			}
+//		}
 	}
 }
 

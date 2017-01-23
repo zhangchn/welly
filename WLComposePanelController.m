@@ -21,12 +21,12 @@
 
 @interface WLComposePanelController()
 
-@property (assign) NSView <NSTextInput> *telnetView;
-@property IBOutlet NSColorWell *bgColorWell;
+@property (weak) NSView <NSTextInput> *telnetView;
+@property (weak) IBOutlet NSColorWell *bgColorWell;
 
 /* composeWindow */
-@property IBOutlet NSTextView *composeText;
-@property IBOutlet NSPanel *composePanel;
+@property (weak) IBOutlet NSTextView *composeText;
+@property (weak) IBOutlet NSPanel *composePanel;
 
 @property NSShadow *shadowForBlink;
 
@@ -76,7 +76,6 @@ SYNTHESIZE_SINGLETON_FOR_CLASS(WLComposePanelController);
     [colorList insertColor:[config colorCyanHilite] key:NSLocalizedString(@"CyanHilite", @"Color") atIndex:14];
     [colorList insertColor:[config colorWhiteHilite] key:NSLocalizedString(@"WhiteHilite", @"Color") atIndex:15];
     [colorPanel attachColorList:colorList];
-    [colorList release];
 	
 	_shadowForBlink = [[NSShadow alloc] init];
 	_shadowForBlink.shadowOffset = NSMakeSize(3.0, -3.0);

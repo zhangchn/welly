@@ -325,16 +325,12 @@ static NSBezierPath *gSymbolLowerLinePath;
 
 - (void)rebuildDualLinePath {
 	for (int i = 0; i < 29; ++i) {
-		if (gSymbolDualLinePath[i])
-			[gSymbolDualLinePath[i] release];
 		gSymbolDualLinePath[i] = nil;
 	}
 }
 
 - (void)rebuildArcPath {
 	for (int i = 0; i < 4; ++i) {
-		if (gSymbolArcPath[i])
-			[gSymbolArcPath[i] release];
 		gSymbolArcPath[i] = nil;
 	}
 }
@@ -353,8 +349,6 @@ static NSBezierPath *gSymbolLowerLinePath;
 		if (!gSymbolSingleLinePathComponent[i][0])
 			gSymbolSingleLinePathComponent[i][0] = [[NSBezierPath alloc] init];
 		for (int j = 1; j < 3; ++j) {
-			if (gSymbolSingleLinePathComponent[i][j])
-				[gSymbolSingleLinePathComponent[i][j] release];
 			gSymbolSingleLinePathComponent[i][j] = [[NSBezierPath alloc] init];
 			gSymbolSingleLinePathComponent[i][j].lineWidth = (j-1)+2.0;
 			gSymbolSingleLinePathComponent[i][j].lineCapStyle = NSSquareLineCapStyle;
@@ -366,9 +360,6 @@ static NSBezierPath *gSymbolLowerLinePath;
 
 - (void)rebuildStraightLinePath {
 	for (int i = 0; i < 4; ++i) {
-		if (gSymbolStraightLinePath[i]) {
-			[gSymbolStraightLinePath[i] release];
-		}
 		gSymbolStraightLinePath[i] = [[NSBezierPath alloc] init];
 	}
 	
@@ -425,16 +416,12 @@ static NSBezierPath *gSymbolLowerLinePath;
     
     int base = 0;
     for (base = 0; base < 4; base++) {
-        if (gSymbolTrianglePathL[base])
-            [gSymbolTrianglePathL[base] release];
         gSymbolTrianglePathL[base] = [[NSBezierPath alloc] init];
         [gSymbolTrianglePathL[base] moveToPoint:NSMakePoint(_fontWidth, _fontHeight / 2)];
         for (i = 0; i < 3 && triangleIndexL[base][i] >= 0; i++)
             [gSymbolTrianglePathL[base] lineToPoint:pts[triangleIndexL[base][i]]];
         [gSymbolTrianglePathL[base] closePath];
         
-        if (gSymbolTrianglePathR[base])
-            [gSymbolTrianglePathR[base] release];
         gSymbolTrianglePathR[base] = [[NSBezierPath alloc] init];
         [gSymbolTrianglePathR[base] moveToPoint: NSMakePoint(_fontWidth, _fontHeight / 2)];
         for (i = 0; i < 3 && triangleIndexR[base][i] >= 0; i++)
@@ -444,8 +431,6 @@ static NSBezierPath *gSymbolLowerLinePath;
 	
 	// Extended
 	for (int i = 0; i < 3; ++i) {
-		if (gSymbolDiagonalPath[i])
-			[gSymbolDiagonalPath[i] release];		
 	}
 	gSymbolDiagonalPath[0] = [[NSBezierPath alloc] init];
 	gSymbolDiagonalPath[0].lineWidth = 2.0;
@@ -504,12 +489,8 @@ static NSBezierPath *gSymbolLowerLinePath;
     _fontWidth = gConfig.cellWidth;
     _fontHeight = gConfig.cellHeight;
 	
-	if (gLeftImage)
-		[gLeftImage release];
     gLeftImage = [[NSImage alloc] initWithSize:NSMakeSize(_fontWidth, _fontHeight)];
 	
-	if (gSymbolImage)
-		[gSymbolImage release];
 	gSymbolImage = [[NSImage alloc] initWithSize:NSMakeSize(_fontWidth*2, _fontHeight)];
 	
     [self createSymbolPath];

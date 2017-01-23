@@ -13,7 +13,7 @@
 #import "WLConnection.h"
 #import "WLSite.h"
 #import "WLGlobalConfig.h"
-#import <PSMTabBarControl/PSMTabBarControl.h>
+#import <PSMTabBarControl/PSMRolloverButton.h>
 
 @interface WLMainFrameController ()
 
@@ -37,7 +37,7 @@
     // open the portal
     // the switch
     [self tabViewDidChangeNumberOfTabViewItems:_tabView];
-	[_tabBarControl setMainController:[self retain]];
+	[_tabBarControl setMainController:self];
 }
 
 #pragma mark -

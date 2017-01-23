@@ -89,8 +89,6 @@
 
 - (void)dealloc {
     [self close];
-    self.proxyAddress = nil;
-    [super dealloc];
 }
 
 - (void)close {
@@ -161,7 +159,7 @@
     } else { /* parent */
         int one = 1;
         ioctl(_fd, TIOCPKT, &one);
-        [self retain]; // for the thread
+         // for the thread
         [NSThread detachNewThreadSelector:@selector(readLoop:) toTarget:[self class] withObject:self];
     }
 
@@ -176,7 +174,7 @@
         [_delegate protocolDidConnect:self];
     }
     [_delegate protocolDidRecv:self data:data];
-    [data autorelease]; // allocated in the read loop
+    //[data autorelease]; // allocated in the read loop
 }
 
 - (void)send:(NSData *)data {
@@ -224,15 +222,19 @@
 
 // NOTE: retain pty before starting the thread
 + (void)readLoop:(WLPTY *)pty {
-    NSAutoreleasePool *pool = [NSAutoreleasePool new];
+    //NSAutoreleasePool *pool = [NSAutoreleasePool new];
+    
+    
+    
     fd_set readfds, errorfds;
     BOOL exit = NO;
     unsigned char buf[4096];
-    int iterationCount = 0;
+    //int iterationCount = 0;
     int result;
     
     while (!exit) {
-        iterationCount++;
+        //iterationCount++;
+        @autoreleasepool {
 
         FD_ZERO(&readfds);
         FD_ZERO(&errorfds);
@@ -260,11 +262,6 @@
                 exit = YES;
             }
         }
-        
-        if (iterationCount % 5000 == 0) {
-            [pool release];
-            pool = [NSAutoreleasePool new];
-            iterationCount = 1;
         }
     }
 
@@ -272,8 +269,8 @@
         [pty performSelectorOnMainThread:@selector(close) withObject:nil waitUntilDone:NO];
     }
     
-    [pool release];
-    [pty release];
+    
     [NSThread exit];
+    
 }
 @end

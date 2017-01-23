@@ -85,10 +85,6 @@ static BOOL isLion;
     return self;
 }
 
-- (void)dealloc {
-    [_URLs release];
-    [super dealloc];
-}
 
 // delegate for QLPreviewPanel
 // zoom effect from the current mouse coordinates

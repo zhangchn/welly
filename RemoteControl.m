@@ -54,10 +54,6 @@ NSString* kTargetApplicationIdentifier = @"TargetBundleIdentifier";
 	return self;
 }
 
-- (void) dealloc {
-    self.delegate = nil;
-	[super dealloc];
-}
 
 - (void) setListeningToRemote: (BOOL) value {
 }

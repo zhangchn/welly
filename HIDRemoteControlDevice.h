@@ -36,7 +36,6 @@
 @interface HIDRemoteControlDevice : RemoteControl {
 	IOHIDDeviceInterface** hidDeviceInterface;
 	IOHIDQueueInterface**  queue;
-	NSMutableArray*		   allCookies;
 	NSMutableDictionary*   cookieToButtonMapping;
 	CFRunLoopSourceRef	   eventSource;
 	

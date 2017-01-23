@@ -10,7 +10,7 @@
 
 @interface WLFeedGenerator()
 @property (copy) NSString *siteName;
-@property (retain) NSXMLDocument *xmlDoc;
+@property (strong) NSXMLDocument *xmlDoc;
 
 @end
 
@@ -29,7 +29,6 @@
 		[root addAttribute:[NSXMLNode attributeWithName:@"version" stringValue:@"2.0"]];
         NSXMLDocument *doc = [[NSXMLDocument alloc] initWithRootElement:root];
         self.xmlDoc = doc;
-        [doc release];
         
 		_xmlDoc.version = @"1.0";
 		_xmlDoc.characterEncoding = @"UTF-8";
@@ -42,11 +41,6 @@
     return self;
 }
 
-- (void)dealloc {
-    self.siteName = nil;
-    self.xmlDoc = nil;
-    [super dealloc];
-}
 
 - (void)addItemWithTitle:(NSString *)aTitle 
 			 description:(NSString *)aDescription 

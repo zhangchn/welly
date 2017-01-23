@@ -11,10 +11,16 @@
 @class WLEffectView;
 @interface WLPopUpMessage:NSObject {
 }
++ (instancetype)sharedInstance;
 
-+ (void)showPopUpMessage:(NSString*)message 
+- (void)showPopUpMessage:(NSString*)message
 				duration:(CGFloat)duration 
 			  effectView:(WLEffectView *)effectView;
+
+- (void)hidePopUpMessage;
++ (void)showPopUpMessage:(NSString*)message
+                duration:(CGFloat)duration
+              effectView:(WLEffectView *)effectView;
 
 + (void)hidePopUpMessage;
 

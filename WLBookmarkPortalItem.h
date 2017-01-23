@@ -12,7 +12,7 @@
 
 @interface WLBookmarkPortalItem : WLPortalItem <WLPasteboardReceiver, WLDraggingSource>
 @property (readwrite, copy, nonatomic) NSString *path;
-@property (readwrite, retain, nonatomic) WLSite *site;
+@property (readwrite, strong, nonatomic) WLSite *site;
 - (instancetype)initWithSite:(WLSite *)site;
 - (instancetype)initWithPath:(NSString *)path title:(NSString *)title NS_DESIGNATED_INITIALIZER;
 //- (void)setPath:(NSString *)path;

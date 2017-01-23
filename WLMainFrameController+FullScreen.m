@@ -43,7 +43,6 @@
 	} else {
 		// Restore old parameters
 		[gConfig setSizeParameters:_originalSizeParameters];
-		[_originalSizeParameters release];
 		_originalSizeParameters = nil;
 	}
 }

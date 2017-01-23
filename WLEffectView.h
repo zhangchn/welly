@@ -31,8 +31,8 @@
 	CGColorRef _popUpLayerTextColor;
 	CGFontRef _popUpLayerTextFont;
 }
-@property (assign) CALayer *mainLayer;
-@property (assign) IBOutlet WLTerminalView *mainView;
+@property (weak) CALayer *mainLayer;
+@property  IBOutlet WLTerminalView *mainView;
 // for ip seeker
 - (void)drawIPAddrBox:(NSRect)rect;
 - (void)clearIPAddrBox;

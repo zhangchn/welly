@@ -21,8 +21,8 @@
 - (void)addEmoticon:(YLEmoticon *)emoticon;
 @property (NS_NONATOMIC_IOSONLY, readonly) unsigned int countOfEmoticons;
 - (id)objectInEmoticonsAtIndex:(unsigned)theIndex;
-- (void)getEmoticons:(id *)objsPtr 
-			   range:(NSRange)range;
+//- (void)getEmoticons:(id *)objsPtr 
+//			   range:(NSRange)range;
 - (void)insertObject:(id)obj 
   inEmoticonsAtIndex:(unsigned)theIndex;
 - (void)removeObjectFromEmoticonsAtIndex:(unsigned)theIndex;
@@ -45,10 +45,6 @@ SYNTHESIZE_SINGLETON_FOR_CLASS(WLEmoticonsPanelController);
     return self;
 }
 
-- (void)dealloc {
-    [_emoticons release];
-    [super dealloc];
-}
 
 - (void)loadNibFile {
 	if (_emoticonsPanel) {
@@ -116,10 +112,10 @@ SYNTHESIZE_SINGLETON_FOR_CLASS(WLEmoticonsPanelController);
     return _emoticons[theIndex];
 }
 
-- (void)getEmoticons:(id *)objsPtr 
-			   range:(NSRange)range {
-    [_emoticons getObjects:objsPtr range:range];
-}
+//- (void)getEmoticons:(id *)objsPtr 
+//			   range:(NSRange)range {
+//    [_emoticons getObjects:objsPtr range:range];
+//}
 
 - (void)insertObject:(id)obj 
   inEmoticonsAtIndex:(unsigned)theIndex {

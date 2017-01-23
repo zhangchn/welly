@@ -74,7 +74,7 @@ typedef enum _RemoteControlEventIdentifier {
 	Base Interface for Remote Control devices
 */
 @interface RemoteControl : NSObject
-@property (retain, nonatomic) id delegate;
+@property (strong, nonatomic) id delegate;
 
 // returns nil if the remote control device is not available
 - (instancetype) initWithDelegate: (id) remoteControlDelegate NS_DESIGNATED_INITIALIZER;

@@ -112,7 +112,6 @@ SYNTHESIZE_SINGLETON_FOR_CLASS(WLMainFrameController);
     [colorList insertColor:[config colorWhiteHilite] key:NSLocalizedString(@"WhiteHilite", @"Color") atIndex:15];
     [colorPanel attachColorList:colorList];
 	[colorPanel setShowsAlpha:YES];
-    [colorList release];
 	
     // restore connections
     if ([[NSUserDefaults standardUserDefaults] boolForKey:WLRestoreConnectionKeyName]) 
@@ -163,7 +162,6 @@ SYNTHESIZE_SINGLETON_FOR_CLASS(WLMainFrameController);
         NSMenuItem *menuItem = [[NSMenuItem alloc] initWithTitle:s.name ?: @"" action:@selector(openSiteMenu:) keyEquivalent:@""];
         menuItem.representedObject = s;
         [_sitesMenu.submenu addItem:menuItem];
-        [menuItem release];
     }	
 }
 
@@ -189,24 +187,23 @@ SYNTHESIZE_SINGLETON_FOR_CLASS(WLMainFrameController);
 }
 
 - (void)newConnectionWithSite:(WLSite *)site {
-    NSAutoreleasePool *pool = [NSAutoreleasePool new];
+    @autoreleasepool {
 
-    WLConnection *connection = [[WLConnection alloc] initWithSite:site];
+        WLConnection *connection = [[WLConnection alloc] initWithSite:site];
 	
 	[_tabView newTabWithConnection:connection label:site.name];
 	// We can release it since it is retained by the tab view item
-	[connection release];
 	// Set the view to be focused.
 	[_mainWindow makeFirstResponder:[_tabView frontMostView]];
 	
-    [self updateEncodingMenu];
-    [_detectDoubleByteButton setState:site.shouldDetectDoubleByte ? NSOnState : NSOffState];
-    _detectDoubleByteMenuItem.state = site.shouldDetectDoubleByte ? NSOnState : NSOffState;
-    [_autoReplyButton setState:site.shouldAutoReply ? NSOnState : NSOffState];
-    _autoReplyMenuItem.state = site.shouldAutoReply ? NSOnState : NSOffState;
-    [_mouseButton setState:site.shouldEnableMouse ? NSOnState : NSOffState];
+        [self updateEncodingMenu];
+        [_detectDoubleByteButton setState:site.shouldDetectDoubleByte ? NSOnState : NSOffState];
+        _detectDoubleByteMenuItem.state = site.shouldDetectDoubleByte ? NSOnState : NSOffState;
+        [_autoReplyButton setState:site.shouldAutoReply ? NSOnState : NSOffState];
+        _autoReplyMenuItem.state = site.shouldAutoReply ? NSOnState : NSOffState;
+        [_mouseButton setState:site.shouldEnableMouse ? NSOnState : NSOffState];
 
-    [pool release];
+    }
 }
 
 #pragma mark -
@@ -373,8 +370,8 @@ SYNTHESIZE_SINGLETON_FOR_CLASS(WLMainFrameController);
             if ([site.address rangeOfString:name].location != NSNotFound && !(ssh ^ [site.address hasPrefix:@"ssh://"])) 
                 [matchedSites addObject:site];
         if (matchedSites.count > 0) {
-            [matchedSites sortUsingDescriptors:@[[[[NSSortDescriptor alloc] initWithKey:@"address.length" ascending:YES] autorelease]]];
-            s = [[matchedSites[0] copy] autorelease];
+            [matchedSites sortUsingDescriptors:@[[[NSSortDescriptor alloc] initWithKey:@"address.length" ascending:YES]]];
+            s = [matchedSites[0] copy];
         } else {
             s = [WLSite site];
             s.address = name;
@@ -384,15 +381,15 @@ SYNTHESIZE_SINGLETON_FOR_CLASS(WLMainFrameController);
         for (WLSite *site in sites) 
             if ([site.name rangeOfString:name].location != NSNotFound) 
                 [matchedSites addObject:site];
-        [matchedSites sortUsingDescriptors: @[[[[NSSortDescriptor alloc] initWithKey:@"name.length" ascending:YES] autorelease]]];
+        [matchedSites sortUsingDescriptors: @[[[NSSortDescriptor alloc] initWithKey:@"name.length" ascending:YES]]];
         if (matchedSites.count == 0) {
             for (WLSite *site in sites) 
                 if ([site.address rangeOfString:name].location != NSNotFound)
                     [matchedSites addObject:site];
-            [matchedSites sortUsingDescriptors:@[[[[NSSortDescriptor alloc] initWithKey:@"address.length" ascending:YES] autorelease]]];
+            [matchedSites sortUsingDescriptors:@[[[NSSortDescriptor alloc] initWithKey:@"address.length" ascending:YES]]];
         } 
         if (matchedSites.count > 0) {
-            s = [[matchedSites[0] copy] autorelease];
+            s = [matchedSites[0] copy];
         } else {
             s = [WLSite site];
             s.address = [sender stringValue];
@@ -484,7 +481,7 @@ SYNTHESIZE_SINGLETON_FOR_CLASS(WLMainFrameController);
 		[[_tabView frontMostConnection] reconnect];
         return;
     }
-    NSAlert *alert = [[[NSAlert alloc] init] autorelease];
+    NSAlert *alert = [[NSAlert alloc] init];
     alert.alertStyle = NSAlertStyleWarning;
     [alert addButtonWithTitle:@"Confirm"];
     [alert addButtonWithTitle:@"Cancel"];

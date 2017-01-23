@@ -244,12 +244,9 @@ static unsigned short gEmptyAttr;
 }
 
 - (void)dealloc {
-    [_csBuf release];
-    [_csArg release];
     for (int i = 0; i < _row; i++)
         free(_grid[i]);
     free(_grid);
-    [super dealloc];
 }
 
 # pragma mark -
@@ -264,7 +261,7 @@ static unsigned short gEmptyAttr;
 - (void)feedBytes:(const unsigned char*)bytes 
 		   length:(NSUInteger)len 
 	   connection:(id)connection {
-    NSAutoreleasePool *pool = [NSAutoreleasePool new];
+    @autoreleasepool {
 	
 	int i, x;
 	unsigned char c;
@@ -1002,7 +999,7 @@ static unsigned short gEmptyAttr;
 		}
     }
 	
-    [pool release];
+    }
 }
 
 //- (void)setTerminal:(WLTerminal *)terminal {
@@ -1043,11 +1040,11 @@ static unsigned short gEmptyAttr;
     if (_csBuf)
         [_csBuf clear];
     else
-        _csBuf = [[WLIntegerArray integerArray] retain];
+        _csBuf = [WLIntegerArray integerArray];
     if (_csArg)
         [_csArg clear];
     else
-        _csArg = [[WLIntegerArray integerArray] retain];
+        _csArg = [WLIntegerArray integerArray];
 }
 
 - (void)clearRow:(int)r {

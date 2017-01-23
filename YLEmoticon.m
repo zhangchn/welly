@@ -21,11 +21,6 @@
     return self;
 }
 
-- (void)dealloc {
-    [_content release];
-    [_name release];
-    [super dealloc];
-}
 
 - (instancetype)initWithName:(NSString *)name 
 		   content:(NSString *)content {
@@ -44,18 +39,18 @@
     YLEmoticon *e = [[YLEmoticon alloc] init];
 //    [e setName: [d valueForKey: @"name"]];
     e.content = [d valueForKey:@"content"];
-    return [e autorelease];    
+    return e;    
 }
 
 + (YLEmoticon *)emoticonWithName:(NSString *)n 
 						 content:(NSString *)c {
     YLEmoticon *e = [[YLEmoticon alloc] initWithName:n content:c];
-    return [e autorelease];
+    return e;
 }
 
 + (YLEmoticon *)emoticonWithString:(NSString *)string {
 	YLEmoticon *e = [[YLEmoticon alloc] initWithName:string content:string];
-	return [e autorelease];
+	return e;
 }
 
 #pragma mark -

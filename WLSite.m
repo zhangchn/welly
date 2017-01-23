@@ -45,15 +45,8 @@ NSString *const WLDefaultSiteName = @"DefaultSiteName";
     }
     return self;
 }
-- (void)dealloc {
-    self.name = nil;
-    self.address = nil;
-    self.autoReplyString = nil;
-    self.proxyAddress = nil;
-    [super dealloc];
-}
 + (WLSite *)site {
-    return [[WLSite new] autorelease];
+    return [WLSite new];
 }
 
 + (WLSite *)siteWithDictionary:(NSDictionary *)d {

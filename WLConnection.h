@@ -29,12 +29,12 @@
 	WLMessageDelegate *_messageDelegate;
 	NSInteger _messageCount;
 	
-	id _tabViewItemController;
+	id __unsafe_unretained _tabViewItemController;
 }
-@property (readwrite, retain) WLSite *site;
-@property (readwrite, retain, setter=setTerminal:, nonatomic) WLTerminal *terminal;
-@property (readwrite, retain) WLTerminalFeeder *terminalFeeder;
-@property (readwrite, retain) NSObject <WLProtocol> *protocol;
+@property (readwrite, strong) WLSite *site;
+@property (readwrite, strong, setter=setTerminal:, nonatomic) WLTerminal *terminal;
+@property (readwrite, strong) WLTerminalFeeder *terminalFeeder;
+@property (readwrite, strong) NSObject <WLProtocol> *protocol;
 @property (readwrite, assign, setter=setConnected:, nonatomic) BOOL isConnected;
 @property (readonly) NSDate *lastTouchDate;
 @property (readonly) NSInteger messageCount;
@@ -43,7 +43,7 @@
 @property (readwrite, copy) NSImage *icon;
 @property (readwrite, assign, getter=isProcessing) BOOL processing;
 @property (readwrite, assign) NSInteger objectCount;
-@property (readwrite, assign) id tabViewItemController;
+@property (readwrite, unsafe_unretained) id tabViewItemController;
 
 - (instancetype)initWithSite:(WLSite *)site;
 

@@ -129,12 +129,12 @@ SYNTHESIZE_SINGLETON_FOR_CLASS(WLPostDownloadDelegate);
 #pragma mark Post Download
 - (void)preparePostDownload:(WLTerminal *)terminal {
     // clear s
-    NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init]; 
-    NSString *s = [WLPostDownloadDelegate downloadPostFromTerminal:terminal];
-    [_postText performSelectorOnMainThread:@selector(setString:) 
+    @autoreleasepool { 
+        NSString *s = [WLPostDownloadDelegate downloadPostFromTerminal:terminal];
+        [_postText performSelectorOnMainThread:@selector(setString:) 
 								withObject:s 
 							 waitUntilDone:TRUE];
-    [pool release];
+    }
 }
 
 - (void)beginPostDownloadInWindow:(NSWindow *)window 

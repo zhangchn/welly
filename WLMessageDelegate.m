@@ -12,12 +12,12 @@
 #import "WLSite.h"
 #import "WLTabView.h"
 #import "WLMainFrameController.h"
-#import "WLGrowlBridge.h"
+//#import "WLGrowlBridge.h"
 
 NSString *const WLAutoReplyGrowlTipFormat = @"AutoReplyGrowlTipFormat";
 @interface WLMessageDelegate ()
-@property (assign) WLConnection *connection;
-@property (assign) NSMutableString *unreadMessage;
+@property (weak) WLConnection *connection;
+@property (strong) NSMutableString *unreadMessage;
 - (void)didClickGrowlNewMessage:(id)connection;
 @end
 
@@ -26,8 +26,8 @@ NSString *const WLAutoReplyGrowlTipFormat = @"AutoReplyGrowlTipFormat";
 - (instancetype)init {
 	self = [super init];
 	if (self) {
-		_unreadMessage = [[NSMutableString alloc] initWithCapacity:400];
-		[_unreadMessage setString:@""];
+		self.unreadMessage = [[NSMutableString alloc] initWithCapacity:400];
+		[self.unreadMessage setString:@""];
 		_unreadCount = 0;
 	}
 	return self;
@@ -40,10 +40,6 @@ NSString *const WLAutoReplyGrowlTipFormat = @"AutoReplyGrowlTipFormat";
 	return self;
 }
 
-- (void)dealloc {
-	[_unreadMessage release];
-	[super dealloc];
-}
 
 //- (WLConnection *)connection {
 //    return _connection;
@@ -79,13 +75,13 @@ NSString *const WLAutoReplyGrowlTipFormat = @"AutoReplyGrowlTipFormat";
 		}
 		
 		// should invoke growl notification
-		[WLGrowlBridge notifyWithTitle:callerName
-						   description:description 
-					  notificationName:kGrowlNotificationNameNewMessageReceived
-							  isSticky:NO
-						   clickTarget:self
-						 clickSelector:@selector(didClickGrowlNewMessage:)
-							identifier:_connection];
+//		[WLGrowlBridge notifyWithTitle:callerName
+//						   description:description 
+//					  notificationName:kGrowlNotificationNameNewMessageReceived
+//							  isSticky:NO
+//						   clickTarget:self
+//						 clickSelector:@selector(didClickGrowlNewMessage:)
+//							identifier:_connection];
 		
 	}
 }

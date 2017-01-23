@@ -50,12 +50,12 @@ const float WLHorizontalScrollReactivateTimeInteval = 1.0;
 		_view = view;
 		
 		_handlers = [[NSMutableArray alloc] initWithObjects:
-					 [[[WLIPAddrHotspotHandler alloc] initWithManager:self] autorelease],
-					 [[[WLClickEntryHotspotHandler alloc] initWithManager:self] autorelease],
-					 [[[WLButtonAreaHotspotHandler alloc] initWithManager:self] autorelease],
-					 [[[WLMovingAreaHotspotHandler alloc] initWithManager:self] autorelease],
-					 [[[WLEditingCursorMoveHotspotHandler alloc] initWithManager:self] autorelease],
-					 [[[WLAuthorAreaHotspotHandler alloc] initWithManager:self] autorelease],
+					 [[WLIPAddrHotspotHandler alloc] initWithManager:self],
+					 [[WLClickEntryHotspotHandler alloc] initWithManager:self],
+					 [[WLButtonAreaHotspotHandler alloc] initWithManager:self],
+					 [[WLMovingAreaHotspotHandler alloc] initWithManager:self],
+					 [[WLEditingCursorMoveHotspotHandler alloc] initWithManager:self],
+					 [[WLAuthorAreaHotspotHandler alloc] initWithManager:self],
 					 nil];
 		_horizontalScrollReactivateTimer = [NSTimer scheduledTimerWithTimeInterval:WLHorizontalScrollReactivateTimeInteval
 																			target:self
@@ -79,9 +79,7 @@ const float WLHorizontalScrollReactivateTimeInteval = 1.0;
 
 - (void)dealloc {
 	for (NSObject *obj in _handlers)
-		[obj dealloc];
-	[_handlers dealloc];
-	[super dealloc];
+		obj;
 }
 
 #pragma mark -
@@ -188,12 +186,12 @@ const float WLHorizontalScrollReactivateTimeInteval = 1.0;
 
 - (NSTrackingArea *)addTrackingAreaWithRect:(NSRect)rect 
 								   userInfo:(NSDictionary *)userInfo {
-	NSTrackingArea *area = [[[NSTrackingArea alloc] initWithRect:rect
+	NSTrackingArea *area = [[NSTrackingArea alloc] initWithRect:rect
 														options:(  NSTrackingMouseEnteredAndExited
 																 | NSTrackingMouseMoved
 																 | NSTrackingActiveInActiveApp) 
 														  owner:self
-													   userInfo:userInfo] autorelease];
+													   userInfo:userInfo];
 	[_view addTrackingArea:area];
 	if ([self isMouseInsideRect:rect]) {
 		NSEvent *event = [NSEvent enterExitEventWithType:NSEventTypeMouseEntered 

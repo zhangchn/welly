@@ -15,6 +15,7 @@
 #import "WLTerminalView.h"
 #import "WLConnection.h"
 #import "WLEncoder.h"
+#import "WLSite.h"
 #import "WLPostDownloadDelegate.h"
 
 NSString *const WLMenuTitleDownloadPost = @"Download post";
@@ -29,9 +30,6 @@ NSString *const WLCommandSequenceSameThreadReading = @"\030";	// ^X
 NSString *const WLCommandSequenceSameAuthorReading = @"\025";	// ^U
 
 @implementation WLClickEntryHotspotHandler
-- (void)dealloc {
-	[super dealloc];
-}
 
 #pragma mark -
 #pragma mark Mouse Event Handler
@@ -117,7 +115,7 @@ NSString *const WLCommandSequenceSameAuthorReading = @"\025";	// ^U
 	
 	// Do Post Download
 	if (count != maxAttempt) {
-		[[WLPostDownloadDelegate sharedInstance] beginPostDownloadInWindow:[NSApp window] 
+		[[WLPostDownloadDelegate sharedInstance] beginPostDownloadInWindow:[NSApp keyWindow]
 															   forTerminal:[_view frontMostTerminal]];
 	}
 }
@@ -156,7 +154,7 @@ NSString *const WLCommandSequenceSameAuthorReading = @"\025";	// ^U
 }
 
 - (NSMenu *)menuForEvent:(NSEvent *)theEvent {
-	NSMenu *menu = [[[NSMenu alloc] init] autorelease];
+	NSMenu *menu = [[NSMenu alloc] init];
 	if ([_view frontMostTerminal].bbsState.state == BBSBrowseBoard) {
 		[menu addItemWithTitle:NSLocalizedString(WLMenuTitleDownloadPost, @"Contextual Menu")
 						action:@selector(downloadPost:)

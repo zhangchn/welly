@@ -9,28 +9,43 @@
 #import "WLPopUpMessage.h"
 #import "WLEffectView.h"
 
+@interface WLPopUpMessage ()
+@property WLEffectView *effectView;
+@property (weak) NSTimer *prevTimer;
+
+@end
+
 @implementation WLPopUpMessage
 
-WLEffectView *_effectView;
-NSTimer *_prevTimer;
 
 #pragma mark Class methods
-+ (void)hidePopUpMessage {
+
++ (instancetype)sharedInstance {
+    static WLPopUpMessage *inst = nil;
+    static dispatch_once_t onceToken;
+    dispatch_once(&onceToken, ^{
+        inst = [WLPopUpMessage new];
+    });
+    return inst;
+}
+
+- (void)hidePopUpMessage {
 	if (_effectView) {
 		[_effectView removePopUpMessage];
-		[_effectView release];
+		//[_effectView release];
+        self.effectView = nil;
 	}
     _prevTimer = nil;
 }
 
-+ (void)showPopUpMessage:(NSString*)message 
+- (void)showPopUpMessage:(NSString*)message
 				duration:(CGFloat)duration 
 			  effectView:(WLEffectView *)effectView {
     if (_prevTimer) {
         [_prevTimer invalidate];
     }
 	[effectView drawPopUpMessage:message];
-	_effectView = [effectView retain];
+	_effectView = effectView;
 	_prevTimer = [NSTimer scheduledTimerWithTimeInterval:duration
                                                   target:self 
                                                 selector:@selector(hidePopUpMessage)
@@ -38,4 +53,13 @@ NSTimer *_prevTimer;
                                                  repeats:NO];
 }
 
++ (void)showPopUpMessage:(NSString*)message
+                duration:(CGFloat)duration
+              effectView:(WLEffectView *)effectView {
+    [[WLPopUpMessage sharedInstance] showPopUpMessage:message duration:duration effectView:effectView];
+}
+
++ (void)hidePopUpMessage {
+    [[WLPopUpMessage sharedInstance] hidePopUpMessage];
+}
 @end

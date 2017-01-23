@@ -8,7 +8,7 @@
 
 #import "WLPreviewController.h"
 #import "WLQuickLookBridge.h"
-#import "WLGrowlBridge.h"
+//#import "WLGrowlBridge.h"
 #import "WLGlobalConfig.h"
 
 NSString *const WLGIFToHTMLFormat = @"<html><body bgcolor='Black'><center><img scalefit='1' style='position: absolute; top: 0; right: 0; bottom: 0; left: 0; height:100%%; margin: auto;' src='%@'></img></center></body></html>";
@@ -21,7 +21,7 @@ NSString *const WLGIFToHTMLFormat = @"<html><body bgcolor='Black'><center><img s
     long long _contentLength, _transferredLength;
 //    NSURLDownload *_download;
 }
-@property (readwrite, assign) NSURLDownload *download;
+@property (readwrite, weak) NSURLDownload *download;
 @property (copy) NSString *filename;
 @property (copy) NSString *path;
 @property (assign) BOOL canView;
@@ -86,7 +86,6 @@ static BOOL sHasCacheDir = NO;
         WLDownloadDelegate *delegate = [[WLDownloadDelegate alloc] init];
         download = [[NSURLDownload alloc] initWithRequest:request delegate:delegate];
         delegate.download = download;
-        [delegate release];
     }
     if (download == nil)
         [[NSWorkspace sharedWorkspace] openURL:URL];
@@ -144,15 +143,10 @@ static NSString * stringFromFileSize(long long size) {
 }
 
 - (void)dealloc {
-    [_filename release];
-    [_path release];
     // close window
     [_window close];
-    [_indicator release];
-    [_window release];
 	
 //	[_download release];
-    [super dealloc];
 }
 
 - (void)showLoadingWindow {
@@ -172,7 +166,7 @@ static NSString * stringFromFileSize(long long size) {
     _window.title = @"Loading...";
     [_window setViewsNeedDisplay:NO];
     [_window makeKeyAndOrderFront:nil];
-	[_window.windowController setDelegate:self];
+	// [_window.windowController setDelegate:self];
 
     // Init progress bar
     _indicator = [[HMBlkProgressIndicator alloc] initWithFrame:NSMakeRect(10, 10, 380, 10)];
@@ -187,12 +181,12 @@ static NSString * stringFromFileSize(long long size) {
 - (BOOL)windowShouldClose:(id)window {
     NSURL *URL = _download.request.URL;
     // Show the canceled message
-	if (![WLGrowlBridge isMistEnabled])
-		[WLGrowlBridge notifyWithTitle:URL.absoluteString
-						   description:NSLocalizedString(@"Canceled", @"Download canceled")
-					  notificationName:kGrowlNotificationNameFileTransfer
-							  isSticky:NO
-							identifier:_download];
+//	if (![WLGrowlBridge isMistEnabled])
+//		[WLGrowlBridge notifyWithTitle:URL.absoluteString
+//						   description:NSLocalizedString(@"Canceled", @"Download canceled")
+//					  notificationName:kGrowlNotificationNameFileTransfer
+//							  isSticky:NO
+//							identifier:_download];
     // Remove current url from the url list
     [sURLs removeObject:URL];
     // Cancel the download
@@ -222,12 +216,12 @@ static NSString * stringFromFileSize(long long size) {
     _transferredLength = 0;
 
     // extract & fix incorrectly encoded filename (GB18030 only)
-    NSAutoreleasePool *pool = [NSAutoreleasePool new];
-    _filename = response.suggestedFilename;
-    NSData *data = [_filename dataUsingEncoding:NSISOLatin1StringEncoding allowLossyConversion:YES];
-    NSStringEncoding encoding = CFStringConvertEncodingToNSStringEncoding(kCFStringEncodingGB_18030_2000);
-    _filename = [[NSString alloc] initWithData:data encoding:encoding];
-    [pool release];
+    @autoreleasepool {
+        _filename = response.suggestedFilename;
+        NSData *data = [_filename dataUsingEncoding:NSISOLatin1StringEncoding allowLossyConversion:YES];
+        NSStringEncoding encoding = CFStringConvertEncodingToNSStringEncoding(kCFStringEncodingGB_18030_2000);
+        _filename = [[NSString alloc] initWithData:data encoding:encoding];
+    }
 //	if (![WLGrowlBridge isMistEnabled])
 //		[WLGrowlBridge notifyWithTitle:_filename
 //						   description:[self stringFromTransfer]
@@ -237,7 +231,7 @@ static NSString * stringFromFileSize(long long size) {
 
     // set local path
     NSString *cacheDir = [WLGlobalConfig cacheDirectory];
-    _path = [[cacheDir stringByAppendingPathComponent:_filename] retain];
+    _path = [cacheDir stringByAppendingPathComponent:_filename];
 	if(sDownloadedURLInfo[download.request.URL.absoluteString]) { // URL in cache
 		// Get local file size
 		NSString * tempPath = [sDownloadedURLInfo valueForKey:download.request.URL.absoluteString];
@@ -262,10 +256,9 @@ static NSString * stringFromFileSize(long long size) {
 		// Close the progress bar window
 		[_window close];
 		
-        [self retain]; // "didFailWithError" may release the delegate
+         // "didFailWithError" may release the delegate
         [download cancel];
         [self download:download didFailWithError:nil];
-        [self release];
         return; // or next may crash
 	}
 
@@ -318,54 +311,69 @@ static void formatProps(NSMutableString *s, id *fmt, id *val) {
     // boost: pool (leaks), check nil (crash), readable values
     CGImageSourceRef exifSource = CGImageSourceCreateWithURL((CFURLRef)([NSURL fileURLWithPath:_path]), nil);
     if (exifSource) {
-		NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
-        NSDictionary *metaData = (NSDictionary*) CGImageSourceCopyPropertiesAtIndex(exifSource, 0, nil);
-		[metaData autorelease];
+		@autoreleasepool {
+            NSDictionary *metaData = (NSDictionary*) CFBridgingRelease(CGImageSourceCopyPropertiesAtIndex(exifSource, 0, nil));
 		NSMutableString *props = [NSMutableString string];
-        NSDictionary *exifData = metaData[(NSString *)kCGImagePropertyExifDictionary];
+            NSDictionary *exifData = metaData[(NSString *)kCGImagePropertyExifDictionary];
 		if (exifData) {
-            NSString *dateTime = exifData[(NSString *)kCGImagePropertyExifDateTimeOriginal];
-            NSNumber *eTime = exifData[(NSString *)kCGImagePropertyExifExposureTime];
-            NSNumber *fLength = exifData[(NSString *)kCGImagePropertyExifFocalLength];
-            NSNumber *fNumber = exifData[(NSString *)kCGImagePropertyExifFNumber];
-            NSArray *isoArray = exifData[(NSString *)kCGImagePropertyExifISOSpeedRatings];
-            // readable exposure time
-            NSString *eTimeStr = nil;
-            if (eTime) {
-                double eTimeVal = eTime.doubleValue;
-                // zero exposure time...
-                if (eTimeVal < 1 && eTimeVal != 0) {
-                    eTimeStr = [NSString stringWithFormat:@"1/%g", 1/eTimeVal];
-                } else
-                    eTimeStr = eTime.stringValue;
+                NSString *dateTime = exifData[(NSString *)kCGImagePropertyExifDateTimeOriginal];
+                NSNumber *eTime = exifData[(NSString *)kCGImagePropertyExifExposureTime];
+                NSNumber *fLength = exifData[(NSString *)kCGImagePropertyExifFocalLength];
+                NSNumber *fNumber = exifData[(NSString *)kCGImagePropertyExifFNumber];
+                NSArray *isoArray = exifData[(NSString *)kCGImagePropertyExifISOSpeedRatings];
+                // readable exposure time
+                NSString *eTimeStr = nil;
+                if (eTime) {
+                    double eTimeVal = eTime.doubleValue;
+                    // zero exposure time...
+                    if (eTimeVal < 1 && eTimeVal != 0) {
+                        eTimeStr = [NSString stringWithFormat:@"1/%g", 1/eTimeVal];
+                    } else
+                        eTimeStr = eTime.stringValue;
+                }
+                // iso
+                NSNumber *iso = nil;
+                if (isoArray && isoArray.count)
+                    iso = isoArray[0];
+                // format
+//            id keys[] = {@"Original Date Time", @"Exposure Time", @"Focal Length", @"F Number", @"ISO", nil};
+//            id vals[] = {dateTime, eTimeStr, fLength, fNumber, iso};
+//            formatProps(props, keys,vals);
+//            
+//            id *x = keys;
+//            id *y = vals;
+//            for (; *x; ++x, ++y) {
+//                id obj = *y;
+//                if (obj == nil)
+//                    continue;
+//                [props appendFormat:NSLocalizedString(*x, nil), obj];
+//            }
+
+                NSArray * keys = @[@"Original Date Time", @"Exposure Time", @"Focal Length", @"F Number", @"ISO"];
+                NSArray * values = @[dateTime, eTimeStr, fLength, fNumber, iso];
+                NSInteger idx;
+                for (idx = 0; idx < keys.count; idx ++) {
+                    [props appendFormat:NSLocalizedString(keys[idx], nil), values[idx]];
+                }
             }
-            // iso
-            NSNumber *iso = nil;
-            if (isoArray && isoArray.count)
-                iso = isoArray[0];
-            // format
-            id keys[] = {@"Original Date Time", @"Exposure Time", @"Focal Length", @"F Number", @"ISO", nil};
-            id vals[] = {dateTime, eTimeStr, fLength, fNumber, iso};
-            formatProps(props, keys,vals);
-        }
 
-        NSDictionary *tiffData = metaData[(NSString *)kCGImagePropertyTIFFDictionary];
-        if (tiffData) {
-            NSString *makeName = tiffData[(NSString *)kCGImagePropertyTIFFMake];
-            NSString *modelName = tiffData[(NSString *)kCGImagePropertyTIFFModel];
-            // some photos give null names
-            if (makeName || modelName)
-                [props appendFormat:NSLocalizedString(@"tiffStringFormat", "\nManufacturer and Model: \n%@ %@"), makeName, modelName];
-        }
+            NSDictionary *tiffData = metaData[(NSString *)kCGImagePropertyTIFFDictionary];
+            if (tiffData) {
+                NSString *makeName = tiffData[(NSString *)kCGImagePropertyTIFFMake];
+                NSString *modelName = tiffData[(NSString *)kCGImagePropertyTIFFModel];
+                // some photos give null names
+                if (makeName || modelName)
+                    [props appendFormat:NSLocalizedString(@"tiffStringFormat", "\nManufacturer and Model: \n%@ %@"), makeName, modelName];
+            }
 
-        if(props.length) 
-            [WLGrowlBridge notifyWithTitle:_filename
-                               description:props
-                          notificationName:kGrowlNotificationNameEXIFInformation
-                                  isSticky:NO
-                                identifier:download];
+//        if(props.length) 
+//            [WLGrowlBridge notifyWithTitle:_filename
+//                               description:props
+//                          notificationName:kGrowlNotificationNameEXIFInformation
+//                                  isSticky:NO
+//                                identifier:download];
         // release
-        [pool release];
+        }
         CFRelease(exifSource);
     }
 

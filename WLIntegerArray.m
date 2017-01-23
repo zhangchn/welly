@@ -12,7 +12,7 @@
 @implementation WLIntegerArray
 
 + (instancetype) integerArray {
-    return [[[WLIntegerArray alloc] init] autorelease];
+    return [[WLIntegerArray alloc] init];
 }
 
 - (instancetype)init {
@@ -22,10 +22,6 @@
     return self;
 }
 
-- (void)dealloc {
-    [_array release];
-    [super dealloc];
-}
 
 - (void)push_back:(NSInteger)integer {
     [_array addPointer:(void *)integer];
@@ -56,8 +52,7 @@
 }
 
 - (void)clear {
-    [_array release];
-    _array = [[NSPointerArray pointerArrayWithWeakObjects] retain];
+    _array = [NSPointerArray pointerArrayWithWeakObjects];
 }
 
 @end

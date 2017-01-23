@@ -27,7 +27,6 @@
 		1841E73E0F7BD280002DCBA8 /* WLProxy.m in Sources */ = {isa = PBXBuildFile; fileRef = 1841E73D0F7BD280002DCBA8 /* WLProxy.m */; };
 		185680E60F25E23B00A1F4F3 /* password.tif in Resources */ = {isa = PBXBuildFile; fileRef = 185680E50F25E23B00A1F4F3 /* password.tif */; };
 		186E810F0F218C10007D73BC /* WLComposePanelController.m in Sources */ = {isa = PBXBuildFile; fileRef = 186E810E0F218C10007D73BC /* WLComposePanelController.m */; };
-		18A685A80D9414D900CA423A /* WLGrowlBridge.m in Sources */ = {isa = PBXBuildFile; fileRef = 18A685A70D9414D900CA423A /* WLGrowlBridge.m */; };
 		18BB9B840D98ECC900387145 /* QQWry.dat in Resources */ = {isa = PBXBuildFile; fileRef = 18BB9B830D98ECC900387145 /* QQWry.dat */; };
 		18BB9B870D98ECE500387145 /* IPSeeker.m in Sources */ = {isa = PBXBuildFile; fileRef = 18BB9B860D98ECE500387145 /* IPSeeker.m */; };
 		18F813960F45A93A002FF48C /* WLFeedGenerator.m in Sources */ = {isa = PBXBuildFile; fileRef = 18F813950F45A93A002FF48C /* WLFeedGenerator.m */; };
@@ -861,7 +860,6 @@
 				85E7825C0D057E8400BDA3FB /* YLEmoticon.m in Sources */,
 				85ED52290D0920E6003296D4 /* CommonType.m in Sources */,
 				85ED53220D092B5F003296D4 /* WLConnection.m in Sources */,
-				18A685A80D9414D900CA423A /* WLGrowlBridge.m in Sources */,
 				18BB9B870D98ECE500387145 /* IPSeeker.m in Sources */,
 				5AF8CA5D0D9CDB0000DFB5AB /* WLMessageDelegate.m in Sources */,
 				5A09016D0DBCDD1600AC08F4 /* WLMainFrameController.m in Sources */,
@@ -1011,6 +1009,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ARCHS = "$(ARCHS_STANDARD_64_BIT)";
+				CLANG_ENABLE_OBJC_ARC = YES;
 				COPY_PHASE_STRIP = NO;
 				DEPLOYMENT_LOCATION = NO;
 				ENABLE_OPENMP_SUPPORT = NO;
@@ -1039,6 +1038,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ARCHS = "$(ARCHS_STANDARD_64_BIT)";
+				CLANG_ENABLE_OBJC_ARC = YES;
 				DEPLOYMENT_LOCATION = YES;
 				ENABLE_OPENMP_SUPPORT = NO;
 				FRAMEWORK_SEARCH_PATHS = (

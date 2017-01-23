@@ -102,9 +102,9 @@ NSString *const WLGrowlClickObjectKeyName = @"ClickRepresentedObject";
 - (void)growlNotificationWasClicked:(id)contextId {
 	NSDictionary *context = (NSDictionary *)contextId;
 	// encapsulate target/selector/object
-	id target = [context[WLGrowlClickTargetKeyName] unsignedLongValue];
+	id target = (id) [context[WLGrowlClickTargetKeyName] unsignedLongValue];
 	SEL selector = NSSelectorFromString(context[WLGrowlClickSelectorKeyName]);
-	id object = [context[WLGrowlClickObjectKeyName] unsignedLongValue];
+	id object = (id)[context[WLGrowlClickObjectKeyName] unsignedLongValue];
 	// perform action
 	[target performSelector:selector withObject:object];
 }

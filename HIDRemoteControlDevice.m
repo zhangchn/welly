@@ -46,6 +46,8 @@
 @interface HIDRemoteControlDevice (IOKitMethods) 
 + (io_object_t) findRemoteDevice;
 - (IOHIDDeviceInterface**) createInterfaceForDevice: (io_object_t) hidDevice NS_RETURNS_INNER_POINTER;
+@property 	NSMutableArray*		   allCookies;
+
 @property (NS_NONATOMIC_IOSONLY, readonly) BOOL initializeCookies;
 @property (NS_NONATOMIC_IOSONLY, readonly) BOOL openDevice;
 @end
@@ -93,8 +95,6 @@
 - (void) dealloc {
 	[self removeNotifcationObserver];
 	[self stopListening:self];
-	[cookieToButtonMapping release];
-	[super dealloc];
 }
 
 - (void) sendRemoteButtonEvent: (RemoteControlEventIdentifier) event pressedDown: (BOOL) pressedDown {
@@ -112,7 +112,7 @@
 }
 	
 - (BOOL) isListeningToRemote {
-	return (hidDeviceInterface != NULL && allCookies != NULL && queue != NULL);	
+	return (hidDeviceInterface != NULL && self.allCookies != nil && queue != NULL);
 }
 
 - (void) setListeningToRemote: (BOOL) value {
@@ -210,9 +210,9 @@ cleanup:
 		sendNotification = YES;
 	}
 	
-	if (allCookies != nil) {
-		[allCookies autorelease];
-		allCookies = nil;
+	if (self.allCookies != nil) {
+		//[allCookies autorelease];
+		self.allCookies = nil;
 	}
 	
 	if (hidDeviceInterface != NULL) {
@@ -315,29 +315,29 @@ static void QueueCallbackFunction(void* target,  IOReturn result, void* refcon, 
 		NSLog(@"QueueCallbackFunction called with invalid target!");
 		return;
 	}
-	NSAutoreleasePool* pool = [[NSAutoreleasePool alloc] init];
+	@autoreleasepool {
 	
-	HIDRemoteControlDevice* remote = (HIDRemoteControlDevice*)target;	
-	IOHIDEventStruct event;	
-	AbsoluteTime 	 zeroTime = {0,0};
-	NSMutableString* cookieString = [NSMutableString string];
-	SInt32			 sumOfValues = 0;
-	while (result == kIOReturnSuccess)
-	{
-		result = (*[remote queue])->getNextEvent([remote queue], &event, zeroTime, 0);		
-		if ( result != kIOReturnSuccess )
-			continue;
-	
-		//printf("%d %d %d\n", event.elementCookie, event.value, event.longValue);		
+		HIDRemoteControlDevice* remote = (__bridge HIDRemoteControlDevice*)target;	
+		IOHIDEventStruct event;	
+		AbsoluteTime 	 zeroTime = {0,0};
+		NSMutableString* cookieString = [NSMutableString string];
+		SInt32			 sumOfValues = 0;
+		while (result == kIOReturnSuccess)
+		{
+			result = (*[remote queue])->getNextEvent([remote queue], &event, zeroTime, 0);		
+			if ( result != kIOReturnSuccess )
+				continue;
 		
-		if (((int)event.elementCookie)!=5) {
-			sumOfValues+=event.value;
-			[cookieString appendString:[NSString stringWithFormat:@"%d_", event.elementCookie]];
+			//printf("%d %d %d\n", event.elementCookie, event.value, event.longValue);		
+			
+			if (((int)event.elementCookie)!=5) {
+				sumOfValues+=event.value;
+				[cookieString appendString:[NSString stringWithFormat:@"%d_", event.elementCookie]];
+			}
 		}
-	}
-	[remote handleEventWithCookieString: cookieString sumOfValues: sumOfValues];
+		[remote handleEventWithCookieString: cookieString sumOfValues: sumOfValues];
 	
-	[pool release];
+	}
 }
 
 @implementation HIDRemoteControlDevice (IOKitMethods)
@@ -383,7 +383,7 @@ static void QueueCallbackFunction(void* target,  IOReturn result, void* refcon, 
 	long					usage;
 	long					usagePage;
 	id						object;
-	NSArray*				elements = nil;
+	NSArray				    *elements = nil;
 	NSDictionary*			element;
 	IOReturn success;
 	
@@ -393,16 +393,16 @@ static void QueueCallbackFunction(void* target,  IOReturn result, void* refcon, 
 	// for this device anyway, and thus, it's faster to iterate them
 	// ourselves. When grabbing only one or two elements, a matching
 	// dictionary should be passed in here instead of NULL.
-	success = (*handle)->copyMatchingElements(handle, NULL, (CFArrayRef*)&elements);
+    CFArrayRef				cfElements = NULL;
+	success = (*handle)->copyMatchingElements(handle, NULL, &cfElements);
 	
 	if (success == kIOReturnSuccess) {
-		
-		[elements autorelease];		
+        elements = (__bridge_transfer NSArray *)cfElements;
 		/*
 		cookies = calloc(NUMBER_OF_APPLE_REMOTE_ACTIONS, sizeof(IOHIDElementCookie)); 
 		memset(cookies, 0, sizeof(IOHIDElementCookie) * NUMBER_OF_APPLE_REMOTE_ACTIONS);
 		*/
-		allCookies = [[NSMutableArray alloc] init];
+		self.allCookies = [[NSMutableArray alloc] init];
 		
 		NSEnumerator *elementsEnumerator = [elements objectEnumerator];
 		
@@ -410,7 +410,7 @@ static void QueueCallbackFunction(void* target,  IOReturn result, void* refcon, 
 			//Get cookie
 			object = [element valueForKey: (NSString*)CFSTR(kIOHIDElementCookieKey) ];
 			if (object == nil || ![object isKindOfClass:[NSNumber class]]) continue;
-			if (object == 0 || CFGetTypeID(object) != CFNumberGetTypeID()) continue;
+			if (object == 0 || CFGetTypeID((__bridge CFTypeRef)(object)) != CFNumberGetTypeID()) continue;
 			cookie = (IOHIDElementCookie) [object longValue];
 			
 			//Get usage
@@ -423,7 +423,7 @@ static void QueueCallbackFunction(void* target,  IOReturn result, void* refcon, 
 			if (object == nil || ![object isKindOfClass:[NSNumber class]]) continue;			
 			usagePage = [object longValue];
 
-			[allCookies addObject: @((int)cookie)];
+			[self.allCookies addObject: @((int)cookie)];
 		}
 	} else {
 		return NO;
@@ -445,7 +445,7 @@ static void QueueCallbackFunction(void* target,  IOReturn result, void* refcon, 
 			result = (*queue)->create(queue, 0, 12);	//depth: maximum number of elements in queue before oldest elements in queue begin to be lost.
 
 			IOHIDElementCookie cookie;
-			NSEnumerator *allCookiesEnumerator = [allCookies objectEnumerator];
+			NSEnumerator *allCookiesEnumerator = [self.allCookies objectEnumerator];
 			
 			while ((cookie = (IOHIDElementCookie)[[allCookiesEnumerator nextObject] intValue])) {
 				(*queue)->addElement(queue, cookie, 0);
@@ -454,7 +454,7 @@ static void QueueCallbackFunction(void* target,  IOReturn result, void* refcon, 
 			// add callback for async events			
 			ioReturnValue = (*queue)->createAsyncEventSource(queue, &eventSource);			
 			if (ioReturnValue == KERN_SUCCESS) {
-				ioReturnValue = (*queue)->setEventCallout(queue,QueueCallbackFunction, self, NULL);
+				ioReturnValue = (*queue)->setEventCallout(queue,QueueCallbackFunction, (__bridge void *)(self), NULL);
 				if (ioReturnValue == KERN_SUCCESS) {
 					CFRunLoopAddSource(CFRunLoopGetCurrent(), eventSource, kCFRunLoopDefaultMode);
 					

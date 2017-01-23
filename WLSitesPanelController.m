@@ -17,24 +17,24 @@
 
 @interface WLSitesPanelController()
 /* Sites Array */
-@property (retain)   NSMutableArray *sites;
-@property (assign)   IBOutlet NSArrayController *sitesController;
+@property (strong)   NSMutableArray *sites;
+@property (weak)   IBOutlet NSArrayController *sitesController;
 
 /* Site Panel Outlets */
-@property (assign)   IBOutlet NSPanel *sitesPanel;
-@property (assign)   IBOutlet NSTableView *tableView;
-@property (assign)   IBOutlet NSTextField *siteNameField;
-@property (assign)   IBOutlet NSTextField *siteAddressField;
+@property (weak)   IBOutlet NSPanel *sitesPanel;
+@property (weak)   IBOutlet NSTableView *tableView;
+@property (weak)   IBOutlet NSTextField *siteNameField;
+@property (weak)   IBOutlet NSTextField *siteAddressField;
 
-@property (assign)   IBOutlet NSPopUpButton *proxyTypeButton;
-@property (assign)   IBOutlet NSTextField *proxyAddressField;
+@property (weak)   IBOutlet NSPopUpButton *proxyTypeButton;
+@property (weak)   IBOutlet NSTextField *proxyAddressField;
 
 /* Password Window Outlets */
-@property (assign)   IBOutlet NSPanel *passwordPanel;
-@property (assign)   IBOutlet NSSecureTextField *passwordField;
+@property (weak)   IBOutlet NSPanel *passwordPanel;
+@property (weak)   IBOutlet NSSecureTextField *passwordField;
 
 /* Observers */
-@property (assign)   NSMutableArray *sitesObservers;
+@property (strong)   NSMutableArray *sitesObservers;
 
 
 - (void)loadSites;
@@ -42,9 +42,9 @@
 
 /* sites accessors */
 - (id)objectInSitesAtIndex:(NSUInteger)index;
-- (void)getSites:(id *)objects 
-		   range:(NSRange)range;
-- (void)insertObject:(id)anObject 
+//- (void)getSites:(id *)objects 
+//		   range:(NSRange)range;
+- (void)insertObject:(id)anObject
 	  inSitesAtIndex:(NSUInteger)index;
 - (void)removeObjectFromSitesAtIndex:(NSUInteger)index;
 - (void)replaceObjectInSitesAtIndex:(NSUInteger)index 
@@ -85,11 +85,6 @@ SYNTHESIZE_SINGLETON_FOR_CLASS(WLSitesPanelController);
 	[_tableView registerForDraggedTypes:@[SiteTableViewDataType]];
 }
 
-- (void)dealloc {
-    [_sites release];
-	[_sitesObservers release];
-    [super dealloc];
-}
 
 #pragma mark -
 #pragma mark Save/Load Sites Array
@@ -147,7 +142,7 @@ SYNTHESIZE_SINGLETON_FOR_CLASS(WLSitesPanelController);
 
 - (void)openSitesPanelInWindow:(NSWindow *)mainWindow 
 				    andAddSite:(WLSite *)site {
-	site = [[site copy] autorelease];
+	site = [site copy];
     //[self performSelector:@selector(openSitesPanelInWindow:) withObject:mainWindow afterDelay:0.1];
 	[self openSitesPanelInWindow:mainWindow];
 	[_sitesController addObject:site];
@@ -162,7 +157,7 @@ SYNTHESIZE_SINGLETON_FOR_CLASS(WLSitesPanelController);
     
     if (a.count == 1) {
         WLSite *s = a[0];
-        [[WLMainFrameController sharedInstance] newConnectionWithSite:[[s copy] autorelease]];
+        [[WLMainFrameController sharedInstance] newConnectionWithSite:[s copy]];
     }
 }
 
@@ -293,10 +288,10 @@ SYNTHESIZE_SINGLETON_FOR_CLASS(WLSitesPanelController);
     return _sites[index];
 }
 
-- (void)getSites:(id *)objects 
-		   range:(NSRange)range {
-    [_sites getObjects:objects range:range];
-}
+//- (void)getSites:(id *)objects 
+//		   range:(NSRange)range {
+//    [_sites getObjects:objects range:range];
+//}
 
 - (void)insertObject:(id)anObject 
 	  inSitesAtIndex:(NSUInteger)index {

@@ -40,7 +40,7 @@
 @property (readonly) int cursorX;
 @property (readonly) int cursorY;
 @property cell **grid;
-@property (assign) WLTerminal *terminal;
+@property (weak) WLTerminal *terminal;
 - (instancetype)init NS_DESIGNATED_INITIALIZER;
 - (instancetype)initWithConnection:(WLConnection *)connection;
 - (void)dealloc;

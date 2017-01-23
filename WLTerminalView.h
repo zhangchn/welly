@@ -28,7 +28,7 @@
 	NSRange _markedRange;
 	
 	IBOutlet YLMarkedTextView *_textField;
-	IBOutlet WLEffectView *_effectView;
+	IBOutlet WLEffectView *__weak _effectView;
     
     int _selectionLocation;
     int _selectionLength;
@@ -44,7 +44,7 @@
 }
 @property (readonly, getter=isInUrlMode) BOOL inUrlMode;
 @property (readonly, getter=isMouseActive) BOOL mouseActive;
-@property (readonly) WLEffectView *effectView;
+@property (weak, readonly) WLEffectView *effectView;
 
 @property (NS_NONATOMIC_IOSONLY, readonly) BOOL shouldWarnCompose;
 
