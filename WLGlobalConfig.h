@@ -66,7 +66,7 @@ NSString *const WLEnglishFontSizeKeyName;
 	CFDictionaryRef _cCTAttribute[2][NUM_COLOR];
 	CFDictionaryRef _eCTAttribute[2][NUM_COLOR];
 }
-@property	(weak) NSArray *colorTable;
+@property	(strong) NSArray *colorTable;
 
 @property (readwrite, assign) int messageCount;
 @property (readwrite, assign) int row;
