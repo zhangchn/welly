@@ -222,8 +222,8 @@
         void *pass = 0;
 	
         OSStatus status = SecKeychainFindGenericPassword(nil,
-            strlen(service), service,
-            strlen(account), account,
+            (uint32_t)strlen(service), service,
+            (uint32_t)strlen(account), account,
             &len, &pass,
             nil);
         if (status == noErr) {

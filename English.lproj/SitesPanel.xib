@@ -400,8 +400,8 @@ ssh://[id@]your.site.org[:port]</string>
                                                             <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
                                                         </textFieldCell>
                                                     </textField>
-                                                    <button toolTip="点击此处设置或取消自动登录" imageHugsTitle="YES" id="24">
-                                                        <rect key="frame" x="275.5" y="282" width="19" height="19"/>
+                                                    <button toolTip="点击此处设置或取消自动登录" misplaced="YES" imageHugsTitle="YES" id="24">
+                                                        <rect key="frame" x="276" y="282" width="22" height="19"/>
                                                         <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMinY="YES"/>
                                                         <buttonCell key="cell" type="square" bezelStyle="shadowlessSquare" image="password" imagePosition="only" alignment="center" controlSize="small" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="67">
                                                             <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
@@ -429,6 +429,7 @@ ssh://[id@]your.site.org[:port]</string>
             <connections>
                 <outlet property="initialFirstResponder" destination="70" id="100"/>
             </connections>
+            <point key="canvasLocation" x="138.5" y="165"/>
         </window>
         <window title="Password" allowsToolTipsWhenApplicationIsInactive="NO" autorecalculatesKeyViewLoop="NO" hidesOnDeactivate="YES" oneShot="NO" visibleAtLaunch="NO" animationBehavior="default" id="3" userLabel="Password Panel" customClass="NSPanel">
             <windowStyleMask key="styleMask" titled="YES" utility="YES"/>

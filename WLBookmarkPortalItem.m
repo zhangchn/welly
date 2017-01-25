@@ -13,6 +13,7 @@
 @implementation WLBookmarkPortalItem
 #pragma mark -
 #pragma mark Init & dealloc
+
 - (instancetype)initWithSite:(WLSite *)site {
 	if (self = [self init]) {
 		self.site = site;

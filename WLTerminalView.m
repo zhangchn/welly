@@ -148,7 +148,7 @@ BOOL isEnglishNumberAlphabet(unsigned char c) {
 	range.location = [self convertIndexFromPoint:point];
 	range.length = 0;
 	
-	int r = range.location / self.maxColumn;
+	int r = (int)range.location / self.maxColumn;
 	int c = range.location % self.maxColumn;
 	cell *currRow = [self.frontMostTerminal cellsOfRow:r];
 	[self.frontMostTerminal updateDoubleByteStateForRow:r];
@@ -394,6 +394,19 @@ BOOL isEnglishNumberAlphabet(unsigned char c) {
 	[self writePDFInsideRect:imageRect toPasteboard:pb];
 }
 
+
+- (void)warnPasteWithCompletion:(void (^)(void))completion {
+    NSAlert *alert = [[NSAlert alloc] init];
+    alert.messageText = NSLocalizedString(@"Are you sure you want to paste?", @"Sheet Title");
+    alert.informativeText = NSLocalizedString(@"It seems that you are not in edit mode. Pasting may cause unpredictable behaviors. Are you sure you want to paste?", @"Sheet Message");
+    [alert addButtonWithTitle:NSLocalizedString(@"Confirm", @"Default Button")];
+    [alert addButtonWithTitle:NSLocalizedString(@"Cancel", @"Cancel Button")];
+    // TODO:
+    [alert beginSheetModalForWindow:self.window completionHandler:^(NSModalResponse returnCode) {
+        completion();
+    }];
+}
+/*
 - (void)warnPasteWithSelector:(SEL)didEndSelector {
     NSAlert *alert = [[NSAlert alloc] init];
     alert.messageText = NSLocalizedString(@"Are you sure you want to paste?", @"Sheet Title");
@@ -416,6 +429,8 @@ BOOL isEnglishNumberAlphabet(unsigned char c) {
 //					  nil,
 //					  NSLocalizedString(@"It seems that you are not in edit mode. Pasting may cause unpredictable behaviors. Are you sure you want to paste?", @"Sheet Message"));
 }
+*/
+
 
 - (BOOL)shouldWarnPaste {
 	return [[NSUserDefaults standardUserDefaults] boolForKey:WLSafePasteEnabledKeyName] && self.frontMostTerminal.bbsState.state != BBSComposePost;
@@ -424,7 +439,11 @@ BOOL isEnglishNumberAlphabet(unsigned char c) {
 - (void)pasteColor:(id)sender {
     if (!self.connected) return;
 	if ([self shouldWarnPaste]) {
-		[self warnPasteWithSelector:@selector(confirmPasteColor:returnCode:contextInfo:)];
+		//[self warnPasteWithSelector:@selector(confirmPasteColor:returnCode:contextInfo:)];
+        WLTerminalView * __weak weakSelf = self;
+        [self warnPasteWithCompletion:^{
+            [weakSelf confirmPasteColor:nil returnCode:0 contextInfo:NULL];
+        }];
 	} else {
 		[self performPasteColor];
 	}
@@ -433,7 +452,12 @@ BOOL isEnglishNumberAlphabet(unsigned char c) {
 - (void)paste:(id)sender {
     if (!self.connected) return;
 	if ([self shouldWarnPaste]) {
-		[self warnPasteWithSelector:@selector(confirmPaste:returnCode:contextInfo:)];
+		//[self warnPasteWithSelector:@selector(confirmPaste:returnCode:contextInfo:)];
+        WLTerminalView * __weak weakSelf = self;
+        [self warnPasteWithCompletion:^{
+            [weakSelf confirmPaste:nil returnCode:0 contextInfo:NULL];
+        }];
+
 	} else {
 		[self performPaste];
 	}
@@ -442,7 +466,12 @@ BOOL isEnglishNumberAlphabet(unsigned char c) {
 - (void)pasteWrap:(id)sender {
     if (!self.connected) return;
 	if ([self shouldWarnPaste]) {
-		[self warnPasteWithSelector:@selector(confirmPasteWrap:returnCode:contextInfo:)];
+		//[self warnPasteWithSelector:@selector(confirmPasteWrap:returnCode:contextInfo:)];
+        WLTerminalView * __weak weakSelf = self;
+        [self warnPasteWithCompletion:^{
+            [weakSelf confirmPasteWrap:nil returnCode:0 contextInfo:NULL];
+        }];
+
 	} else {
 		[self performPasteWrap];
 	}
@@ -1124,7 +1153,7 @@ BOOL isEnglishNumberAlphabet(unsigned char c) {
 		}
 	} else if ([attribute isEqual:NSAccessibilityNumberOfCharactersAttribute]) {
 		if (_selectionLength != 0) {
-			return [NSNumber numberWithUnsignedInteger:_selectionLength];
+			return @(_selectionLength);
 		} else {
 			return @([self rangeForWordAtPoint:self.mouseLocationInView].length);
 		}
@@ -1143,7 +1172,7 @@ BOOL isEnglishNumberAlphabet(unsigned char c) {
 		NSRange range = ((NSValue *)parameter).rangeValue;
 		NSAttributedString *attrString = [self.frontMostTerminal attributedStringAtIndex:range.location 
 																					length:range.length];
-		return [attrString RTFFromRange:NSMakeRange(0, attrString.length) documentAttributes:nil];
+        return [attrString RTFFromRange:NSMakeRange(0, attrString.length) documentAttributes:@{}];
 	} else if ([attribute isEqual:NSAccessibilityLineForIndexParameterizedAttribute]) {
 		NSUInteger index = ((NSNumber *)parameter).unsignedIntegerValue;
 		return @(index/self.maxColumn);

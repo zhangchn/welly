@@ -532,16 +532,15 @@ static NSBezierPath *gSymbolLowerLinePath;
 	return NO;
 }
 
-- (void)drawSymbol:(NSObject *)symbol 
-	  withSelector:(SEL)selector	   
-	 leftAttribute:(attribute)attrL 
-	rightAttribute:(attribute)attrR {
-	int colorIndexL = fgColorIndexOfAttribute(attrL);
+- (void)strokeSymbol:(NSBezierPath *)symbol
+       leftAttribute:(attribute)attrL
+      rightAttribute:(attribute)attrR {
+    int colorIndexL = fgColorIndexOfAttribute(attrL);
 	int colorIndexR = fgColorIndexOfAttribute(attrR);
 	NSColor *colorR = [gConfig colorAtIndex:colorIndexR hilite:fgBoldOfAttribute(attrR)];
 	
 	[colorR set];
-	[symbol performSelector:selector];
+	[symbol stroke];
 	if (colorIndexL != colorIndexR || fgBoldOfAttribute(attrL) != fgBoldOfAttribute(attrR)) {
 		NSColor *colorL = [gConfig colorAtIndex:fgColorIndexOfAttribute(attrL) hilite:fgBoldOfAttribute(attrL)];
 		[gLeftImage lockFocus];
@@ -552,11 +551,11 @@ static NSBezierPath *gSymbolLowerLinePath;
 		NSRectFill(rect);
 		
 		[colorL set];
-		[symbol performSelector:selector];
+		[symbol stroke];
 		[gLeftImage unlockFocus];
 		[gLeftImage drawAtPoint:NSZeroPoint
 					   fromRect:rect
-					  operation:NSCompositeCopy
+					  operation:NSCompositingOperationCopy
 					   fraction:1.0];		
 	}
 }
@@ -599,7 +598,7 @@ static NSBezierPath *gSymbolLowerLinePath;
 	[gSymbolImage unlockFocus];
 	[gSymbolImage drawAtPoint:NSZeroPoint
 					 fromRect:rect
-					operation:NSCompositeCopy
+					operation:NSCompositingOperationCopy
 					 fraction:1.0];
 	
 	if (colorIndexL != colorIndexR || fgBoldOfAttribute(attrL) != fgBoldOfAttribute(attrR)) {
@@ -624,106 +623,96 @@ static NSBezierPath *gSymbolLowerLinePath;
 }
 
 - (void)drawSpecialSymbol:(unichar)ch 
-				   forRow:(int)r 
-				   column:(int)c 
-			leftAttribute:(attribute)attrL 
-		   rightAttribute:(attribute)attrR {
-	int colorIndexL = fgColorIndexOfAttribute(attrL);
-	int colorIndexR = fgColorIndexOfAttribute(attrR);
-	NSPoint origin = NSMakePoint(c * _fontWidth, (_maxRow - 1 - r) * _fontHeight);
-	
-	NSAffineTransform *xform = [NSAffineTransform transform]; 
-	[xform translateXBy:origin.x yBy:origin.y];
-	[xform concat];
-	
-	NSColor *colorL = [gConfig colorAtIndex:colorIndexL hilite:fgBoldOfAttribute(attrL)];
-	NSColor *colorR = [gConfig colorAtIndex:colorIndexR hilite:fgBoldOfAttribute(attrR)];
-	if (ch == 0x25FC) { // ◼ BLACK SQUARE
-		[colorL set];
-		NSRectFill(gSymbolBlackSquareRectL);
-		[colorR set];
-		NSRectFill(gSymbolBlackSquareRectR);
-	} else if (ch >= 0x2581 && ch <= 0x2588) { // BLOCK ▁▂▃▄▅▆▇█
-		[colorL set];
-		NSRectFill(gSymbolLowerBlockRectL[ch - 0x2581]);
-		[colorR set];
-		NSRectFill(gSymbolLowerBlockRectR[ch - 0x2581]);
-	} else if (ch >= 0x2589 && ch <= 0x258F) { // BLOCK ▉▊▋▌▍▎▏
-		[colorL set];
-		NSRectFill(gSymbolLeftBlockRectL[ch - 0x2589]);
-		if (ch <= 0x259B) {
-			[colorR set];
-			NSRectFill(gSymbolLeftBlockRectR[ch - 0x2589]);
-		}
-	} else if (ch == 0x2594) {
-		[colorL set];
-		NSRectFill(gSymbolUpperBlockRectL);
-		[colorR set];
-		NSRectFill(gSymbolUpperBlockRectR);
-	} else if (ch == 0x2595) {
-		[colorR set];
-		NSRectFill(gSymbolRightBlockRect);
-	} else if (ch >= 0x25E2 && ch <= 0x25E5) { // TRIANGLE ◢◣◤◥
-		[colorL set];
-		[gSymbolTrianglePathL[ch - 0x25E2] fill];
-		[colorR set];
-		[gSymbolTrianglePathR[ch - 0x25E2] fill];
-	} else if (ch >= 0x2571 && ch <= 0x2573) { // DIAGONAL ╱╲╳
-		[self drawSymbol:gSymbolDiagonalPath[ch-0x2571] 
-			withSelector:@selector(stroke)
-		   leftAttribute:attrL 
-		  rightAttribute:attrR];
-	} else if (ch >= 0x2550 && ch <= 0x256c) { // DUAL LINE
-		[self drawSymbol:[self dualLinePathWithIndex:(ch-0x2550)]
-			withSelector:@selector(stroke) 
-		   leftAttribute:attrL 
-		  rightAttribute:attrR];
-	} else if (ch >= 0x256d && ch <= 0x2570) { // ARC
-		[self drawSymbol:[self arcPathWithIndex:(ch-0x256d)]
-			withSelector:@selector(stroke) 
-		   leftAttribute:attrL 
-		  rightAttribute:attrR];
-	} else if (ch >= 0x250c && ch <= 0x254b) { // SINGLE LINE
-		[self drawSingleLineSymbol:ch 
-					 leftAttribute:attrL 
-					rightAttribute:attrR];
-	} else if (ch >= 0x2500 && ch <= 0x2503) { // STRAIGHT LINE ─ ━ │ ┃
-		[self drawSymbol:[self straightLineWithIndex:ch-0x2500]
-			withSelector:@selector(stroke) 
-		   leftAttribute:attrL 
-		  rightAttribute:attrR];
-	} else if (ch == 0x2014) {
-		[self drawSymbol:[self straightLineWithIndex:0]
-			withSelector:@selector(stroke) 
-		   leftAttribute:attrL 
-		  rightAttribute:attrR];
-	} else if (ch == 0xfe33) { // ︳
-		[self drawSymbol:gSymbolLeftLinePath 
-			withSelector:@selector(stroke) 
-		   leftAttribute:attrL 
-		  rightAttribute:attrR];
-	} else if (ch == 0xffe3) { // ￣
-		[self drawSymbol:gSymbolUpperLinePath 
-			withSelector:@selector(stroke) 
-		   leftAttribute:attrL 
-		  rightAttribute:attrR];
-	} else if (ch == 0xff3f) { // ＿
-		[self drawSymbol:gSymbolLowerLinePath 
-			withSelector:@selector(stroke) 
-		   leftAttribute:attrL 
-		  rightAttribute:attrR];
-	} else if (ch == 0xff0f) { // ／
-		[self drawSymbol:gSymbolDiagonalPath[0] 
-			withSelector:@selector(stroke)
-		   leftAttribute:attrL 
-		  rightAttribute:attrR];
-	} else if (ch == 0xfe68 || ch == 0xff3c) { // ﹨ ＼
-		[self drawSymbol:gSymbolDiagonalPath[1] 
-			withSelector:@selector(stroke)
-		   leftAttribute:attrL 
-		  rightAttribute:attrR];
-	}
-	
+                   forRow:(int)r
+                   column:(int)c
+            leftAttribute:(attribute)attrL
+           rightAttribute:(attribute)attrR {
+    int colorIndexL = fgColorIndexOfAttribute(attrL);
+    int colorIndexR = fgColorIndexOfAttribute(attrR);
+    NSPoint origin = NSMakePoint(c * _fontWidth, (_maxRow - 1 - r) * _fontHeight);
+    
+    NSAffineTransform *xform = [NSAffineTransform transform];
+    [xform translateXBy:origin.x yBy:origin.y];
+    [xform concat];
+    
+    NSColor *colorL = [gConfig colorAtIndex:colorIndexL hilite:fgBoldOfAttribute(attrL)];
+    NSColor *colorR = [gConfig colorAtIndex:colorIndexR hilite:fgBoldOfAttribute(attrR)];
+    if (ch == 0x25FC) { // ◼ BLACK SQUARE
+        [colorL set];
+        NSRectFill(gSymbolBlackSquareRectL);
+        [colorR set];
+        NSRectFill(gSymbolBlackSquareRectR);
+    } else if (ch >= 0x2581 && ch <= 0x2588) { // BLOCK ▁▂▃▄▅▆▇█
+        [colorL set];
+        NSRectFill(gSymbolLowerBlockRectL[ch - 0x2581]);
+        [colorR set];
+        NSRectFill(gSymbolLowerBlockRectR[ch - 0x2581]);
+    } else if (ch >= 0x2589 && ch <= 0x258F) { // BLOCK ▉▊▋▌▍▎▏
+        [colorL set];
+        NSRectFill(gSymbolLeftBlockRectL[ch - 0x2589]);
+        if (ch <= 0x259B) {
+            [colorR set];
+            NSRectFill(gSymbolLeftBlockRectR[ch - 0x2589]);
+        }
+    } else if (ch == 0x2594) {
+        [colorL set];
+        NSRectFill(gSymbolUpperBlockRectL);
+        [colorR set];
+        NSRectFill(gSymbolUpperBlockRectR);
+    } else if (ch == 0x2595) {
+        [colorR set];
+        NSRectFill(gSymbolRightBlockRect);
+    } else if (ch >= 0x25E2 && ch <= 0x25E5) { // TRIANGLE ◢◣◤◥
+        [colorL set];
+        [gSymbolTrianglePathL[ch - 0x25E2] fill];
+        [colorR set];
+        [gSymbolTrianglePathR[ch - 0x25E2] fill];
+    } else if (ch >= 0x2571 && ch <= 0x2573) { // DIAGONAL ╱╲╳
+        [self strokeSymbol:gSymbolDiagonalPath[ch-0x2571]
+             leftAttribute:attrL
+            rightAttribute:attrR];
+    } else if (ch >= 0x2550 && ch <= 0x256c) { // DUAL LINE
+        [self strokeSymbol:[self dualLinePathWithIndex:(ch-0x2550)]
+             leftAttribute:attrL
+            rightAttribute:attrR];
+    } else if (ch >= 0x256d && ch <= 0x2570) { // ARC
+        [self strokeSymbol:[self arcPathWithIndex:(ch-0x256d)]
+             leftAttribute:attrL
+            rightAttribute:attrR];
+    } else if (ch >= 0x250c && ch <= 0x254b) { // SINGLE LINE
+        [self drawSingleLineSymbol:ch
+                     leftAttribute:attrL
+                    rightAttribute:attrR];
+    } else if (ch >= 0x2500 && ch <= 0x2503) { // STRAIGHT LINE ─ ━ │ ┃
+        [self strokeSymbol:[self straightLineWithIndex:ch-0x2500]
+             leftAttribute:attrL
+            rightAttribute:attrR];
+    } else if (ch == 0x2014) {
+        [self strokeSymbol:[self straightLineWithIndex:0]
+             leftAttribute:attrL
+            rightAttribute:attrR];
+    } else if (ch == 0xfe33) { // ︳
+        [self strokeSymbol:gSymbolLeftLinePath
+             leftAttribute:attrL
+            rightAttribute:attrR];
+    } else if (ch == 0xffe3) { // ￣
+        [self strokeSymbol:gSymbolUpperLinePath
+             leftAttribute:attrL
+            rightAttribute:attrR];
+    } else if (ch == 0xff3f) { // ＿
+        [self strokeSymbol:gSymbolLowerLinePath 
+             leftAttribute:attrL
+            rightAttribute:attrR];
+    } else if (ch == 0xff0f) { // ／
+        [self strokeSymbol:gSymbolDiagonalPath[0]
+             leftAttribute:attrL 
+            rightAttribute:attrR];
+    } else if (ch == 0xfe68 || ch == 0xff3c) { // ﹨ ＼
+        [self strokeSymbol:gSymbolDiagonalPath[1] 
+             leftAttribute:attrL
+            rightAttribute:attrR];
+    }
+    
 	[xform invert];
 	[xform concat];
 }

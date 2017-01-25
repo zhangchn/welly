@@ -401,7 +401,6 @@ SYNTHESIZE_SINGLETON_FOR_CLASS(WLGlobalConfig);
     if (!c)
 		c = [NSColor colorWithDeviceRed:0.00 green:0.00 blue:0.00 alpha:1.0];
     if (c != _colorTable[0][0]) {
-        _colorTable[0][0];
         _colorTable[0][0] = [c colorUsingColorSpaceName:NSCalibratedRGBColorSpace];
     }
     [[NSUserDefaults standardUserDefaults] setMyColor:c forKey:@"ColorBlack"];
@@ -410,7 +409,6 @@ SYNTHESIZE_SINGLETON_FOR_CLASS(WLGlobalConfig);
 - (void)setColorBlackHilite:(NSColor *)c {
     if (!c)c = [NSColor colorWithDeviceRed:0.25 green:0.25 blue:0.25 alpha:1.0];
     if (c != _colorTable[1][0]) {
-        _colorTable[1][0];
         _colorTable[1][0] = [c colorUsingColorSpaceName:NSCalibratedRGBColorSpace];
     }
     [[NSUserDefaults standardUserDefaults] setMyColor:c forKey:@"ColorBlackHilite"];
@@ -420,7 +418,6 @@ SYNTHESIZE_SINGLETON_FOR_CLASS(WLGlobalConfig);
 - (void)setColorRed:(NSColor *)c {
     if (!c)c = [NSColor colorWithDeviceRed:0.50 green:0.00 blue:0.00 alpha:1.0];
     if (c != _colorTable[0][1]) {
-        _colorTable[0][1];
         _colorTable[0][1] = [c colorUsingColorSpaceName:NSCalibratedRGBColorSpace];
     }
     [[NSUserDefaults standardUserDefaults] setMyColor:c forKey:@"ColorRed"];
@@ -429,7 +426,6 @@ SYNTHESIZE_SINGLETON_FOR_CLASS(WLGlobalConfig);
 - (void)setColorRedHilite:(NSColor *)c {
     if (!c)c = [NSColor colorWithDeviceRed:1.00 green:0.00 blue:0.00 alpha:1.0];
     if (c != _colorTable[1][1]) {
-        _colorTable[1][1];
         _colorTable[1][1] = [c colorUsingColorSpaceName:NSCalibratedRGBColorSpace];
     }
     [[NSUserDefaults standardUserDefaults] setMyColor:c forKey:@"ColorRedHilite"];
@@ -448,7 +444,6 @@ SYNTHESIZE_SINGLETON_FOR_CLASS(WLGlobalConfig);
 - (void)setColorGreenHilite:(NSColor *)c {
     if (!c)c = [NSColor colorWithDeviceRed:0.00 green:1.00 blue:0.00 alpha:1.0];
     if (c != _colorTable[1][2]) {
-        _colorTable[1][2];
         _colorTable[1][2] = [c colorUsingColorSpaceName:NSCalibratedRGBColorSpace];
     }
     [[NSUserDefaults standardUserDefaults] setMyColor:c forKey:@"ColorGreenHilite"];
@@ -458,7 +453,6 @@ SYNTHESIZE_SINGLETON_FOR_CLASS(WLGlobalConfig);
 - (void)setColorYellow:(NSColor *)c {
     if (!c)c = [NSColor colorWithDeviceRed:0.50 green:0.50 blue:0.00 alpha:1.0];
     if (c != _colorTable[0][3]) {
-        _colorTable[0][3];
         _colorTable[0][3] = [c colorUsingColorSpaceName:NSCalibratedRGBColorSpace];
     }
     [[NSUserDefaults standardUserDefaults] setMyColor:c forKey:@"ColorYellow"];
@@ -467,7 +461,6 @@ SYNTHESIZE_SINGLETON_FOR_CLASS(WLGlobalConfig);
 - (void)setColorYellowHilite:(NSColor *)c {
     if (!c)c = [NSColor colorWithDeviceRed:1.00 green:1.00 blue:0.00 alpha:1.0];
     if (c != _colorTable[1][3]) {
-        _colorTable[1][3];
         _colorTable[1][3] = [c colorUsingColorSpaceName:NSCalibratedRGBColorSpace];
     }
     [[NSUserDefaults standardUserDefaults] setMyColor:c forKey:@"ColorYellowHilite"];
@@ -477,7 +470,6 @@ SYNTHESIZE_SINGLETON_FOR_CLASS(WLGlobalConfig);
 - (void)setColorBlue:(NSColor *)c {
     if (!c)c = [NSColor colorWithDeviceRed:0.00 green:0.00 blue:0.50 alpha:1.0];
     if (c != _colorTable[0][4]) {
-        _colorTable[0][4];
         _colorTable[0][4] = [c colorUsingColorSpaceName:NSCalibratedRGBColorSpace];
     }
     [[NSUserDefaults standardUserDefaults] setMyColor:c forKey:@"ColorBlue"];
@@ -486,7 +478,6 @@ SYNTHESIZE_SINGLETON_FOR_CLASS(WLGlobalConfig);
 - (void)setColorBlueHilite:(NSColor *)c {
     if (!c)c = [NSColor colorWithDeviceRed:0.00 green:0.00 blue:1.00 alpha:1.0];
     if (c != _colorTable[1][4]) {
-        _colorTable[1][4];
         _colorTable[1][4] = [c colorUsingColorSpaceName:NSCalibratedRGBColorSpace];
     }
     [[NSUserDefaults standardUserDefaults] setMyColor:c forKey:@"ColorBlueHilite"];
@@ -496,7 +487,6 @@ SYNTHESIZE_SINGLETON_FOR_CLASS(WLGlobalConfig);
 - (void)setColorMagenta:(NSColor *)c {
     if (!c)c = [NSColor colorWithDeviceRed:0.50 green:0.00 blue:0.50 alpha:1.0];
     if (c != _colorTable[0][5]) {
-        _colorTable[0][5];
         _colorTable[0][5] = [c colorUsingColorSpaceName:NSCalibratedRGBColorSpace];
     }
     [[NSUserDefaults standardUserDefaults] setMyColor:c forKey:@"ColorMagenta"];
@@ -505,7 +495,6 @@ SYNTHESIZE_SINGLETON_FOR_CLASS(WLGlobalConfig);
 - (void)setColorMagentaHilite:(NSColor *)c {
     if (!c)c = [NSColor colorWithDeviceRed:1.00 green:0.00 blue:1.00 alpha:1.0];
     if (c != _colorTable[1][5]) {
-        _colorTable[1][5];
         _colorTable[1][5] = [c colorUsingColorSpaceName:NSCalibratedRGBColorSpace];
     }
     [[NSUserDefaults standardUserDefaults] setMyColor:c forKey:@"ColorMagentaHilite"];
@@ -515,7 +504,6 @@ SYNTHESIZE_SINGLETON_FOR_CLASS(WLGlobalConfig);
 - (void)setColorCyan:(NSColor *)c {
     if (!c)c = [NSColor colorWithDeviceRed:0.00 green:0.50 blue:0.50 alpha:1.0];
     if (c != _colorTable[0][6]) {
-        _colorTable[0][6];
         _colorTable[0][6] = [c colorUsingColorSpaceName:NSCalibratedRGBColorSpace];
     }
     [[NSUserDefaults standardUserDefaults] setMyColor:c forKey:@"ColorCyan"];
@@ -524,7 +512,6 @@ SYNTHESIZE_SINGLETON_FOR_CLASS(WLGlobalConfig);
 - (void)setColorCyanHilite:(NSColor *)c {
     if (!c)c = [NSColor colorWithDeviceRed:0.00 green:1.00 blue:1.00 alpha:1.0];
     if (c != _colorTable[1][6]) {
-        _colorTable[1][6];
         _colorTable[1][6] = [c colorUsingColorSpaceName:NSCalibratedRGBColorSpace];
     }
     [[NSUserDefaults standardUserDefaults] setMyColor:c forKey:@"ColorCyanHilite"];
@@ -534,7 +521,6 @@ SYNTHESIZE_SINGLETON_FOR_CLASS(WLGlobalConfig);
 - (void)setColorWhite:(NSColor *)c {
     if (!c)c = [NSColor colorWithDeviceRed:0.50 green:0.50 blue:0.50 alpha:1.0];
     if (c != _colorTable[0][7]) {
-        _colorTable[0][7];
         _colorTable[0][7] = [c colorUsingColorSpaceName:NSCalibratedRGBColorSpace];
     }
     [[NSUserDefaults standardUserDefaults] setMyColor:c forKey:@"ColorWhite"];
@@ -543,7 +529,6 @@ SYNTHESIZE_SINGLETON_FOR_CLASS(WLGlobalConfig);
 - (void)setColorWhiteHilite:(NSColor *)c {
     if (!c)c = [NSColor colorWithDeviceRed:1.00 green:1.00 blue:1.00 alpha:1.0];
     if (c != _colorTable[1][7]) {
-        _colorTable[1][7];
         _colorTable[1][7] = [c colorUsingColorSpaceName:NSCalibratedRGBColorSpace];
     }
     [[NSUserDefaults standardUserDefaults] setMyColor:c forKey:@"ColorWhiteHilite"];
@@ -553,7 +538,6 @@ SYNTHESIZE_SINGLETON_FOR_CLASS(WLGlobalConfig);
 - (void)setColorBG:(NSColor *)c {
     if (!c)c = [NSColor colorWithDeviceRed:0.00 green:0.00 blue:0.00 alpha:1.0];
     if (c != _colorTable[0][9]) {
-        _colorTable[0][9];
         _colorTable[0][9] = [c colorUsingColorSpaceName:NSCalibratedRGBColorSpace];
 //        if ([self colorBGHilite] != c) [self setColorBGHilite: c];
     }
@@ -564,7 +548,6 @@ SYNTHESIZE_SINGLETON_FOR_CLASS(WLGlobalConfig);
 - (void)setColorBGHilite:(NSColor *)c {
     if (!c)c = [NSColor colorWithDeviceRed:0.00 green:0.00 blue:0.00 alpha:1.0];
     if (c != _colorTable[1][9]) {
-        _colorTable[1][9];
         _colorTable[1][9] = [c colorUsingColorSpaceName:NSCalibratedRGBColorSpace];
 //        if ([self colorBG] != c) [self setColorBG: c];
     }

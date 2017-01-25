@@ -35,15 +35,13 @@
 
 @interface WLPortalItem : NSObject <WLPortalSource> {
     NSString *_title;
-    NSImage  *__weak _image;
+    NSImage *_image;
 }
 
-@property (readonly) NSString *imageTitle;
-@property (weak, readonly) NSImage *image;
-
-- (instancetype)initWithTitle:(NSString *)title NS_DESIGNATED_INITIALIZER;
-- (instancetype)initWithImage:(NSImage *)theImage NS_DESIGNATED_INITIALIZER;
-- (instancetype)initWithImage:(NSImage *)theImage title:(NSString *)title NS_DESIGNATED_INITIALIZER;
+@property (readonly) NSImage *image;
+- (instancetype)initWithTitle:(NSString *)title ;
+- (instancetype)initWithImage:(NSImage *)theImage;
+- (instancetype)initWithImage:(NSImage *)theImage title:(NSString *)title;
 
 #pragma mark -
 #pragma mark IKImageBrowserItem protocol

@@ -12,7 +12,7 @@
 
 // suppress warnings
 @interface PSMTabBarControl ()
-@property (NS_NONATOMIC_IOSONLY, readonly, copy) NSArray *cells;
+@property (nonatomic, copy) NSArray *cells;
 - (id)cellForPoint:(NSPoint)mousePt 
 		 cellFrame:(NSRect *)cellFrame;
 - (void)closeTabClick:(id)sender;

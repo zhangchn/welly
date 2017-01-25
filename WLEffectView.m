@@ -202,7 +202,7 @@
 	if (!_buttonLayer)
 		[self setupButtonLayer];
 	
-	CATextLayer *textLayer = _buttonLayer.sublayers.lastObject;
+	CATextLayer *textLayer = (CATextLayer *) _buttonLayer.sublayers.lastObject;
 	
 	// Set the message to the text layer
 	textLayer.string = message;
@@ -343,7 +343,7 @@
 		[self setupPopUpLayer];
     }	
 	
-	CATextLayer *textLayer = _popUpLayer.sublayers.lastObject;
+	CATextLayer *textLayer = (CATextLayer *)_popUpLayer.sublayers.lastObject;
 	
 	// Set the message to the text layer
 	textLayer.string = message;

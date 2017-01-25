@@ -20,7 +20,7 @@
 
 
 @interface WLSitesPanelController : NSObject
-@property (weak, readonly) NSArray *sites;
+@property (readonly) NSArray *sites;
 
 /* Accessors */
 + (WLSitesPanelController *)sharedInstance;

@@ -66,12 +66,12 @@ NSString *const WLDefaultSiteName = @"DefaultSiteName";
 
 - (NSDictionary *)dictionaryOfSite {
     return @{YLSiteNameAttributeName: self.name ?: @"", YLSiteAddressAttributeName: self.address,
-            YLSiteEncodingAttributeName: [NSNumber numberWithUnsignedShort:self.encoding], 
-            YLSiteAnsiColorKeyAttributeName: [NSNumber numberWithUnsignedShort:self.ansiColorKey], 
+            YLSiteEncodingAttributeName: @(self.encoding),
+            YLSiteAnsiColorKeyAttributeName: @(self.ansiColorKey),
             YLSiteDetectDoubleByteAttributeName: @(self.shouldDetectDoubleByte),
 			YLSiteEnableMouseAttributeName: @(self.shouldEnableMouse),
 			YLSiteAutoReplyStringAttributeName: self.autoReplyString ?: @"",
-            WLSiteProxyTypeAttributeName: [NSNumber numberWithUnsignedShort:self.proxyType],
+            WLSiteProxyTypeAttributeName: @(self.proxyType),
             WLSiteProxyAddressAttributeName: self.proxyAddress ?: @""};
 }
 

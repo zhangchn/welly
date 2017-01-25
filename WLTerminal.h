@@ -28,10 +28,10 @@
     //BOOL **_dirty;
 	// unichar *_textBuf;
 }
-@property unsigned int maxRow;
-@property unsigned int maxColumn;
-@property unsigned int cursorColumn;
-@property unsigned int cursorRow;
+@property int maxRow;
+@property int maxColumn;
+@property int cursorColumn;
+@property int cursorRow;
 @property cell **grid;
 @property (weak, nonatomic) WLConnection *connection;
 @property (assign, readwrite) WLBBSType bbsType;

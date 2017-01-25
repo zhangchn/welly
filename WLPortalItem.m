@@ -11,8 +11,11 @@
 
 static NSImage *default_image;
 
+@interface WLPortalItem ()
+@property (copy) NSString *imageTitle;
+@end
+
 @implementation WLPortalItem
-@synthesize imageTitle = _title;
 @synthesize image = _image;
 #pragma mark -
 #pragma mark Initialize
@@ -57,10 +60,6 @@ static NSImage *default_image;
         return default_image;
     }
     return _image;
-}
-
-- (NSString*)imageTitle {
-    return _title;
 }
 
 #pragma mark -
