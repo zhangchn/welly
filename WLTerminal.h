@@ -51,17 +51,17 @@
 - (void)removeAllDirtyMarks;
 
 /* Access Data */
-- (attribute)attrAtRow:(int)r 
-				column:(int)c ;
-- (NSString *)stringAtIndex:(int)begin 
-					 length:(int)length;
+- (attribute)attrAtRow:(NSInteger)r
+				column:(NSInteger)c ;
+- (NSString *)stringAtIndex:(NSInteger)begin
+					 length:(NSInteger)length;
 - (NSAttributedString *)attributedStringAtIndex:(NSUInteger)location 
 										 length:(NSUInteger)length;
-- (cell *)cellsOfRow:(int)r NS_RETURNS_INNER_POINTER;
-- (cell)cellAtIndex:(int)index;
+- (cell *)cellsOfRow:(NSInteger)r NS_RETURNS_INNER_POINTER;
+- (cell)cellAtIndex:(NSInteger)index;
 
 /* Update State */
-- (void)updateDoubleByteStateForRow:(int)r;
+- (void)updateDoubleByteStateForRow:(NSInteger)r;
 - (void)updateBBSState;
 
 /* Accessor */

@@ -39,6 +39,8 @@ BOOL isEnglishNumberAlphabet(unsigned char c) {
 
 
 @interface WLTerminalView ()
+@property (assign) NSInteger selectionLocation;
+@property (assign) NSInteger selectionLength;
 - (void)drawSelection;
 
 // safe_paste
@@ -85,7 +87,7 @@ BOOL isEnglishNumberAlphabet(unsigned char c) {
 #pragma mark -
 #pragma mark Conversion
 
-- (int)convertIndexFromPoint:(NSPoint)p {
+- (NSInteger)convertIndexFromPoint:(NSPoint)p {
 	if (p.x >= self.maxColumn * self.fontWidth)
 		p.x = self.maxColumn * self.fontWidth - 0.001;
     if (p.y >= self.maxRow * self.fontHeight)
@@ -94,16 +96,16 @@ BOOL isEnglishNumberAlphabet(unsigned char c) {
 		p.x = 0;
     if (p.y < 0)
 		p.y = 0;
-    int cx, cy = 0;
+    NSInteger cx, cy = 0;
     cx = (int) ((CGFloat) p.x / self.fontWidth);
     cy = self.maxRow - (int) ((CGFloat) p.y / self.fontHeight) - 1;
     return cy * self.maxColumn + cx;
 }
 
-- (NSRect)rectAtRow:(int)r 
-			 column:(int)c 
-			 height:(int)h 
-			  width:(int)w {
+- (NSRect)rectAtRow:(NSInteger)r
+			 column:(NSInteger)c
+			 height:(NSInteger)h
+			  width:(NSInteger)w {
 	return NSMakeRect(c * self.fontWidth, (self.maxRow - h - r) * self.fontHeight, self.fontWidth * w, self.fontHeight * h);
 }
 
@@ -111,28 +113,28 @@ BOOL isEnglishNumberAlphabet(unsigned char c) {
 	if (_selectionLength == 0)
 		return NSZeroRect;
 	
-	int startIndex = _selectionLocation;
-	int endIndex = startIndex + _selectionLength;
+	NSInteger startIndex = _selectionLocation;
+	NSInteger endIndex = startIndex + _selectionLength;
 	if (_selectionLength > 0)
 		--endIndex;
 	
-	int row = startIndex / self.maxColumn;
-	int column = startIndex % self.maxColumn;
-	int endRow = endIndex / self.maxColumn;
-	int endColumn = endIndex % self.maxColumn;
+	NSInteger row = startIndex / self.maxColumn;
+	NSInteger column = startIndex % self.maxColumn;
+	NSInteger endRow = endIndex / self.maxColumn;
+	NSInteger endColumn = endIndex % self.maxColumn;
 	
 	if (endRow < row) {
-		int temp = row;
+		NSInteger temp = row;
 		row = endRow;
 		endRow = temp - 1;
 	}
 	if (endColumn < column) {
-		int temp = column;
+		NSInteger temp = column;
 		column = endColumn;
 		endColumn = temp - 1;
 	}
-	int height = (endRow - row) + 1;
-	int width = (endColumn - column) + 1;
+	NSInteger height = (endRow - row) + 1;
+	NSInteger width = (endColumn - column) + 1;
 	
 	return NSMakeRect(column, row, width, height);
 }
@@ -348,7 +350,7 @@ BOOL isEnglishNumberAlphabet(unsigned char c) {
     NSString *s = self.selectedPlainString;
     
     /* Color copy */
-    int location, length;
+    NSInteger location, length;
     if (_selectionLength >= 0) {
         location = _selectionLocation;
         length = _selectionLength;
@@ -543,7 +545,7 @@ BOOL isEnglishNumberAlphabet(unsigned char c) {
 		return;
 	}
 	// Disable the mouse if we cancelled any selection
-    if(abs(_selectionLength) > 0) 
+    if(labs(_selectionLength) > 0)
         _isNotCancelingSelection = NO;
     NSPoint p = [self convertPoint:theEvent.locationInWindow fromView:nil];
     _selectionLocation = [self convertIndexFromPoint:p];
@@ -569,8 +571,8 @@ BOOL isEnglishNumberAlphabet(unsigned char c) {
 
     NSPoint p = theEvent.locationInWindow;
     p = [self convertPoint:p fromView:nil];
-    int index = [self convertIndexFromPoint:p];
-    int oldValue = _selectionLength;
+    NSInteger index = [self convertIndexFromPoint:p];
+    NSInteger oldValue = _selectionLength;
     _selectionLength = index - _selectionLocation + 1;
     if (_selectionLength <= 0) 
 		_selectionLength--;
@@ -584,7 +586,7 @@ BOOL isEnglishNumberAlphabet(unsigned char c) {
     [self hasMouseActivity];
     if (!self.connected) return;
     // open url
-    if (abs(_selectionLength) <= 1 && _isNotCancelingSelection && !_isKeying && !_inUrlMode) {
+    if (labs(_selectionLength) <= 1 && _isNotCancelingSelection && !_isKeying && !_inUrlMode) {
 		[_mouseBehaviorDelegate mouseUp:theEvent];
     }
 	_isNotCancelingSelection = YES;
@@ -727,7 +729,7 @@ BOOL isEnglishNumberAlphabet(unsigned char c) {
 	}
 	return;
 	
-	[super flagsChanged:event];
+	//[super flagsChanged:event];
 }
 
 - (void)clearSelection {
@@ -755,7 +757,7 @@ BOOL isEnglishNumberAlphabet(unsigned char c) {
 
 - (void)drawSelection {
     @autoreleasepool {
-        int location, length;
+        NSInteger location, length;
         if (_selectionLength >= 0) {
             location = _selectionLocation;
             length = _selectionLength;
@@ -763,8 +765,8 @@ BOOL isEnglishNumberAlphabet(unsigned char c) {
             location = _selectionLocation + _selectionLength;
             length = 0 - (int)_selectionLength;
         }
-        int x = location % self.maxColumn;
-        int y = location / self.maxColumn;
+        NSInteger x = location % self.maxColumn;
+        NSInteger y = location / self.maxColumn;
         [[NSColor colorWithCalibratedRed: 0.6 green: 0.9 blue: 0.6 alpha: 0.4] set];
 
 	if (_hasRectangleSelected) {
@@ -839,7 +841,7 @@ BOOL isEnglishNumberAlphabet(unsigned char c) {
     if (_selectionLength == 0) return nil;
     
 	if (!_hasRectangleSelected) {
-		int location, length;
+		NSInteger location, length;
 		if (_selectionLength >= 0) {
 			location = _selectionLocation;
 			length = _selectionLength;
@@ -1145,7 +1147,7 @@ BOOL isEnglishNumberAlphabet(unsigned char c) {
 		if (_selectionLength > 0) {
 			return [NSValue valueWithRange:NSMakeRange(_selectionLocation, _selectionLength)];
 		} else if (_selectionLength < 0) {
-			return [NSValue valueWithRange:NSMakeRange(_selectionLocation + _selectionLength, abs(_selectionLength))];
+			return [NSValue valueWithRange:NSMakeRange(_selectionLocation + _selectionLength, labs(_selectionLength))];
 		} else {
 			// A weird workaround
 			return [self accessibilityAttributeValue:NSAccessibilityRangeForPositionParameterizedAttribute 

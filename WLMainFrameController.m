@@ -191,11 +191,11 @@ SYNTHESIZE_SINGLETON_FOR_CLASS(WLMainFrameController);
 
         WLConnection *connection = [[WLConnection alloc] initWithSite:site];
 	
-	[_tabView newTabWithConnection:connection label:site.name];
-	// We can release it since it is retained by the tab view item
-	// Set the view to be focused.
-	[_mainWindow makeFirstResponder:_tabView.frontMostView];
-	
+        [_tabView newTabWithConnection:connection label:site.name];
+        // We can release it since it is retained by the tab view item
+        // Set the view to be focused.
+        [_mainWindow makeFirstResponder:_tabView.frontMostView];
+        
         [self updateEncodingMenu];
         [_detectDoubleByteButton setState:site.shouldDetectDoubleByte ? NSOnState : NSOffState];
         _detectDoubleByteMenuItem.state = site.shouldDetectDoubleByte ? NSOnState : NSOffState;

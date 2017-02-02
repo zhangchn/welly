@@ -148,7 +148,7 @@
                 a = [[a arrayByAddingObject:@"-o"] arrayByAddingObject:proxyCommand];
             }
         }
-        int n = a.count;
+        NSUInteger n = a.count;
         char *argv[n+1];
         for (int i = 0; i < n; ++i)
             argv[i] = (char *)[a[i] UTF8String];
@@ -180,7 +180,7 @@
 - (void)send:(NSData *)data {
     fd_set writefds, errorfds;
     struct timeval timeout;
-    int chunkSize;
+    NSInteger chunkSize;
     
     if (_fd < 0 || _connecting) // disable input when connecting
         return;
@@ -188,7 +188,7 @@
     [_delegate protocolWillSend:self data:data];
 
     const char *msg = data.bytes;
-    int length = data.length;
+    NSInteger length = data.length;
     while (length > 0) {
         FD_ZERO(&writefds);
         FD_ZERO(&errorfds);
@@ -211,7 +211,7 @@
         if (length > 4096) chunkSize = 4096;
         else chunkSize = length;
         
-        int size = write(_fd, msg, chunkSize);
+        NSInteger size = write(_fd, msg, chunkSize);
         if (size < 0)
             break;
         
@@ -230,7 +230,7 @@
     BOOL exit = NO;
     unsigned char buf[4096];
     //int iterationCount = 0;
-    int result;
+    NSInteger result;
     
     while (!exit) {
         //iterationCount++;

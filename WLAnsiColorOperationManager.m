@@ -62,17 +62,17 @@ void convertFromUTF8(cell *buffer, int bufferLength, WLEncoding encoding) {
 const cell WLWhiteSpaceCell = {WLWhitespaceCharacter, 0};
 
 + (NSData *)ansiColorDataFromTerminal:(WLTerminal *)terminal 
-						   atLocation:(int)location 
-							   length:(int)length {
-	int maxRow = [WLGlobalConfig sharedInstance].row;
-	int maxColumn = [WLGlobalConfig sharedInstance].column;
+						   atLocation:(NSInteger)location
+							   length:(NSInteger)length {
+	NSInteger maxRow = [WLGlobalConfig sharedInstance].row;
+	NSInteger maxColumn = [WLGlobalConfig sharedInstance].column;
 	cell *buffer = (cell *)malloc((length + maxRow + maxColumn + 1) * sizeof(cell));
     int i, j;
     int bufferLength = 0;
     int emptyCount = 0;
 	
 	for (i = 0; i < length; i++) {
-		int index = location + i;
+		NSInteger index = location + i;
 		cell *currentRow = [terminal cellsOfRow:(index / maxColumn)];
 		
 		if ((index % maxColumn == 0) && (index != location)) {

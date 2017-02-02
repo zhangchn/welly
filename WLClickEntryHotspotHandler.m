@@ -185,9 +185,9 @@ NSString *const WLCommandSequenceSameAuthorReading = @"\025";	// ^U
 #pragma mark -
 #pragma mark Add Tracking Areas
 - (void)addClickEntryRect:(NSString *)title
-					  row:(int)r
-				   column:(int)c
-				   length:(int)length {
+					  row:(NSInteger)r
+				   column:(NSInteger)c
+				   length:(NSInteger)length {
 	NSRect rect = [_view rectAtRow:r column:c height:1 width:length];
 	// Generate User Info
 	NSArray *keys = @[WLMouseHandlerUserInfoName, WLMouseRowUserInfoName];
@@ -196,7 +196,7 @@ NSString *const WLCommandSequenceSameAuthorReading = @"\025";	// ^U
 	[_trackingAreas addObject:[_manager addTrackingAreaWithRect:rect userInfo:userInfo]];
 }
 
-- (void)addClickEntryRectAtRow:(int)r column:(int)c length:(int)length {
+- (void)addClickEntryRectAtRow:(NSInteger)r column:(NSInteger)c length:(NSInteger)length {
     NSString *title = [_view.frontMostTerminal stringAtIndex:c+r*_maxColumn length:length];
     [self addClickEntryRect:title row:r column:c length:length];
 }
@@ -384,7 +384,7 @@ BOOL isPostTitleStarter(unichar c) {
     WLTerminal *ds = _view.frontMostTerminal;
 	// Parse the table title line to get ranges
 	NSRange postRange = {0, 0};
-	int c = 0;
+	NSInteger c = 0;
 	for (; c < _maxColumn - 2; ++c) {
 		if ([[ds stringAtIndex:c + 2 * _maxColumn length:2] isEqualToString:@"标"]) {
 			postRange.location = c;
@@ -400,10 +400,10 @@ BOOL isPostTitleStarter(unichar c) {
 	}
 	
 	// Parse each line
-	for (int r = 3; r < _maxRow - 1; ++r) {
+	for (NSInteger r = 3; r < _maxRow - 1; ++r) {
 		cell *currRow = [ds cellsOfRow:r];
 		
-		for (int c = postRange.location; c < postRange.location + postRange.length; ++c)
+		for (NSInteger c = postRange.location; c < postRange.location + postRange.length; ++c)
 			if (currRow[c].byte != 0 && currRow[c].byte != ' ') {
 				[self addClickEntryRectAtRow:r column:postRange.location length:postRange.length];
 				break;

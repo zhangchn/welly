@@ -30,8 +30,8 @@
 	IBOutlet YLMarkedTextView *_textField;
 	IBOutlet WLEffectView *__weak _effectView;
     
-    int _selectionLocation;
-    int _selectionLength;
+    //int _selectionLocation;
+    //int _selectionLength;
 	BOOL _wantsRectangleSelection;
 	BOOL _hasRectangleSelected;
 	
@@ -60,10 +60,10 @@
 - (void) showCustomizedPopUpMessage:(NSString *) myMessage;
 
 
-- (NSRect)rectAtRow:(int)r 
-			 column:(int)c 
-			 height:(int)h 
-			  width:(int)w;
+- (NSRect)rectAtRow:(NSInteger)r
+			 column:(NSInteger)c
+			 height:(NSInteger)h
+			  width:(NSInteger)w;
 
 @property (NS_NONATOMIC_IOSONLY, readonly) BOOL shouldEnableMouse;
 
@@ -81,6 +81,6 @@
 - (void)deactivateMouseForKeying;
 - (void)activateMouseForKeying:(NSTimer*)timer;
 
-- (int)convertIndexFromPoint:(NSPoint)aPoint;
+- (NSInteger)convertIndexFromPoint:(NSPoint)aPoint;
 @property (NS_NONATOMIC_IOSONLY, readonly) NSPoint mouseLocationInView;
 @end

@@ -185,7 +185,7 @@ static NSImage *gLeftImage;
 - (void)tick {
     @autoreleasepool {
 		[self updateBackedImage];
-    WLTerminal *ds = self.frontMostTerminal;
+        WLTerminal *ds = self.frontMostTerminal;
 		
 		if (ds && (_x != ds.cursorColumn || _y != ds.cursorRow)) {
 			[self setNeedsDisplayInRect:NSMakeRect(_x * _fontWidth, (_maxRow - 1 - _y) * _fontHeight, _fontWidth, _fontHeight)];

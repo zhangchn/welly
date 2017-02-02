@@ -122,8 +122,6 @@ static DBPrefsWindowController *_sharedPrefsWindowController = nil;
 		[self setShiftSlowsAnimation:YES];
 	}
 	return self;
-
-	(void)window;  // To prevent compiler warnings.
 }
 
 

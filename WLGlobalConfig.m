@@ -435,7 +435,6 @@ SYNTHESIZE_SINGLETON_FOR_CLASS(WLGlobalConfig);
 - (void)setColorGreen:(NSColor *)c {
     if (!c)c = [NSColor colorWithDeviceRed:0.00 green:0.50 blue:0.00 alpha:1.0];
     if (c != _colorTable[0][2]) {
-        _colorTable[0][2];
         _colorTable[0][2] = [c colorUsingColorSpaceName:NSCalibratedRGBColorSpace];
     }
     [[NSUserDefaults standardUserDefaults] setMyColor:c forKey:@"ColorGreen"];

@@ -24,21 +24,17 @@
 
 @implementation WLConnection
 //@synthesize site = _site;
-@synthesize terminal = _terminal;
-@synthesize terminalFeeder = _feeder;
 //@synthesize protocol = _protocol;
-@synthesize isConnected = _connected;
-@synthesize objectCount = _objectCount;
-@synthesize lastTouchDate = _lastTouchDate;
-@synthesize messageCount = _messageCount;
-@synthesize messageDelegate = _messageDelegate;
-@synthesize tabViewItemController = _tabViewItemController;
+//@synthesize objectCount = _objectCount;
+//@synthesize lastTouchDate = _lastTouchDate;
+//@synthesize messageCount = _messageCount;
+//@synthesize messageDelegate = _messageDelegate;
 
 - (instancetype)initWithSite:(WLSite *)site {
 	self = [self init];
     if (self) {
 		// Create a feeder to parse content from the connection
-		_feeder = [[WLTerminalFeeder alloc] initWithConnection:self];
+		self.terminalFeeder = [[WLTerminalFeeder alloc] initWithConnection:self];
 
         self.site = site;
         if (!site.dummy) {
@@ -65,7 +61,7 @@
 	if (_terminal != value) {
 		_terminal = value;
         _terminal.connection = self;
-		_feeder.terminal = _terminal;
+		self.terminalFeeder.terminal = _terminal;
 	}
 }
 
@@ -79,7 +75,7 @@
     }
 }
 
-- (void)setLastTouchDate {
+- (void)resetLastTouchDate {
     _lastTouchDate = [NSDate date];
 }
 
@@ -100,18 +96,18 @@
 
 - (void)protocolDidRecv:(id)protocol 
 				   data:(NSData*)data {
-	[_feeder feedData:data connection:self];
+	[self.terminalFeeder feedData:data connection:self];
 }
 
 - (void)protocolWillSend:(id)protocol 
 					data:(NSData*)data {
-    [self setLastTouchDate];
+    [self resetLastTouchDate];
 }
 
 - (void)protocolDidClose:(id)protocol {
     [self setProcessing:NO];
     [self setConnected:NO];
-	[_feeder clearAll];
+	[self.terminalFeeder clearAll];
     [_terminal clearAll];
 }
 
@@ -206,13 +202,13 @@
                     if (*ps == ' ' || *ps == '/')
                         break;
                 if (ps != pe) {
-                    while (_feeder.cursorY <= 3)
+                    while (self.terminalFeeder.cursorY <= 3)
                         sleep(1);
                     [self sendBytes:ps+1 length:pe-ps-1];
                     [self sendBytes:"\r" length:1];
                 }
             }
-        } else if (_feeder.grid[_feeder.cursorY][_feeder.cursorX - 2].byte == '?') {
+        } else if (self.terminalFeeder.grid[self.terminalFeeder.cursorY][self.terminalFeeder.cursorX - 2].byte == '?') {
             [self sendBytes:"yes\r" length:4];
             sleep(1);
         }
@@ -246,7 +242,7 @@
 	
 	// we should let the icon on the deck bounce
 	[NSApp requestUserAttention: (config.shouldRepeatBounce ? NSCriticalRequest : NSInformationalRequest)];
-	config.messageCount = config.messageCount + value;
+	config.messageCount += (int)value;
 	_messageCount += value;
     self.objectCount = _messageCount;
 }
@@ -257,7 +253,7 @@
 		return;
 	
 	WLGlobalConfig *config = [WLGlobalConfig sharedInstance];
-	config.messageCount = config.messageCount - _messageCount;
+	config.messageCount -= (int)_messageCount;
 	_messageCount = 0;
     self.objectCount = _messageCount;
 }

@@ -19,7 +19,7 @@
 @implementation WLMainFrameController (FullScreen)
 
 - (BOOL)isInFullScreenMode {
-	return (_mainWindow.styleMask & NSFullScreenWindowMask) ? YES : NO;
+	return (_mainWindow.styleMask & NSWindowStyleMaskFullScreen) ? YES : NO;
 }
 
 + (NSDictionary *)sizeParametersForZoomRatio:(CGFloat)zoomRatio {

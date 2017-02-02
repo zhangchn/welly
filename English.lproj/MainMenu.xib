@@ -603,14 +603,14 @@ ssh://[id@]your.site.org[:port]</string>
                             </connections>
                         </button>
                     </toolbarItem>
-                    <toolbarItem implicitItemIdentifier="23A0A597-93F4-41FE-946C-E22EFACE5154" label="Auto Reply" paletteLabel="Auto Reply" image="CEB825A2-C871-4EA6-A177-230AF06690FA" id="972">
+                    <toolbarItem implicitItemIdentifier="23A0A597-93F4-41FE-946C-E22EFACE5154" label="Auto Reply" paletteLabel="Auto Reply" image="4A45A8F7-304E-44AE-8FC8-DFD020265EC6" id="972">
                         <nil key="toolTip"/>
                         <size key="minSize" width="30" height="19"/>
                         <size key="maxSize" width="30" height="19"/>
                         <button key="view" verticalHuggingPriority="750" id="970">
                             <rect key="frame" x="17" y="14" width="30" height="19"/>
                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
-                            <buttonCell key="cell" type="recessed" title="Re:" bezelStyle="recessed" image="CEB825A2-C871-4EA6-A177-230AF06690FA" imagePosition="overlaps" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="971">
+                            <buttonCell key="cell" type="recessed" title="Re:" bezelStyle="recessed" image="4A45A8F7-304E-44AE-8FC8-DFD020265EC6" imagePosition="overlaps" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="971">
                                 <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES" changeBackground="YES" changeGray="YES"/>
                                 <font key="font" metaFont="systemBold" size="12"/>
                             </buttonCell>
@@ -658,7 +658,7 @@ ssh://[id@]your.site.org[:port]</string>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMaxX="YES" flexibleMinY="YES" heightSizable="YES"/>
                         <clipView key="contentView" drawsBackground="NO" copiesOnScroll="NO" id="0RO-tZ-WWk">
                             <rect key="frame" x="0.0" y="0.0" width="234" height="425"/>
-                            <autoresizingMask key="autoresizingMask"/>
+                            <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                             <subviews>
                                 <textView editable="NO" selectable="NO" drawsBackground="NO" importsGraphics="NO" horizontallyResizable="YES" findStyle="panel" continuousSpellChecking="YES" usesRuler="YES" spellingCorrection="YES" smartInsertDelete="YES" id="1095">
                                     <rect key="frame" x="0.0" y="0.0" width="234" height="425"/>
@@ -1455,7 +1455,7 @@ ssh://[id@]your.site.org[:port]</string>
         <customObject id="1158" customClass="WLPreviewController"/>
     </objects>
     <resources>
-        <image name="CEB825A2-C871-4EA6-A177-230AF06690FA" width="1" height="1">
+        <image name="4A45A8F7-304E-44AE-8FC8-DFD020265EC6" width="1" height="1">
             <mutableData key="keyedArchiveRepresentation">
 YnBsaXN0MDDUAQIDBAUGPT5YJHZlcnNpb25YJG9iamVjdHNZJGFyY2hpdmVyVCR0b3ASAAGGoK4HCBMU
 GR4fIyQrLjE3OlUkbnVsbNUJCgsMDQ4PEBESVk5TU2l6ZVYkY2xhc3NcTlNJbWFnZUZsYWdzVk5TUmVw
