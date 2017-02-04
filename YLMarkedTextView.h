@@ -9,14 +9,8 @@
 #import <Cocoa/Cocoa.h>
 
 
-@interface YLMarkedTextView : NSView {
-//	NSAttributedString *_string;
-//	NSRange _markedRange;
-//	NSRange _selectedRange;
-//	NSFont *_defaultFont;
-	CGFloat _lineHeight;
-//	NSPoint _destination;
-}
+@interface YLMarkedTextView : NSView
+
 @property (readwrite, copy, nonatomic) NSAttributedString *string;
 @property (readwrite, assign, nonatomic) NSRange markedRange;
 @property (readwrite, assign, nonatomic) NSRange selectedRange;

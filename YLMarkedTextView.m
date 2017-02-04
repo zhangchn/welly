@@ -8,6 +8,9 @@
 
 #import "YLMarkedTextView.h"
 
+@interface YLMarkedTextView ()
+@property (assign, nonatomic) CGFloat lineHeight;
+@end
 
 @implementation YLMarkedTextView
 
