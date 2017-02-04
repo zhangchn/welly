@@ -290,44 +290,44 @@ static NSImage *gLeftImage;
 
 - (void)updateBackedImage {
     @autoreleasepool {
-		int x, y;
-    WLTerminal *ds = self.frontMostTerminal;
-		[_backedImage lockFocus];
-		CGContextRef myCGContext = (CGContextRef)[NSGraphicsContext currentContext].graphicsPort;
-		if (ds) {
-        /* Draw Background */
-        for (y = 0; y < _maxRow; y++) {
-            for (x = 0; x < _maxColumn; x++) {
-                if ([ds isDirtyAtRow:y column:x]) {
-                    int startx = x;
-                    for (; x < _maxColumn && [ds isDirtyAtRow:y column:x]; x++) ;
-                    [self updateBackgroundForRow:y from:startx to:x];
+        int x, y;
+        WLTerminal *ds = self.frontMostTerminal;
+        [_backedImage lockFocus];
+        CGContextRef myCGContext = (CGContextRef)[NSGraphicsContext currentContext].graphicsPort;
+        if (ds) {
+            /* Draw Background */
+            for (y = 0; y < _maxRow; y++) {
+                for (x = 0; x < _maxColumn; x++) {
+                    if ([ds isDirtyAtRow:y column:x]) {
+                        int startx = x;
+                        for (; x < _maxColumn && [ds isDirtyAtRow:y column:x]; x++) ;
+                        [self updateBackgroundForRow:y from:startx to:x];
+                    }
                 }
             }
-        }
-        CGContextSaveGState(myCGContext);
-        CGContextSetShouldSmoothFonts(myCGContext, 
-                                      gConfig.shouldSmoothFonts ? true : false);
-        
-        /* Draw String row by row */
-        for (y = 0; y < _maxRow; y++) {
-            [self drawStringForRow:y context:myCGContext];
-        }
-        CGContextRestoreGState(myCGContext);
-        /*
-        for (y = 0; y < _maxRow; y++) {
-            for (x = 0; x < _maxColumn; x++) {
-                [ds setDirty:NO atRow:y column:x];
+            CGContextSaveGState(myCGContext);
+            CGContextSetShouldSmoothFonts(myCGContext,
+                                          gConfig.shouldSmoothFonts ? true : false);
+            
+            /* Draw String row by row */
+            for (y = 0; y < _maxRow; y++) {
+                [self drawStringForRow:y context:myCGContext];
             }
-        }*/
-			[ds removeAllDirtyMarks];
-    } else {
-        [[NSColor clearColor] set];
-        CGContextFillRect(myCGContext, CGRectMake(0, 0, _maxColumn * _fontWidth, _maxRow * _fontHeight));
-    }
-		
-		[_backedImage unlockFocus];
-		return;
+            CGContextRestoreGState(myCGContext);
+            /*
+             for (y = 0; y < _maxRow; y++) {
+             for (x = 0; x < _maxColumn; x++) {
+             [ds setDirty:NO atRow:y column:x];
+             }
+             }*/
+            [ds removeAllDirtyMarks];
+        } else {
+            [[NSColor clearColor] set];
+            CGContextFillRect(myCGContext, CGRectMake(0, 0, _maxColumn * _fontWidth, _maxRow * _fontHeight));
+        }
+        
+        [_backedImage unlockFocus];
+        return;
 	}
 }
 
@@ -354,7 +354,7 @@ static NSImage *gLeftImage;
         isDoubleColor[i] = isDoubleByte[i] = textBuf[i] = 0;
 	
     // find the first dirty position in this row
-	for (x = 0; x < _maxColumn && ![ds isDirtyAtRow:r column:x]; x++) ;
+    for (x = 0; x < _maxColumn && ![ds isDirtyAtRow:r column:x]; x++) {;};
 	// all clean? great!
     if (x == _maxColumn) 
 		return; 
