@@ -268,9 +268,5 @@
     if (result >= 0) {
         [pty performSelectorOnMainThread:@selector(close) withObject:nil waitUntilDone:NO];
     }
-    
-    
-    [NSThread exit];
-    
 }
 @end
