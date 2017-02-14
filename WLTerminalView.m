@@ -908,6 +908,10 @@ BOOL isEnglishNumberAlphabet(unsigned char c) {
     }
 }
 
+- (void)insertText:(id)string replacementRange:(NSRange)replacementRange {
+    [self insertText:string withDelay:0];
+}
+
 - (void)doCommandBySelector:(SEL)aSelector {
 	unsigned char ch[10];
     
@@ -1021,6 +1025,18 @@ BOOL isEnglishNumberAlphabet(unsigned char c) {
 // This method returns the range for selected region.  Just like markedRange method, its location field contains char index from the text beginning.
 - (NSRange)selectedRange {
     return _selectedRange;
+}
+
+- (void)setMarkedText:(id)string selectedRange:(NSRange)selectedRange replacementRange:(NSRange)replacementRange {
+    [self setMarkedText:string selectedRange:selectedRange];
+}
+
+- (NSAttributedString *)attributedSubstringForProposedRange:(NSRange)range actualRange:(NSRangePointer)actualRange {
+    return [self attributedSubstringFromRange:range];
+}
+
+- (NSRect)firstRectForCharacterRange:(NSRange)range actualRange:(NSRangePointer)actualRange {
+    return [self firstRectForCharacterRange:range];
 }
 
 // This method returns the first frame of rects for theRange in screen coordindate system.
