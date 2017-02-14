@@ -22,6 +22,22 @@
 #define OMIT_IMPLIED_ANIM_END \
 	[CATransaction commit]
 
+@interface WLEffectView()
+@property (weak) CALayer *mainLayer;
+@property CALayer *ipAddrLayer;
+@property CALayer *clickEntryLayer;
+@property CALayer *popUpLayer;
+@property CALayer *buttonLayer;
+
+@property CALayer *urlLineLayer;
+@property CGImageRef urlIndicatorImage;
+@property CALayer *urlIndicatorLayer;
+@property int selectedItemIndex;
+
+@property CGColorRef popUpLayerTextColor;
+@property CGFontRef popUpLayerTextFont;
+@end
+
 @implementation WLEffectView
 - (instancetype)initWithView:(WLTerminalView *)view {
 	self = [self initWithFrame:view.frame];

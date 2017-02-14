@@ -21,13 +21,7 @@
 
 @end
 
-@interface WLTerminal : NSObject {
-    //unsigned int _offset;
-	
-    // cell **_grid;
-    //BOOL **_dirty;
-	// unichar *_textBuf;
-}
+@interface WLTerminal : NSObject
 @property NSInteger maxRow;
 @property NSInteger maxColumn;
 @property NSInteger cursorColumn;

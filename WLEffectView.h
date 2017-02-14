@@ -14,24 +14,7 @@
 
 @class WLTerminalView;
 
-@interface WLEffectView : NSView {
-	
-	//IBOutlet WLTerminalView *_mainView;
-	
-	CALayer *_ipAddrLayer;
-	CALayer *_clickEntryLayer;
-	CALayer *_popUpLayer;
-	CALayer *_buttonLayer;
-	
-	CALayer *_urlLineLayer;
-	CGImageRef _urlIndicatorImage;
-	CALayer *_urlIndicatorLayer;
-	int selectedItemIndex;
-	
-	CGColorRef _popUpLayerTextColor;
-	CGFontRef _popUpLayerTextFont;
-}
-@property (weak) CALayer *mainLayer;
+@interface WLEffectView : NSView
 @property  IBOutlet WLTerminalView *mainView;
 // for ip seeker
 - (void)drawIPAddrBox:(NSRect)rect;

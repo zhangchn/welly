@@ -11,32 +11,7 @@
 
 @class WLConnection, WLIntegerArray, WLTerminal;
 
-@interface WLTerminalFeeder : NSObject {
-    NSInteger _savedCursorX;
-    NSInteger _savedCursorY;
-			
-    enum { TP_NORMAL, TP_ESCAPE, TP_CONTROL, TP_SCS } _state;
-	
-    WLIntegerArray *_csBuf;
-    WLIntegerArray *_csArg;
-    NSUInteger _csTemp;
-	
-    NSInteger _scrollBeginRow;
-    NSInteger _scrollEndRow;
-	
-//	WLTerminal *_terminal;
-	WLConnection *_connection;
-	
-	BOOL _hasNewMessage;	// to determine if a growl notification is needed
-	
-    enum { VT100, VT102 } _emustd;
-	
-    BOOL _modeScreenReverse;  // reverse (true), not reverse (false, default)
-	BOOL _modeOriginRelative; // relative origin (true), absolute origin (false, default)
-    BOOL _modeWraptext;       // autowrap (true, default), wrap disabled (false)
-    BOOL _modeLNM;            // line feed (true, default), new line (false)
-    BOOL _modeIRM;            // insert (true), replace (false, default)
-}
+@interface WLTerminalFeeder : NSObject
 @property (readonly) NSInteger cursorX;
 @property (readonly) NSInteger cursorY;
 @property cell **grid;

@@ -9,8 +9,7 @@
 #import <Cocoa/Cocoa.h>
 
 @class WLEffectView;
-@interface WLPopUpMessage:NSObject {
-}
+@interface WLPopUpMessage:NSObject
 + (instancetype)sharedInstance;
 
 - (void)showPopUpMessage:(NSString*)message

@@ -143,17 +143,46 @@
 #define CSI_SCP     0x73 // s, Saves the cursor position.
 #define CSI_RCP     0x75 // u, Restores the cursor position.
 
+typedef NS_ENUM(NSUInteger, WLTerminalFeederState) {
+    TP_NORMAL,
+    TP_ESCAPE,
+    TP_CONTROL,
+    TP_SCS,
+};
+
+typedef NS_ENUM(NSUInteger, WLEmuStandard) {
+    VT100,
+    VT102,
+};
+
 @interface WLTerminalFeeder ()
 @property NSUInteger row;
 @property NSUInteger column;
 @property NSUInteger offset;
 @property NSInteger fgColor;
 @property NSInteger bgColor;
+@property NSInteger savedCursorX;
+@property NSInteger savedCursorY;
+@property NSInteger scrollBeginRow;
+@property NSInteger scrollEndRow;
+
 @property BOOL bold;
 @property BOOL underline;
 @property BOOL blink;
 @property BOOL reverse;
+@property BOOL hasNewMessage;	// to determine if a growl notification is needed
+@property BOOL modeScreenReverse;  // reverse (true), not reverse (false, default)
+@property BOOL modeOriginRelative; // relative origin (true), absolute origin (false, default)
+@property BOOL modeWraptext;       // autowrap (true, default), wrap disabled (false)
+@property BOOL modeLNM;            // line feed (true, default), new line (false)
+@property BOOL modeIRM;            // insert (true), replace (false, default)
+@property WLIntegerArray *csBuf;
+@property WLIntegerArray *csArg;
+@property NSUInteger csTemp;
+@property WLTerminalFeederState state;
+@property WLEmuStandard emustd;
 
+@property (weak) WLConnection *connection;
 
 /* Clear */
 - (void)clearRow:(NSInteger)r;
