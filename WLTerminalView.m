@@ -768,28 +768,28 @@ BOOL isEnglishNumberAlphabet(unsigned char c) {
         NSInteger x = location % self.maxColumn;
         NSInteger y = location / self.maxColumn;
         [[NSColor colorWithCalibratedRed: 0.6 green: 0.9 blue: 0.6 alpha: 0.4] set];
-
-	if (_hasRectangleSelected) {
-		// Rectangle
-		NSRect selectedRect = [self selectedRect];
-		NSRect drawingRect = [self rectAtRow:selectedRect.origin.y
-									  column:selectedRect.origin.x
-									  height:selectedRect.size.height
-									   width:selectedRect.size.width];
-		[NSBezierPath fillRect:drawingRect];
-	} else {
-		while (length > 0) {
-			if (x + length <= self.maxColumn) { // one-line
-				[NSBezierPath fillRect:NSMakeRect(x * self.fontWidth, (self.maxRow - y - 1) * self.fontHeight, self.fontWidth * length, self.fontHeight)];
-				length = 0;
-			} else {
-				[NSBezierPath fillRect:NSMakeRect(x * self.fontWidth, (self.maxRow - y - 1) * self.fontHeight, self.fontWidth * (self.maxColumn - x), self.fontHeight)];
-				length -= (self.maxColumn - x);
-			}
-			x = 0;
-			y++;
-		}
-	}
+        
+        if (_hasRectangleSelected) {
+            // Rectangle
+            NSRect selectedRect = [self selectedRect];
+            NSRect drawingRect = [self rectAtRow:selectedRect.origin.y
+                                          column:selectedRect.origin.x
+                                          height:selectedRect.size.height
+                                           width:selectedRect.size.width];
+            [NSBezierPath fillRect:drawingRect];
+        } else {
+            while (length > 0) {
+                if (x + length <= self.maxColumn) { // one-line
+                    [NSBezierPath fillRect:NSMakeRect(x * self.fontWidth, (self.maxRow - y - 1) * self.fontHeight, self.fontWidth * length, self.fontHeight)];
+                    length = 0;
+                } else {
+                    [NSBezierPath fillRect:NSMakeRect(x * self.fontWidth, (self.maxRow - y - 1) * self.fontHeight, self.fontWidth * (self.maxColumn - x), self.fontHeight)];
+                    length -= (self.maxColumn - x);
+                }
+                x = 0;
+                y++;
+            }
+        }
     }
 }
 
