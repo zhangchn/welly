@@ -258,7 +258,10 @@ static NSString * stringFromFileSize(long long size) {
 		
          // "didFailWithError" may release the delegate
         [download cancel];
-        [self download:download didFailWithError:nil];
+        [self     download:download
+          didFailWithError:[NSError errorWithDomain:NSURLErrorDomain
+                                               code:NSURLErrorCannotOpenFile
+                                           userInfo:nil]];
         return; // or next may crash
 	}
 

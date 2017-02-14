@@ -52,7 +52,8 @@
 }
 
 - (void)clear {
-    _array = [NSPointerArray pointerArrayWithWeakObjects];
+    NSPointerFunctionsOptions options = NSPointerFunctionsOpaqueMemory|NSPointerFunctionsIntegerPersonality;
+    _array = [NSPointerArray pointerArrayWithOptions:options];
 }
 
 @end

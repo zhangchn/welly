@@ -144,8 +144,8 @@ SYNTHESIZE_SINGLETON_FOR_CLASS(WLMainFrameController);
 
 - (void)updateSitesMenuWithSites:(NSArray *)sites {
 	// Update Sites Menus
-	int total = _sitesMenu.submenu.numberOfItems;
-    int i = total - 1;
+	NSInteger total = _sitesMenu.submenu.numberOfItems;
+    NSInteger i = total - 1;
     // search the last seperator from the bottom
     for (; i > 0; i--)
         if ([_sitesMenu.submenu itemAtIndex:i].separatorItem)
@@ -153,7 +153,7 @@ SYNTHESIZE_SINGLETON_FOR_CLASS(WLMainFrameController);
 	
     // then remove all menuitems below it, since we need to refresh the site menus
     ++i;
-    for (int j = i; j < total; j++) {
+    for (NSInteger j = i; j < total; j++) {
         [_sitesMenu.submenu removeItemAtIndex:i];
     }
     
@@ -260,8 +260,8 @@ SYNTHESIZE_SINGLETON_FOR_CLASS(WLMainFrameController);
 }
 
 - (void)saveLastConnections {
-    int tabNumber = _tabView.numberOfTabViewItems;
-    int i;
+    NSInteger tabNumber = _tabView.numberOfTabViewItems;
+    NSInteger i;
     NSMutableArray *a = [NSMutableArray array];
     for (i = 0; i < tabNumber; i++) {
         id connection = [[_tabView tabViewItemAtIndex:i].identifier content];
@@ -469,7 +469,7 @@ SYNTHESIZE_SINGLETON_FOR_CLASS(WLMainFrameController);
 */
 
 - (void)confirmReconnect:(NSWindow *)sheet 
-			  returnCode:(int)returnCode 
+			  returnCode:(NSModalResponse)returnCode 
 			 contextInfo:(void *)contextInfo {
     if (returnCode == NSAlertFirstButtonReturn) {
 		[_tabView.frontMostConnection reconnect];
@@ -567,7 +567,7 @@ SYNTHESIZE_SINGLETON_FOR_CLASS(WLMainFrameController);
     if (![[NSUserDefaults standardUserDefaults] boolForKey:WLConfirmOnCloseEnabledKeyName]) 
         return YES;
     
-    int tabNumber = _tabView.numberOfTabViewItems;
+    NSInteger tabNumber = _tabView.numberOfTabViewItems;
 	int connectedConnection = 0;
     for (int i = 0; i < tabNumber; i++) {
         id connection = [[_tabView tabViewItemAtIndex:i].identifier content];
@@ -592,14 +592,14 @@ SYNTHESIZE_SINGLETON_FOR_CLASS(WLMainFrameController);
 				returnCode:(int)returnCode 
 			   contextInfo:(void *)contextInfo {
     [[NSUserDefaults standardUserDefaults] synchronize];
-    [NSApp replyToApplicationShouldTerminate:(returnCode == NSAlertDefaultReturn)];
+    [NSApp replyToApplicationShouldTerminate:(returnCode == NSAlertFirstButtonReturn)];
 }
 
 - (void)confirmSheetDidDismiss:(NSWindow *)sheet
 					returnCode:(int)returnCode 
 				   contextInfo:(void *)contextInfo {
     [[NSUserDefaults standardUserDefaults] synchronize];
-    [NSApp replyToApplicationShouldTerminate:(returnCode == NSAlertDefaultReturn)];
+    [NSApp replyToApplicationShouldTerminate:(returnCode == NSAlertFirstButtonReturn)];
 }
 
 #pragma mark -
@@ -666,7 +666,7 @@ withReplyEvent:(NSAppleEventDescriptor *)replyEvent {
 								   alternateButton:NSLocalizedString(@"Cancel", @"Cancel Button")
 									   otherButton:nil
 						 informativeTextWithFormat:NSLocalizedString(@"If you proceed, you will lost all your current font settings for Welly, and this operation is only encouraged when your font settings are missing. Are you sure you want to continue?", @"Sheet Message")];
-	if ([alert runModal] != NSAlertDefaultReturn)
+	if ([alert runModal] != NSAlertFirstButtonReturn)
 		return;
 	
 	// Set the font settings
@@ -689,6 +689,7 @@ withReplyEvent:(NSAppleEventDescriptor *)replyEvent {
                       @"Please pay attention to our future versions. Thanks for your cooperation.");
     return;
     // TODO: uncomment the following code to enable RSS mode.
+    /*
     if (!_tabView.frontMostConnection || !_tabView.frontMostConnection.isConnected) return;
     if (!_rssThread) {
         [NSThread detachNewThreadSelector:@selector(fetchFeed) toTarget:self withObject:nil];
@@ -703,6 +704,7 @@ withReplyEvent:(NSAppleEventDescriptor *)replyEvent {
                           nil,
                           @"In this mode, Welly automatically fetches data and generates RSS feed. To leave, click the button below.\r\rCaution: This feature is very unstable, and works only with SMTH BBS. Try it at your own risk!");
     }
+     */
 }
 
 - (void)rssSheetDidClose:(NSWindow *)sheet

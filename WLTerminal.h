@@ -28,10 +28,10 @@
     //BOOL **_dirty;
 	// unichar *_textBuf;
 }
-@property int maxRow;
-@property int maxColumn;
-@property int cursorColumn;
-@property int cursorRow;
+@property NSInteger maxRow;
+@property NSInteger maxColumn;
+@property NSInteger cursorColumn;
+@property NSInteger cursorRow;
 @property cell **grid;
 @property (weak, nonatomic) WLConnection *connection;
 @property (assign, readwrite) WLBBSType bbsType;
@@ -41,13 +41,13 @@
 - (void)clearAll;
 
 /* Dirty */
-- (BOOL)isDirtyAtRow:(int)r 
-			  column:(int)c;
+- (BOOL)isDirtyAtRow:(NSInteger)r
+			  column:(NSInteger)c;
 - (void)setAllDirty;
 - (void)setDirty:(BOOL)d 
-		   atRow:(int)r 
-		  column:(int)c;
-- (void)setDirtyForRow:(int)r;
+		   atRow:(NSInteger)r
+		  column:(NSInteger)c;
+- (void)setDirtyForRow:(NSInteger)r;
 - (void)removeAllDirtyMarks;
 
 /* Access Data */
@@ -69,8 +69,8 @@
 
 /* Input Interface */
 - (void)feedGrid:(cell **)grid;
-- (void)setCursorX:(int)cursorX
-				 Y:(int)cursorY;
+- (void)setCursorX:(NSInteger)cursorX
+				 Y:(NSInteger)cursorY;
 
 /* Observer Interface */
 - (void)addObserver:(id <WLTerminalObserver>)observer;

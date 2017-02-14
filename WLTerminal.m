@@ -78,8 +78,8 @@
 	 */
 }
 
-- (void)setCursorX:(int)cursorX
-				 Y:(int)cursorY {
+- (void)setCursorX:(NSInteger)cursorX
+				 Y:(NSInteger)cursorY {
 	_cursorColumn = cursorX;
 	_cursorRow = cursorY;
 }
@@ -116,19 +116,19 @@
 			_dirty[r][c] = YES;
 }
 
-- (void)setDirtyForRow:(int)r {
+- (void)setDirtyForRow:(NSInteger)r {
 	for (int c = 0; c < _maxColumn; c++)
 		_dirty[r][c] = YES;
 }
 
-- (BOOL)isDirtyAtRow:(int)r 
-			  column:(int)c {
+- (BOOL)isDirtyAtRow:(NSInteger)r
+			  column:(NSInteger)c {
 	return _dirty[r][c];
 }
 
 - (void)setDirty:(BOOL)d
-		   atRow:(int)r
-		  column:(int)c {
+		   atRow:(NSInteger)r
+		  column:(NSInteger)c {
 	_dirty[r][c] = d;
 }
 
@@ -233,7 +233,7 @@
 	return attrStr;
 }
 
-- (NSString *)stringAtRow:(int)row {
+- (NSString *)stringAtRow:(NSInteger)row {
 	return [self stringAtIndex:row * _maxColumn length:_maxColumn];
 }
 

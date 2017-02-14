@@ -1041,15 +1041,7 @@ BOOL isEnglishNumberAlphabet(unsigned char c) {
 
 // This method returns the first frame of rects for theRange in screen coordindate system.
 - (NSRect)firstRectForCharacterRange:(NSRange)theRange {
-    NSPoint pointInWindowCoordinates;
-    NSRect rectInScreenCoordinates;
-
-    pointInWindowCoordinates = _textField.frame.origin;
-    //[_textField convertPoint: [_textField frame].origin toView: nil];
-    rectInScreenCoordinates.origin = [_textField.window convertBaseToScreen:pointInWindowCoordinates];
-    rectInScreenCoordinates.size = _textField.bounds.size;
-
-    return rectInScreenCoordinates;
+    return [_textField.window convertRectToScreen:_textField.frame];
 }
 
 // This method returns the index for character that is nearest to thePoint.  thPoint is in screen coordinate system.

@@ -19,14 +19,14 @@
 
 // emoticons accessors
 - (void)addEmoticon:(YLEmoticon *)emoticon;
-@property (NS_NONATOMIC_IOSONLY, readonly) unsigned int countOfEmoticons;
-- (id)objectInEmoticonsAtIndex:(unsigned)theIndex;
+@property (NS_NONATOMIC_IOSONLY, readonly) NSUInteger countOfEmoticons;
+- (id)objectInEmoticonsAtIndex:(NSUInteger)theIndex;
 //- (void)getEmoticons:(id *)objsPtr 
 //			   range:(NSRange)range;
 - (void)insertObject:(id)obj 
-  inEmoticonsAtIndex:(unsigned)theIndex;
-- (void)removeObjectFromEmoticonsAtIndex:(unsigned)theIndex;
-- (void)replaceObjectInEmoticonsAtIndex:(unsigned)theIndex withObject:(id)obj;
+  inEmoticonsAtIndex:(NSUInteger)theIndex;
+- (void)removeObjectFromEmoticonsAtIndex:(NSUInteger)theIndex;
+- (void)replaceObjectInEmoticonsAtIndex:(NSUInteger)theIndex withObject:(id)obj;
 @end
 
 @implementation WLEmoticonsPanelController
@@ -53,7 +53,9 @@ SYNTHESIZE_SINGLETON_FOR_CLASS(WLEmoticonsPanelController);
 	}
 	
 	// Load Nib file and load all emoticons in
-	if ([NSBundle loadNibNamed:kEmoticonPanelNibFilename owner:self]) {
+	if ([[NSBundle mainBundle] loadNibNamed:kEmoticonPanelNibFilename
+                                      owner:self
+                            topLevelObjects:nil]) {
 		[self loadEmoticons];
 	}
 }
@@ -75,13 +77,13 @@ SYNTHESIZE_SINGLETON_FOR_CLASS(WLEmoticonsPanelController);
 
 - (IBAction)inputSelectedEmoticon:(id)sender {
     [self closeEmoticonsPanel:sender];
-	if ([NSApp.keyWindow.firstResponder conformsToProtocol:@protocol(NSTextInput)]) {
-		id <NSTextInput> textInput = (id <NSTextInput>)NSApp.keyWindow.firstResponder;
+	if ([NSApp.keyWindow.firstResponder conformsToProtocol:@protocol(NSTextInputClient)]) {
+		id <NSTextInputClient> textInput = (id <NSTextInputClient>)NSApp.keyWindow.firstResponder;
 		NSArray *a = _emoticonsController.selectedObjects;
 		
 		if (a.count == 1) {
 			YLEmoticon *e = a[0];
-			[textInput insertText:e.content];
+            [textInput insertText:e.content replacementRange:NSMakeRange(0, 0)];
 		}		
 	}
 }
@@ -104,11 +106,11 @@ SYNTHESIZE_SINGLETON_FOR_CLASS(WLEmoticonsPanelController);
 
 #pragma mark -
 #pragma mark Emoticons Accessors
-- (unsigned)countOfEmoticons {
+- (NSUInteger)countOfEmoticons {
     return _emoticons.count;
 }
 
-- (id)objectInEmoticonsAtIndex:(unsigned)theIndex {
+- (id)objectInEmoticonsAtIndex:(NSUInteger)theIndex {
     return _emoticons[theIndex];
 }
 
@@ -118,15 +120,15 @@ SYNTHESIZE_SINGLETON_FOR_CLASS(WLEmoticonsPanelController);
 //}
 
 - (void)insertObject:(id)obj 
-  inEmoticonsAtIndex:(unsigned)theIndex {
+  inEmoticonsAtIndex:(NSUInteger)theIndex {
     [_emoticons insertObject:obj atIndex:theIndex];
 }
 
-- (void)removeObjectFromEmoticonsAtIndex:(unsigned)theIndex {
+- (void)removeObjectFromEmoticonsAtIndex:(NSUInteger)theIndex {
     [_emoticons removeObjectAtIndex:theIndex];
 }
 
-- (void)replaceObjectInEmoticonsAtIndex:(unsigned)theIndex withObject:(id)obj {
+- (void)replaceObjectInEmoticonsAtIndex:(NSUInteger)theIndex withObject:(id)obj {
     _emoticons[theIndex] = obj;
 }
 

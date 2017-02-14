@@ -38,8 +38,6 @@ const float WLHorizontalScrollReactivateTimeInteval = 1.0;
 @synthesize activeTrackingAreaUserInfo = _activeTrackingAreaUserInfo;
 @synthesize backgroundTrackingAreaUserInfo = _backgroundTrackingAreaUserInfo;
 @synthesize normalCursor = _normalCursor;
-@synthesize lastBBSState = _lastBBSState;
-@synthesize lastCursorRow = _lastCursorRow;
 @synthesize view = _view;
 
 #pragma mark -
@@ -196,7 +194,7 @@ const float WLHorizontalScrollReactivateTimeInteval = 1.0;
 	if ([self isMouseInsideRect:rect]) {
 		NSEvent *event = [NSEvent enterExitEventWithType:NSEventTypeMouseEntered 
 												location:[NSEvent mouseLocation] 
-										   modifierFlags:NSEventMaskMouseEntered 
+										   modifierFlags:(NSEventModifierFlags)NSEventMaskMouseEntered
 											   timestamp:0
 											windowNumber:_view.window.windowNumber 
 												 context:nil
@@ -220,7 +218,7 @@ const float WLHorizontalScrollReactivateTimeInteval = 1.0;
 	if ([self isMouseInsideRect:rect]) {
 		NSEvent *event = [NSEvent enterExitEventWithType:NSEventTypeMouseExited 
 												location:[NSEvent mouseLocation] 
-										   modifierFlags:NSEventMaskMouseExited 
+										   modifierFlags:(NSEventModifierFlags)NSEventMaskMouseExited
 											   timestamp:0
 											windowNumber:_view.window.windowNumber 
 												 context:nil

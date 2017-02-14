@@ -52,14 +52,12 @@ extern NSString *const WLRangeLengthUserInfoName;
 	} _lastHorizontalScrollDirection;
 	NSTimer *_horizontalScrollReactivateTimer;
 	
-	BBSState _lastBBSState;
-	int _lastCursorRow;
 }
 @property (readwrite, weak) NSDictionary *activeTrackingAreaUserInfo;
 @property (readwrite, weak) NSDictionary *backgroundTrackingAreaUserInfo;
 @property (readwrite, weak) NSCursor *normalCursor;
 @property (readonly) BBSState lastBBSState;
-@property (readonly) int lastCursorRow;
+@property (readonly) NSInteger lastCursorRow;
 @property (weak, readonly) WLTerminalView *view;
 
 - (instancetype)initWithView:(WLTerminalView *)view;

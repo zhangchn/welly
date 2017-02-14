@@ -89,7 +89,7 @@
 								   alternateButton:NSLocalizedString(@"Cancel", @"Cancel Button")
 									   otherButton:nil
 						 informativeTextWithFormat:NSLocalizedString(@"The connection is still alive. If you close this tab, the connection will be lost. Do you want to close this tab anyway?", @"Sheet Message")];
-    if ([alert runModal] == NSAlertDefaultReturn)
+    if ([alert runModal] == NSAlertFirstButtonReturn)
         return YES;
     return NO;
 }

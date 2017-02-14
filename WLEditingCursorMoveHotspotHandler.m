@@ -62,7 +62,7 @@ static NSCursor *gMoveCursor = nil;
 - (void)mouseUp:(NSEvent *)theEvent {
 	// click to move cursor
 	NSPoint p = [_view convertPoint:theEvent.locationInWindow fromView:nil];
-	int _selectionLocation = [_view convertIndexFromPoint: p];
+	NSInteger _selectionLocation = [_view convertIndexFromPoint: p];
 	
 	unsigned char cmd[_maxRow * _maxColumn * 3];
 	unsigned int cmdLength = 0;
@@ -71,13 +71,13 @@ static NSCursor *gMoveCursor = nil;
 	// however, since it is enabled by default in smth (switchible by ctrl-p) and disabled in ptt,
 	// we temporarily use bbsType here...
 	if ([ds bbsType] == WLMaple) { // auto-break-line IS NOT enabled in bbs
-		int moveToRow = _selectionLocation / _maxColumn;
-		int moveToCol = _selectionLocation % _maxColumn;
+		NSInteger moveToRow = _selectionLocation / _maxColumn;
+		NSInteger moveToCol = _selectionLocation % _maxColumn;
 		BOOL home = NO;
 		if (moveToRow > [ds cursorRow]) {
 			cmd[cmdLength++] = 0x01;
 			home = YES;
-			for (int i = [ds cursorRow]; i < moveToRow; i++) {
+			for (NSInteger i = [ds cursorRow]; i < moveToRow; i++) {
 				cmd[cmdLength++] = 0x1B;
 				cmd[cmdLength++] = 0x4F;
 				cmd[cmdLength++] = 0x42;
@@ -85,7 +85,7 @@ static NSCursor *gMoveCursor = nil;
 		} else if (moveToRow < [ds cursorRow]) {
 			cmd[cmdLength++] = 0x01;
 			home = YES;
-			for (int i = [ds cursorRow]; i > moveToRow; i--) {
+			for (NSInteger i = [ds cursorRow]; i > moveToRow; i--) {
 				cmd[cmdLength++] = 0x1B;
 				cmd[cmdLength++] = 0x4F;
 				cmd[cmdLength++] = 0x41;
@@ -94,7 +94,7 @@ static NSCursor *gMoveCursor = nil;
 		
 		cell *currRow = [_view.frontMostTerminal cellsOfRow:moveToRow];
 		if (home) {
-			for (int i = 0; i < moveToCol; i++) {
+			for (NSInteger i = 0; i < moveToCol; i++) {
 				if (currRow[i].attr.f.doubleByte != 2 || _view.frontMostConnection.site.shouldDetectDoubleByte) {
 					cmd[cmdLength++] = 0x1B;
 					cmd[cmdLength++] = 0x4F;
@@ -102,7 +102,7 @@ static NSCursor *gMoveCursor = nil;
 				}
 			}
 		} else if (moveToCol > [ds cursorColumn]) {
-			for (int i = [ds cursorColumn]; i < moveToCol; i++) {
+			for (NSInteger i = [ds cursorColumn]; i < moveToCol; i++) {
 				if (currRow[i].attr.f.doubleByte != 2 || _view.frontMostConnection.site.shouldDetectDoubleByte) {
 					cmd[cmdLength++] = 0x1B;
 					cmd[cmdLength++] = 0x4F;
@@ -110,7 +110,7 @@ static NSCursor *gMoveCursor = nil;
 				}
 			}
 		} else if (moveToCol < [ds cursorColumn]) {
-			for (int i = [ds cursorColumn]; i > moveToCol; i--) {
+			for (NSInteger i = [ds cursorColumn]; i > moveToCol; i--) {
 				if (currRow[i].attr.f.doubleByte != 2 || _view.frontMostConnection.site.shouldDetectDoubleByte) {
 					cmd[cmdLength++] = 0x1B;
 					cmd[cmdLength++] = 0x4F;
@@ -119,12 +119,12 @@ static NSCursor *gMoveCursor = nil;
 			}
 		}
 	} else { // auto-break-line IS enabled in bbs
-		int thisRow = [ds cursorRow];
-		int cursorLocation = thisRow * _maxColumn + [ds cursorColumn];
-		int prevRow = -1;
+		NSInteger thisRow = [ds cursorRow];
+		NSInteger cursorLocation = thisRow * _maxColumn + [ds cursorColumn];
+		NSInteger prevRow = -1;
 		int lastEffectiveChar = -1;
 		if (cursorLocation < _selectionLocation) {
-			for (int i = cursorLocation; i < _selectionLocation; ++i) {
+			for (NSInteger i = cursorLocation; i < _selectionLocation; ++i) {
 				thisRow = i / _maxColumn;
 				if (thisRow != prevRow) {
 					cell *currRow = [ds cellsOfRow:thisRow];
@@ -143,7 +143,7 @@ static NSCursor *gMoveCursor = nil;
 				}
 			}
 		} else {
-			for (int i = cursorLocation; i > _selectionLocation; --i) {
+			for (NSInteger i = cursorLocation; i > _selectionLocation; --i) {
 				thisRow = i / _maxColumn;
 				if (thisRow != prevRow) {
 					cell *currRow = [ds cellsOfRow:thisRow];

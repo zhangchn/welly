@@ -37,17 +37,17 @@ NSString *const WLCommandSequenceSameAuthorReading = @"\025";	// ^U
 	unsigned char cmd[_maxRow * _maxColumn + 1];
 	unsigned int cmdLength = 0;
 	WLTerminal *ds = _view.frontMostTerminal;
-	int cursorRow = ds.cursorRow;
+	NSInteger cursorRow = ds.cursorRow;
 	
 	// Moving Command
 	if (moveToRow > cursorRow) {
-		for (int i = cursorRow; i < moveToRow; i++) {
+		for (NSInteger i = cursorRow; i < moveToRow; i++) {
 			cmd[cmdLength++] = 0x1B;
 			cmd[cmdLength++] = 0x4F;
 			cmd[cmdLength++] = 0x42;
 		} 
 	} else if (moveToRow < cursorRow) {
-		for (int i = cursorRow; i > moveToRow; i--) {
+		for (NSInteger i = cursorRow; i > moveToRow; i--) {
 			cmd[cmdLength++] = 0x1B;
 			cmd[cmdLength++] = 0x4F;
 			cmd[cmdLength++] = 0x41;
@@ -219,7 +219,7 @@ NSString *const WLCommandSequenceSameAuthorReading = @"\025";	// ^U
 			 column:(int)column 
 			   with:(NSString *)s {
     cell *currRow = [_view.frontMostTerminal cellsOfRow:row];
-    int i = 0, n = s.length;
+    NSInteger i = 0, n = s.length;
     for (; i < n && column < _maxColumn - 1; ++i, ++column)
         if (currRow[column].byte != [s characterAtIndex:i])
             return NO;
@@ -419,7 +419,7 @@ BOOL isPostTitleStarter(unichar c) {
 	// In the same page, do NOT update/clear
 	WLTerminal *ds = _view.frontMostTerminal;
 	BBSState bbsState = ds.bbsState;
-	if (bbsState.state == _manager.lastBBSState.state && abs(_manager.lastCursorRow - ds.cursorRow) == 1) {
+	if (bbsState.state == _manager.lastBBSState.state && labs(_manager.lastCursorRow - ds.cursorRow) == 1) {
 		return NO;
 	}
 	return YES;

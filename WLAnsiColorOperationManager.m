@@ -46,7 +46,7 @@ void convertToUTF8(cell *buffer, int bufferLength, WLEncoding encoding) {
 	}
 }
 
-void convertFromUTF8(cell *buffer, int bufferLength, WLEncoding encoding) {
+void convertFromUTF8(cell *buffer, NSInteger bufferLength, WLEncoding encoding) {
 	for (int i = 0; i < bufferLength; ++i) {
 		if (buffer[i].attr.f.doubleByte == 1) {
 			unsigned short code = doubleByteToEncodingCode(buffer[i].byte, buffer[i+1].byte) + 0x8000;
@@ -178,7 +178,7 @@ const cell WLWhiteSpaceCell = {WLWhitespaceCharacter, 0};
 	}
 	
 	cell *buffer = (cell *)ansiColorData.bytes;
-	int bufferLength = ansiColorData.length / sizeof(cell);
+	NSInteger bufferLength = ansiColorData.length / sizeof(cell);
 	convertFromUTF8(buffer, bufferLength, encoding);
 	
 	attribute defaultANSI;

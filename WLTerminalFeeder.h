@@ -12,17 +12,17 @@
 @class WLConnection, WLIntegerArray, WLTerminal;
 
 @interface WLTerminalFeeder : NSObject {
-    int _savedCursorX;
-    int _savedCursorY;
+    NSInteger _savedCursorX;
+    NSInteger _savedCursorY;
 			
     enum { TP_NORMAL, TP_ESCAPE, TP_CONTROL, TP_SCS } _state;
 	
     WLIntegerArray *_csBuf;
     WLIntegerArray *_csArg;
-    unsigned int _csTemp;
+    NSUInteger _csTemp;
 	
-    int _scrollBeginRow;
-    int _scrollEndRow;
+    NSInteger _scrollBeginRow;
+    NSInteger _scrollEndRow;
 	
 //	WLTerminal *_terminal;
 	WLConnection *_connection;
@@ -37,8 +37,8 @@
     BOOL _modeLNM;            // line feed (true, default), new line (false)
     BOOL _modeIRM;            // insert (true), replace (false, default)
 }
-@property (readonly) int cursorX;
-@property (readonly) int cursorY;
+@property (readonly) NSInteger cursorX;
+@property (readonly) NSInteger cursorY;
 @property cell **grid;
 @property (weak) WLTerminal *terminal;
 - (instancetype)init NS_DESIGNATED_INITIALIZER;
@@ -56,5 +56,5 @@
 /* Clear */
 - (void)clearAll;
 
-- (cell *)cellsOfRow:(int)r NS_RETURNS_INNER_POINTER;
+- (cell *)cellsOfRow:(NSInteger)r NS_RETURNS_INNER_POINTER;
 @end

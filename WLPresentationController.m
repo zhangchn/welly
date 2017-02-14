@@ -116,7 +116,7 @@ WLGlobalConfig *gConfig;
 		// Init the window and show
 		NSRect screenRect = [NSScreen mainScreen].frame;
 		_fullScreenWindow = [[WLFullScreenWindow alloc] initWithContentRect:screenRect
-														styleMask:NSBorderlessWindowMask
+														styleMask:NSWindowStyleMaskBorderless
 														  backing:NSBackingStoreBuffered
 															defer:NO];
 		_fullScreenWindow.alphaValue = 0;

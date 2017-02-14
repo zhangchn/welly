@@ -51,9 +51,9 @@ NSString *const WLMenuTitleOpenWithBrowser = @"Open With Browser";
 	
 	// Trimming special characters at the end of url
 	NSCharacterSet *trimmingSet = [NSCharacterSet characterSetWithCharactersInString:@",.:;?!"];
-	int lenBeforeTrimming = urlString.length;
+	NSInteger lenBeforeTrimming = urlString.length;
 	urlString = [urlString stringByTrimmingCharactersInSet:trimmingSet];
-	int trimmedLength = lenBeforeTrimming - urlString.length;
+	NSInteger trimmedLength = lenBeforeTrimming - urlString.length;
 	for (int index=_index-1; index>_index-1-trimmedLength; --index) {
 		_grid[index/_maxColumn][index%_maxColumn].attr.f.url = NO;
 	}
@@ -111,7 +111,7 @@ NSString *const WLMenuTitleOpenWithBrowser = @"Open With Browser";
 		} else {
 			// Try to match the url header
 			for (int p = 0; p < protocolNum; p++) {
-                int len = strlen(protocols[p]);
+                NSInteger len = strlen(protocols[p]);
                 BOOL isMatched = YES;
                 for (int s = 0; s < len; s++)
                     if (_grid[(_index+s)/_maxColumn][(_index+s)%_maxColumn].byte != protocols[p][s] || _grid[(_index+s)/_maxColumn][(_index+s)%_maxColumn].attr.f.doubleByte) {
@@ -296,8 +296,8 @@ NSString *const WLMenuTitleOpenWithBrowser = @"Open With Browser";
 #pragma mark -
 #pragma mark Update State
 - (void)addURL:(NSString *)urlString 
-	   atIndex:(int)index 
-		length:(int)length {
+	   atIndex:(NSInteger)index
+		length:(NSInteger)length {
 	// If there's no url before, make the pointer point to the first URL element
 	if(_currentSelectedURLIndex < 0)
 		_currentSelectedURLIndex = 1;
@@ -314,8 +314,8 @@ NSString *const WLMenuTitleOpenWithBrowser = @"Open With Browser";
 	
 	// Calculate rects to add, notice that we might have multiline url
 	while (length > 0) {
-		int column = index % _maxColumn;
-		int row = index / _maxColumn;
+		NSInteger column = index % _maxColumn;
+		NSInteger row = index / _maxColumn;
 		if (column + length < _maxColumn) {
 			NSRect rect = [_view rectAtRow:row column:column height:1 width:length];
 			[_trackingAreas addObject:[_manager addTrackingAreaWithRect:rect userInfo:userInfo]];

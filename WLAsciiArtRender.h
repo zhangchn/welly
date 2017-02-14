@@ -19,8 +19,8 @@
 
 + (BOOL)isAsciiArtSymbol:(unichar)ch;
 - (void)drawSpecialSymbol:(unichar)ch 
-				   forRow:(int)r 
-				   column:(int)c 
+				   forRow:(NSInteger)r
+				   column:(NSInteger)c 
 			leftAttribute:(attribute)attr1 
 		   rightAttribute:(attribute)attr2;
 - (void)configure;

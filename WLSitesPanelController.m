@@ -205,17 +205,17 @@ SYNTHESIZE_SINGLETON_FOR_CLASS(WLSitesPanelController);
     const char *account = _siteAddressField.stringValue.UTF8String;
     SecKeychainItemRef itemRef;
     if (!SecKeychainFindGenericPassword(nil,
-                                        strlen(service), service,
-                                        strlen(account), account,
+                                        (UInt32)strlen(service), service,
+                                        (UInt32)strlen(account), account,
                                         nil, nil,
                                         &itemRef))
         SecKeychainItemDelete(itemRef);
     const char *pass = _passwordField.stringValue.UTF8String;
     if (*pass) {
         SecKeychainAddGenericPassword(nil,
-                                      strlen(service), service,
-                                      strlen(account), account,
-                                      strlen(pass), pass,
+                                      (UInt32)strlen(service), service,
+                                      (UInt32)strlen(account), account,
+                                      (UInt32)strlen(pass), pass,
                                       nil);
     }
     _passwordField.stringValue = @"";
@@ -257,7 +257,7 @@ SYNTHESIZE_SINGLETON_FOR_CLASS(WLSitesPanelController);
     NSPasteboard* pboard = [info draggingPasteboard];
     NSData* rowData = [pboard dataForType:SiteTableViewDataType];
     NSIndexSet* rowIndexes = [NSKeyedUnarchiver unarchiveObjectWithData:rowData];
-    int dragRow = rowIndexes.firstIndex;
+    NSUInteger dragRow = rowIndexes.firstIndex;
     // move
     NSObject *obj = _sites[dragRow];
     [_sitesController insertObject:obj atArrangedObjectIndex:row];
@@ -278,7 +278,7 @@ SYNTHESIZE_SINGLETON_FOR_CLASS(WLSitesPanelController);
 	return [[self sharedInstance] objectInSitesAtIndex:index];
 }
 
-- (unsigned)countOfSites {
+- (NSUInteger)countOfSites {
     return _sites.count;
 }
 

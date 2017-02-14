@@ -617,14 +617,14 @@ static NSBezierPath *gSymbolLowerLinePath;
 		[gLeftImage unlockFocus];
 		[gLeftImage drawAtPoint:NSZeroPoint
 					   fromRect:rect
-					  operation:NSCompositeCopy
+					  operation:NSCompositingOperationCopy
 					   fraction:1.0];		
 	}
 }
 
 - (void)drawSpecialSymbol:(unichar)ch 
-                   forRow:(int)r
-                   column:(int)c
+                   forRow:(NSInteger)r
+                   column:(NSInteger)c
             leftAttribute:(attribute)attrL
            rightAttribute:(attribute)attrR {
     int colorIndexL = fgColorIndexOfAttribute(attrL);

@@ -22,21 +22,21 @@ static NSImage *gLeftImage;
 @property (strong) NSImage *backedImage;
 @property (assign) CGSize *singleAdvance;
 @property (assign) CGSize *doubleAdvance;
-@property (assign) int x;
-@property (assign) int y;
+@property (assign) NSInteger x;
+@property (assign) NSInteger y;
 @property (weak) WLConnection *connection;
 @property (strong) WLAsciiArtRender *asciiArtRender;
 
 - (void)drawSpecialSymbol:(unichar)ch
-				   forRow:(int)r 
-				   column:(int)c 
+				   forRow:(NSInteger)r
+				   column:(NSInteger)c
 			leftAttribute:(attribute)attr1 
 		   rightAttribute:(attribute)attr2;
-- (void)updateBackgroundForRow:(int)r 
-						  from:(int)start 
-							to:(int)end;
+- (void)updateBackgroundForRow:(NSInteger)r
+						  from:(NSInteger)start
+							to:(NSInteger)end;
 - (void)drawBlink;
-- (void)drawStringForRow:(int)r
+- (void)drawStringForRow:(NSInteger)r
 				 context:(CGContextRef)myCGContext;
 - (void)tick;
 @end
@@ -63,7 +63,7 @@ static NSImage *gLeftImage;
 //    [_backedImage release];
 //    self.backedImage = nil;
     self.backedImage = [[NSImage alloc] initWithSize:[gConfig contentSize]];
-    [_backedImage setFlipped:NO];
+    //[_backedImage setFlipped:NO];
 	
     gLeftImage = [[NSImage alloc] initWithSize:NSMakeSize(_fontWidth, _fontHeight)];			
 	
@@ -331,7 +331,7 @@ static NSImage *gLeftImage;
 	}
 }
 
-- (void)drawStringForRow:(int)r
+- (void)drawStringForRow:(NSInteger)r
 				 context:(CGContextRef)myCGContext {
 	int i, c, x;
 	int start, end;
@@ -470,7 +470,7 @@ static NSImage *gLeftImage;
         CGContextSetRGBStrokeColor(myCGContext, 1.0, 1.0, 1.0, 1.0);
         CGContextSetLineWidth(myCGContext, 1.0);
         
-        int location = 0;
+        NSInteger location = 0;
         int lastIndex = bufIndex[glyphOffset];
         BOOL hidden = isHiddenAttribute(currRow[lastIndex].attr);
         BOOL lastDoubleByte = isDoubleByte[glyphOffset];
@@ -483,7 +483,7 @@ static NSImage *gLeftImage;
                 (!isDoubleByte[runGlyphIndex + glyphOffset] && index != lastIndex + 1) ||
                 (isDoubleByte[runGlyphIndex + glyphOffset] != lastDoubleByte)) {
                 lastDoubleByte = isDoubleByte[runGlyphIndex + glyphOffset];
-                int len = runGlyphIndex - location;
+                NSInteger len = runGlyphIndex - location;
                 
                 CGContextSetTextDrawingMode(myCGContext, (gConfig.showsHiddenText && hidden) ? kCGTextStroke : kCGTextFill);
                 CGGlyph glyph[_maxColumn];
@@ -564,10 +564,10 @@ static NSImage *gLeftImage;
     }
 }
 
-- (void)updateBackgroundForRow:(int)r 
-						  from:(int)start 
-							to:(int)end {
-	int c;
+- (void)updateBackgroundForRow:(NSInteger)r
+						  from:(NSInteger)start
+							to:(NSInteger)end {
+	NSInteger c;
 	cell *currRow = [self.frontMostTerminal cellsOfRow:r];
 	NSRect rowRect = NSMakeRect(start * _fontWidth, (_maxRow - 1 - r) * _fontHeight, (end - start) * _fontWidth, _fontHeight);
 	
@@ -636,8 +636,8 @@ static NSImage *gLeftImage;
 }
 
 - (void)drawSpecialSymbol:(unichar)ch 
-				   forRow:(int)r 
-				   column:(int)c 
+				   forRow:(NSInteger)r
+				   column:(NSInteger)c
 			leftAttribute:(attribute)attr1 
 		   rightAttribute:(attribute)attr2 {
 	[_asciiArtRender drawSpecialSymbol:ch 

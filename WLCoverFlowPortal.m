@@ -30,9 +30,6 @@ const float xscale = 1, yscale = 0.8;
 
 @implementation WLCoverFlowPortal
 
-//@synthesize view = _imageFlowView;
-
-
 - (instancetype)initWithFrame:(NSRect)frame {
 	if ((self = [super initWithFrame:frame])) {
 		// Initialize the imageFlowView
@@ -199,7 +196,8 @@ const float xscale = 1, yscale = 0.8;
 
 // private
 - (BOOL)draggedOut:(NSPoint)screenPoint {
-	NSPoint pt = [[_imageFlowView window] convertScreenToBase:screenPoint];
+    NSRect frame = NSMakeRect(screenPoint.x, screenPoint.y, 0, 0);
+	NSPoint pt = [[_imageFlowView window] convertRectFromScreen:frame].origin;
     return ![_imageFlowView hitTest:pt];
 }
 
