@@ -196,13 +196,13 @@ NSString *const WLMenuTitleOpenWithBrowser = @"Open With Browser";
 #pragma mark Contextual Menu
 - (IBAction)copyURL:(id)sender {
 	NSPasteboard *pb = [NSPasteboard generalPasteboard];
-    NSMutableArray *types = [NSMutableArray arrayWithObjects: NSStringPboardType, NSURLPboardType, nil];
+    NSMutableArray *types = [NSMutableArray arrayWithObjects: NSPasteboardTypeString, NSPasteboardTypeURL, nil];
     [pb declareTypes:types owner:self];
 	
 	NSDictionary *userInfo = [sender representedObject];
 	NSString *urlString = userInfo[WLURLUserInfoName];
-    [pb setString:urlString forType:NSStringPboardType];
-	[pb setString:urlString forType:NSURLPboardType];
+    [pb setString:urlString forType:NSPasteboardTypeString];
+    [pb setString:urlString forType:NSPasteboardTypeURL];
 }
 
 - (IBAction)openWithBrower:(id)sender {

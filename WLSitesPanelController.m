@@ -234,7 +234,7 @@ SYNTHESIZE_SINGLETON_FOR_CLASS(WLSitesPanelController);
 #pragma mark Site View Drag & Drop
 - (BOOL)tableView:(NSTableView *)tv writeRowsWithIndexes:(NSIndexSet *)rowIndexes toPasteboard:(NSPasteboard*)pboard {
     // copy to the pasteboard.
-    NSData *data = [NSKeyedArchiver archivedDataWithRootObject:rowIndexes];
+    NSData *data = [NSKeyedArchiver archivedDataWithRootObject:rowIndexes requiringSecureCoding:NO error:nil];
     [pboard declareTypes:@[SiteTableViewDataType] owner:self];
     [pboard setData:data forType:SiteTableViewDataType];
     return YES;
@@ -256,7 +256,7 @@ SYNTHESIZE_SINGLETON_FOR_CLASS(WLSitesPanelController);
 	dropOperation:(NSTableViewDropOperation)op {
     NSPasteboard* pboard = [info draggingPasteboard];
     NSData* rowData = [pboard dataForType:SiteTableViewDataType];
-    NSIndexSet* rowIndexes = [NSKeyedUnarchiver unarchiveObjectWithData:rowData];
+    NSIndexSet* rowIndexes = [NSKeyedUnarchiver unarchivedObjectOfClass:[NSIndexSet class] fromData:rowData error:nil];
     NSUInteger dragRow = rowIndexes.firstIndex;
     // move
     NSObject *obj = _sites[dragRow];

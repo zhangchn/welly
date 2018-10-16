@@ -293,7 +293,7 @@ static NSImage *gLeftImage;
         int x, y;
         WLTerminal *ds = self.frontMostTerminal;
         [_backedImage lockFocus];
-        CGContextRef myCGContext = (CGContextRef)[NSGraphicsContext currentContext].graphicsPort;
+        CGContextRef myCGContext = (CGContextRef)[NSGraphicsContext currentContext].CGContext;
         if (ds) {
             /* Draw Background */
             for (y = 0; y < _maxRow; y++) {
@@ -516,7 +516,7 @@ static NSImage *gLeftImage;
                 rect.origin = NSZeroPoint;
                 NSRectFill(rect);
                 
-                CGContextRef tempContext = (CGContextRef)[NSGraphicsContext currentContext].graphicsPort;
+                CGContextRef tempContext = (CGContextRef)[NSGraphicsContext currentContext].CGContext;
                 
                 CGContextSetShouldSmoothFonts(tempContext, gConfig.shouldSmoothFonts ? true : false);
                 

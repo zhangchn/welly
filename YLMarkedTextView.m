@@ -28,7 +28,7 @@
 }
 
 - (void)drawRect:(NSRect)rect {
-	CGContextRef context = (CGContextRef) [NSGraphicsContext currentContext].graphicsPort;
+    CGContextRef context = (CGContextRef) [NSGraphicsContext currentContext].CGContext;
 	CGContextSaveGState(context);
 	
 	CGFloat half = (self.frame.size.height / 2.0);

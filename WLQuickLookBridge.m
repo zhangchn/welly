@@ -101,7 +101,7 @@ static BOOL isLion;
 }
 
 - (BOOL)previewView:(id)aView writePreviewItem:(id)item toPasteboard:(id)pboard {
-    [pboard declareTypes:@[NSURLPboardType] owner:nil];
+    [pboard declareTypes:@[NSPasteboardTypeURL] owner:nil];
     [item writeToPasteboard:pboard];
     return YES;
 }

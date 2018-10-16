@@ -291,7 +291,7 @@ static NSColor* colorUsingNearestAnsiColor(NSColor *rawColor, BOOL isBackground)
         [rawColor isEqual:[config colorWhiteHilite]])
         return rawColor;
     CGFloat h, s, b;
-    [[rawColor colorUsingColorSpaceName:@"NSCalibratedRGBColorSpace"] getHue:&h saturation:&s brightness:&b alpha:nil];
+    [[rawColor colorUsingColorSpace:[NSColorSpace deviceRGBColorSpace]] getHue:&h saturation:&s brightness:&b alpha:nil];
     if (s < 0.05) {
         if (isBackground)
             return [config colorBG];

@@ -13,7 +13,7 @@
 #import "WLTerminal.h"
 #import "WLConnection.h"
 #import "WLSite.h"
-#import "WLGLobalConfig.h"
+#import "WLGlobalConfig.h"
 #import "WLContextualMenuManager.h"
 #import "WLPreviewController.h"
 #import "WLIntegerArray.h"
@@ -203,8 +203,8 @@ BOOL isEnglishNumberAlphabet(unsigned char c) {
 - (void)performPaste {
 	NSPasteboard *pb = [NSPasteboard generalPasteboard];
 	NSArray *types = pb.types;
-	if ([types containsObject:NSStringPboardType]) {
-		NSString *str = [pb stringForType:NSStringPboardType];
+    if ([types containsObject:NSPasteboardTypeString]) {
+        NSString *str = [pb stringForType:NSPasteboardTypeString];
 		//[self insertText:str withDelay:100];
 		[self insertText:str withDelay:0];
 	}
@@ -213,10 +213,10 @@ BOOL isEnglishNumberAlphabet(unsigned char c) {
 - (void)performPasteWrap {
     NSPasteboard *pb = [NSPasteboard generalPasteboard];
     NSArray *types = pb.types;
-    if (![types containsObject:NSStringPboardType]) return;
+    if (![types containsObject:NSPasteboardTypeString]) return;
 
     @autoreleasepool {
-        NSString *str = [pb stringForType:NSStringPboardType];
+        NSString *str = [pb stringForType:NSPasteboardTypeString];
         const int LINE_WIDTH = 66, LPADDING = 4;
         WLIntegerArray *word = [WLIntegerArray integerArray];
         WLIntegerArray *text = [WLIntegerArray integerArray];
@@ -328,9 +328,9 @@ BOOL isEnglishNumberAlphabet(unsigned char c) {
 																		 encoding:self.frontMostConnection.site.encoding];
 		[self.frontMostConnection sendMessage:ansiCode];
 		return;
-	} else if ([types containsObject:NSRTFPboardType]) {
+    } else if ([types containsObject:NSPasteboardTypeRTF]) {
 		NSAttributedString *rtfString = [[NSAttributedString alloc]
-										 initWithRTF:[pb dataForType:NSRTFPboardType] 
+                                         initWithRTF:[pb dataForType:NSPasteboardTypeRTF] 
 										 documentAttributes:nil];
 		NSString *ansiCode = [WLAnsiColorOperationManager ansiCodeStringFromAttributedString:rtfString 
 																			 forANSIColorKey:self.frontMostConnection.site.ansiColorKey];
@@ -360,10 +360,10 @@ BOOL isEnglishNumberAlphabet(unsigned char c) {
     }
     
     NSPasteboard *pb = [NSPasteboard generalPasteboard];
-    NSMutableArray *types = [NSMutableArray arrayWithObjects:NSStringPboardType, ANSIColorPBoardType, nil];
+    NSMutableArray *types = [NSMutableArray arrayWithObjects:NSPasteboardTypeString, ANSIColorPBoardType, nil];
     if (!s) s = @"";
     [pb declareTypes:types owner:self];
-    [pb setString:s forType:NSStringPboardType];
+    [pb setString:s forType:NSPasteboardTypeString];
 	if (_hasRectangleSelected) {
 		[pb setData:[WLAnsiColorOperationManager ansiColorDataFromTerminal:self.frontMostTerminal 
 																	inRect:[self selectedRect]] 

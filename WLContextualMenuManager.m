@@ -143,10 +143,10 @@ SYNTHESIZE_SINGLETON_FOR_CLASS(WLContextualMenuManager);
 + (void)copyCodeInfo:(id)sender {
 	NSString *s = [sender title];
 	NSPasteboard *pb = [NSPasteboard generalPasteboard];
-    NSMutableArray *types = [NSMutableArray arrayWithObject:NSStringPboardType];
+    NSMutableArray *types = [NSMutableArray arrayWithObject:NSPasteboardTypeString];
     if (!s) s = @"";
     [pb declareTypes:types owner:self];
-    [pb setString:s forType:NSStringPboardType];
+    [pb setString:s forType:NSPasteboardTypeString];
 }
 #endif
 
@@ -171,8 +171,8 @@ SYNTHESIZE_SINGLETON_FOR_CLASS(WLContextualMenuManager);
 + (void)lookupDictionary:(id)sender {
     NSString *u = [sender representedObject];
     NSPasteboard *spb = [NSPasteboard pasteboardWithUniqueName];
-    [spb declareTypes:@[NSStringPboardType] owner:self];
-    [spb setString:u forType:NSStringPboardType];
+    [spb declareTypes:@[NSPasteboardTypeString] owner:self];
+    [spb setString:u forType:NSPasteboardTypeString];
     NSPerformService(@"Look Up in Dictionary", spb);
 }
 

@@ -116,10 +116,10 @@
 #pragma mark -
 #pragma mark WLPBoardReceiver protocol
 - (BOOL)acceptsPBoard:(NSPasteboard *)pboard {
-	if (![pboard.types containsObject:NSFilenamesPboardType])
+	if (![pboard.types containsObject:NSPasteboardTypeFileURL])
 		return NO;
 	
-    id files = [pboard propertyListForType:NSFilenamesPboardType];
+    id files = [pboard propertyListForType:NSPasteboardTypeFileURL];
     // only one file supported
     if ([files count] != 1)
         return NO;
@@ -137,7 +137,7 @@
 	if (![self acceptsPBoard:pboard])
 		return NO;
 	
-    id files = [pboard propertyListForType:NSFilenamesPboardType];
+    id files = [pboard propertyListForType:NSPasteboardTypeFileURL];
     NSString *src = files[0];
 	return [self setCoverWithFile:src];
 }
@@ -156,9 +156,9 @@
 }
 
 - (NSPasteboard *)draggingPasteboard {
-	NSPasteboard *pboard = [NSPasteboard pasteboardWithName:NSDragPboard];
-    [pboard declareTypes:@[NSFilenamesPboardType] owner:nil];
-    [pboard setString:_path forType:NSFilenamesPboardType];
+    NSPasteboard *pboard = [NSPasteboard pasteboardWithName:NSPasteboardNameDrag];
+    [pboard declareTypes:@[NSPasteboardTypeFileURL] owner:nil];
+    [pboard setString:_path forType:NSPasteboardTypeFileURL];
 	return pboard;
 }
 

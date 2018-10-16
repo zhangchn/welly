@@ -92,7 +92,7 @@ SYNTHESIZE_SINGLETON_FOR_CLASS(WLMainFrameController);
 	[[NSUserDefaults standardUserDefaults] setObject:@"1Welly" forKey:@"NSColorPickerPageableNameListDefaults"];
     WLGlobalConfig *config = [WLGlobalConfig sharedInstance];
 	NSColorPanel *colorPanel = [NSColorPanel sharedColorPanel];
-    colorPanel.mode = NSColorListModeColorPanel;
+    colorPanel.mode = NSColorPanelModeColorList;
     NSColorList *colorList = [[NSColorList alloc] initWithName:@"Welly"];
     [colorList insertColor:[config colorBlack] key:NSLocalizedString(@"Black", @"Color") atIndex:0];
     [colorList insertColor:[config colorRed] key:NSLocalizedString(@"Red", @"Color") atIndex:1];
@@ -131,15 +131,15 @@ SYNTHESIZE_SINGLETON_FOR_CLASS(WLMainFrameController);
     NSMenu *m = _encodingMenuItem.submenu;
     for (int i = 0; i < m.numberOfItems; i++) {
         NSMenuItem *item = [m itemAtIndex:i];
-        item.state = NSOffState;
+        item.state = NSControlStateValueOff;
     }
     if (!_tabView.frontMostTerminal)
         return;
     WLEncoding currentEncoding = _tabView.frontMostTerminal.encoding;
     if (currentEncoding == WLBig5Encoding)
-        [m itemAtIndex:1].state = NSOnState;
+        [m itemAtIndex:1].state = NSControlStateValueOn;
     if (currentEncoding == WLGBKEncoding)
-        [m itemAtIndex:0].state = NSOnState;
+        [m itemAtIndex:0].state = NSControlStateValueOn;
 }
 
 - (void)updateSitesMenuWithSites:(NSArray *)sites {
@@ -197,11 +197,11 @@ SYNTHESIZE_SINGLETON_FOR_CLASS(WLMainFrameController);
         [_mainWindow makeFirstResponder:_tabView.frontMostView];
         
         [self updateEncodingMenu];
-        [_detectDoubleByteButton setState:site.shouldDetectDoubleByte ? NSOnState : NSOffState];
-        _detectDoubleByteMenuItem.state = site.shouldDetectDoubleByte ? NSOnState : NSOffState;
-        [_autoReplyButton setState:site.shouldAutoReply ? NSOnState : NSOffState];
-        _autoReplyMenuItem.state = site.shouldAutoReply ? NSOnState : NSOffState;
-        [_mouseButton setState:site.shouldEnableMouse ? NSOnState : NSOffState];
+        [_detectDoubleByteButton setState:site.shouldDetectDoubleByte ? NSControlStateValueOn : NSControlStateValueOff];
+        _detectDoubleByteMenuItem.state = site.shouldDetectDoubleByte ? NSControlStateValueOn : NSControlStateValueOff;
+        [_autoReplyButton setState:site.shouldAutoReply ? NSControlStateValueOn : NSControlStateValueOff];
+        _autoReplyMenuItem.state = site.shouldAutoReply ? NSControlStateValueOn : NSControlStateValueOff;
+        [_mouseButton setState:site.shouldEnableMouse ? NSControlStateValueOn : NSControlStateValueOff];
 
     }
 }
@@ -214,9 +214,9 @@ SYNTHESIZE_SINGLETON_FOR_CLASS(WLMainFrameController);
                        context:(void *)context {
     if ([keyPath isEqualToString:@"showHiddenText"]) {
         if ([WLGlobalConfig sharedInstance].showsHiddenText) 
-            _showHiddenTextMenuItem.state = NSOnState;
+            _showHiddenTextMenuItem.state = NSControlStateValueOn;
         else
-            _showHiddenTextMenuItem.state = NSOffState;        
+            _showHiddenTextMenuItem.state = NSControlStateValueOff;
     } else if ([keyPath isEqualToString:@"messageCount"]) {
         NSDockTile *dockTile = NSApp.dockTile;
         if ([WLGlobalConfig sharedInstance].messageCount == 0) {
@@ -279,8 +279,8 @@ SYNTHESIZE_SINGLETON_FOR_CLASS(WLMainFrameController);
     if ([sender isKindOfClass:[NSMenuItem class]])
         ddb = !ddb;
     _tabView.frontMostConnection.site.shouldDetectDoubleByte = ddb;
-    [_detectDoubleByteButton setState:(ddb ? NSOnState : NSOffState)];
-    _detectDoubleByteMenuItem.state = (ddb ? NSOnState : NSOffState);
+    [_detectDoubleByteButton setState:(ddb ? NSControlStateValueOn : NSControlStateValueOff)];
+    _detectDoubleByteMenuItem.state = (ddb ? NSControlStateValueOn : NSControlStateValueOff);
 }
 
 - (IBAction)toggleAutoReply:(id)sender {
@@ -288,8 +288,8 @@ SYNTHESIZE_SINGLETON_FOR_CLASS(WLMainFrameController);
 	if ([sender isKindOfClass: [NSMenuItem class]])
 		ar = !ar;
 	// set the state of the button and menuitem
-	[_autoReplyButton setState: ar ? NSOnState : NSOffState];
-	_autoReplyMenuItem.state = ar ? NSOnState : NSOffState;
+    [_autoReplyButton setState: ar ? NSControlStateValueOn : NSControlStateValueOff];
+    _autoReplyMenuItem.state = ar ? NSControlStateValueOn : NSControlStateValueOff;
 	if (!ar && ar != _tabView.frontMostConnection.site.shouldAutoReply) {
 		// when user is to close auto reply, 
 		if (_tabView.frontMostConnection.messageDelegate.unreadCount > 0) {
@@ -309,7 +309,7 @@ SYNTHESIZE_SINGLETON_FOR_CLASS(WLMainFrameController);
     BOOL state = [sender state];
     if ([sender isKindOfClass:[NSMenuItem class]])
         state = !state;
-    [_mouseButton setState:(state ? NSOnState : NSOffState)];
+    [_mouseButton setState:(state ? NSControlStateValueOn : NSControlStateValueOff)];
 	
 	_tabView.frontMostConnection.site.shouldEnableMouse = state;
 
@@ -319,7 +319,7 @@ SYNTHESIZE_SINGLETON_FOR_CLASS(WLMainFrameController);
 }
 
 - (IBAction)toggleShowsHiddenText:(id)sender {
-    BOOL show = ([sender state] == NSOnState);
+    BOOL show = ([sender state] == NSControlStateValueOn);
     if ([sender isKindOfClass:[NSMenuItem class]]) {
         show = !show;
     }
@@ -583,7 +583,7 @@ SYNTHESIZE_SINGLETON_FOR_CLASS(WLMainFrameController);
 					  self, 
                       @selector(confirmSheetDidEnd:returnCode:contextInfo:), 
                       @selector(confirmSheetDidDismiss:returnCode:contextInfo:), nil, 
-                      [NSString stringWithFormat:NSLocalizedString(@"There are %d tabs open in Welly. Do you want to quit anyway?", @"Sheet Message"),
+                      @"%@", [NSString stringWithFormat:NSLocalizedString(@"There are %d tabs open in Welly. Do you want to quit anyway?", @"Sheet Message"),
                                 connectedConnection]);
     return NSTerminateLater;
 }

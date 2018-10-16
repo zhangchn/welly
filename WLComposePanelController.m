@@ -57,7 +57,7 @@ SYNTHESIZE_SINGLETON_FOR_CLASS(WLComposePanelController);
 	[[NSUserDefaults standardUserDefaults] setObject:@"1Welly" forKey:@"NSColorPickerPageableNameListDefaults"];
     WLGlobalConfig *config = [WLGlobalConfig sharedInstance];
     NSColorPanel *colorPanel = [NSColorPanel sharedColorPanel];
-    colorPanel.mode = NSColorListModeColorPanel;
+    colorPanel.mode = NSColorPanelModeColorList;
     NSColorList *colorList = [[NSColorList alloc] initWithName:@"Welly"];
     [colorList insertColor:[config colorBlack] key:NSLocalizedString(@"Black", @"Color") atIndex:0];
     [colorList insertColor:[config colorRed] key:NSLocalizedString(@"Red", @"Color") atIndex:1];
